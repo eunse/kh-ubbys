@@ -91,3 +91,43 @@ footer {
   background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="white" class="bi bi-x-circle-fill" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path></svg>');
 
 }
+
+.board-meta-like, .board-meta-readcount {
+  min-width: 75px;
+  border-left: 1px solid rgba(0,0,0,.125);
+  text-align: center;
+}
+.qna-list .category {
+  width: 100px;
+  padding-right: 15px;
+}
+.qna-list .category .badge {
+  min-width: 85px;
+}
+.qna-list .date {
+  font-size: 0.7rem;
+  text-align: center;
+}
+
+@media (max-width: 575.98px) {
+  .qna-list .category {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  .qna-list .category .badge {
+    
+  }
+  .board-meta {
+    margin-top: 1rem;
+    width: 100%;
+  }
+  .board-meta-like, .board-meta-readcount {
+    border: none;
+    text-align: left;
+    min-width: none;
+  }
+  .board-meta-like p, .board-meta-readcount p {
+    display: inline;
+  }
+}
