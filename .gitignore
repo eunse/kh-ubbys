@@ -1,6 +1,6 @@
-.classpath
-# Created by https://www.toptal.com/developers/gitignore/api/eclipse,java,java-web,macos,windows
-# Edit at https://www.toptal.com/developers/gitignore?templates=eclipse,java,java-web,macos,windows
+
+# Created by https://www.toptal.com/developers/gitignore/api/eclipse,java,macos,windows
+# Edit at https://www.toptal.com/developers/gitignore?templates=eclipse,java,macos,windows
 
 ### Eclipse ###
 .metadata
@@ -93,10 +93,6 @@ local.properties
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-### Java-Web ###
-## ignoring target file
-target/
-
 ### macOS ###
 # General
 .DS_Store
@@ -152,4 +148,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/eclipse,java,java-web,macos,windows
+# End of https://www.toptal.com/developers/gitignore/api/eclipse,java,macos,windows
