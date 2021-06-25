@@ -49,7 +49,7 @@ public class LoginServlet extends HttpServlet {
 				}
 				cookie.setPath(request.getContextPath());
 				response.addCookie(cookie);
-				System.out.println("로그인 된거");
+				System.out.println("로그인 성공");
 				response.sendRedirect(request.getContextPath());
 			} else {
 				session.setAttribute("alertTitle", "오류");
