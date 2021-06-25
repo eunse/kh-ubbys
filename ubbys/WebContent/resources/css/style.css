@@ -1,0 +1,146 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css");
+@import url('https://fonts.googleapis.com/css2?family=Gothic+A1:wght@100;400;700&display=swap');
+
+body {
+  font-family: 'Gothic A1', "Malgun Gothic", "Apple SD Gothic Neo", "NanumGothic", "Apple Gothic", sans-serif;
+}
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  background-color: rgba(255,255,255,0.85);
+  z-index: 99;
+}
+
+.card-hashtag {
+  font-size: 0.8rem;
+}
+
+footer {
+  margin-top: 3rem;
+  background-color: #ccc;  
+}
+.copyright {
+  padding: 150px 0 30px 0;
+}
+
+.list-sm-qna small {
+  border-left: 1px solid #ccc;
+  padding-left: 0.5rem;
+  padding-right: 0.45rem;
+}
+.list-sm-qna small:first-of-type {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.form-signin, .form-signup {
+  padding: 100px 0;
+}
+.form-signin input[type="text"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.user-image {
+  background-position: 50% 50%;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.mypage-info .user-image {
+  display: block;
+  width: 150px;
+  height: 150px;
+  border: 1px solid #ccc;
+}
+.qna-reply-content .user-image {
+  width: 20px;
+  height: 20px;
+}
+.reply-action {
+
+}
+.btn-like .bi-heart {
+  color: #dc3545;
+}
+.mypage-info {
+
+}
+.mypage-info .list-unstyled {
+  margin-left: 1em;
+}
+.mypage-info .list-unstyled > li{
+  text-indent: -1em;
+  padding-left: 1em;
+}
+.list-unstyled .bi::before {
+  padding-right: 1em;
+}
+
+.app-image {
+  width: 125px;
+  height: 125px;
+}
+
+.badge.tag {
+  cursor: pointer;
+  padding-left: 1.7rem;
+  margin-right: 0.5em;
+  background-repeat: no-repeat;
+  background-position: 5px 50% ;
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="white" class="bi bi-x-circle-fill" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path></svg>');
+
+}
+
+.board-meta-like, .board-meta-readcount {
+  min-width: 75px;
+  border-left: 1px solid rgba(0,0,0,.125);
+  text-align: center;
+}
+.qna-list .category {
+  width: 100px;
+  padding-right: 15px;
+}
+.qna-list .category .badge {
+  min-width: 85px;
+}
+.qna-list .date {
+  font-size: 0.7rem;
+  text-align: center;
+}
+.qna-reply-content .date {
+  color: #333;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 575.98px) {
+  .qna-list .category {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  .qna-list .category .badge {
+    
+  }
+  .board-meta {
+    margin-top: 1rem;
+    width: 100%;
+  }
+  .board-meta-like, .board-meta-readcount {
+    border: none;
+    text-align: left;
+    min-width: none;
+  }
+  .board-meta-like p, .board-meta-readcount p {
+    display: inline;
+  }
+}
