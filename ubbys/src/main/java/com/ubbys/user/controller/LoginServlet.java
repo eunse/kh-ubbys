@@ -50,7 +50,12 @@ public class LoginServlet extends HttpServlet {
 				cookie.setPath(request.getContextPath());
 				response.addCookie(cookie);
 				System.out.println("로그인 성공");
-				response.sendRedirect(request.getContextPath());
+				// 회원가입 페이지를 통해 도달했다면 추가 입력 화면으로 이동
+				if(request.getAttribute("isFirstIn") == null) {
+					response.sendRedirect(request.getContextPath());
+				} else {
+					response.sendRedirect(request.getContextPath() + "/signup/add");
+				} // 무슨 이유에서인지 조건을 반대로 바꾸면 일반 로그인 후 redirect가 되지 않음.. 				
 			} else {
 				session.setAttribute("alertTitle", "오류");
 				session.setAttribute("alertMsg", "아이디 또는 비밀번호가 일치하지 않습니다.");

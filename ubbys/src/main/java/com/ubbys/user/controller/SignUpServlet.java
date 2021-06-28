@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,14 +40,17 @@ public class SignUpServlet extends HttpServlet {
 			if(result > 0) { // 회원가입 성공
 				// 추후 성공시 모달 처리할 영역
 				System.out.println("회원가입 성공");
+				
+				// 회원가입 직후 로그인 처리
+				RequestDispatcher view = request.getRequestDispatcher("/login");
+				request.setAttribute("isFirstIn", "true");
+				System.out.println(request.getAttribute("isFirstIn"));
+				view.forward(request, response);
 			} else {
 				// 추후 실패시 모달 처리할 영역
 				System.out.println("회원가입 실패");
-			}
-			HttpSession session = request.getSession();
-//			session.setAttribute("alertIcon", alertIcon);
-//			session.setAttribute("alertMsg", alertMsg);
-			response.sendRedirect(request.getContextPath());
+				response.sendRedirect(request.getContextPath());
+			}			
 		} catch (Exception err) {
 			err.printStackTrace();
 			// request.setAttribute("errorMsg", "회원 가입 과정에서 문제가 발생했습니다.");

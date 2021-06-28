@@ -50,6 +50,30 @@ public class UserDAO {
 		}
 		return result;
 	}
+
+	/**
+	 * 회원가입 후 추가정보 기입 DAO
+	 * @param conn
+	 * @param user
+	 * @return result
+	 * @throws Exception
+	 */
+	public int signUpAddInfo(Connection conn, User user) throws Exception {
+		int result = 0;
+		String sql = prop.getProperty("signUpAddInfo");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, user.getUserNo());
+			pstmt.setString(2, user.getUserPic());
+			pstmt.setString(3, user.getUserLink());
+			pstmt.setString(4, user.getUserInterest());
+			pstmt.setString(5, user.getUserIntroduce());
+			result = pstmt.executeUpdate();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
 	
 	/**
 	 * 로그인 DAO

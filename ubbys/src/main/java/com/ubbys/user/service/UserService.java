@@ -24,7 +24,25 @@ public class UserService {
 		close(conn);
 		return result;
 	}
-
+	
+	/**
+	 * 회원가입 후 추가정보 기입 Service
+	 * @param user
+	 * @return result
+	 * @throws Exception
+	 */
+	public static int signUpAddInfo(User user) throws Exception {
+		Connection conn = getConnection();
+		int result = dao.signUpAddInfo(conn, user);
+		if(result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		close(conn);
+		return result;
+	}
+	
 	/**
 	 * 로그인 Service
 	 * @param userEmail

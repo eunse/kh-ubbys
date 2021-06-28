@@ -24,6 +24,16 @@ public class User {
 		this.userNickname = userNickname;
 	}
 	
+	// 추가 정보 입력용 생성자
+	public User(int userNo, String userPic, String userLink, String userInterest, String userIntroduce) {
+		super();
+		this.userNo = userNo;
+		this.userPic = userPic;
+		this.userLink = userLink;
+		this.userInterest = userInterest;
+		this.userIntroduce = userIntroduce;
+	}
+	
 	// 패스워드를 제외한 전체 생성자	
 	public User(int userNo, String userEmail, String userNickname, Date userRegdate, String userIsAdmin,
 			String userPic, String userLink, String userInterest, String userIntroduce) {
