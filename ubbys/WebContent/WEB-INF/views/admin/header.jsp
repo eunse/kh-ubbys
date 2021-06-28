@@ -1,4 +1,8 @@
-<!doctype html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="contextPath" scope="application" value="${pageContext.servletContext.contextPath}"/>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="utf-8">
@@ -26,15 +30,16 @@
       }
     }
   </style>
-  <link href="sidebars.css" rel="stylesheet">
+  <link href="${contextPath}/resources/admin/css/sidebars.css" rel="stylesheet">
+  <script src="${contextPath}/resources/admin/js/sidebars.js" defer></script>
 </head>
 
 <body>
   <main>
     <div class="flex-shrink-0 p-3 bg-white" style="width: 280px;">
       <a href="#" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
-        <img src="../img/logo.png" height="24" />
-        <span class="fs-5 fw-semibold">UBBYS ADMIN</span>
+        <img src="${contextPath}/resources/img/logo.png" height="24" />
+        <span class="fs-5 fw-semibold"> ADMIN</span>
       </a>
       <ul class="list-unstyled ps-0">
         <li class="mb-1">
@@ -89,11 +94,3 @@
       </ul>
     </div>
     <div class="b-example-divider"></div>
-    <div class="container py-5">
-    </div>
-  </main>
-
-  <script src="sidebars.js"></script>
-</body>
-
-</html>
