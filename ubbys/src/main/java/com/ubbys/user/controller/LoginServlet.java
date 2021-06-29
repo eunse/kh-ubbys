@@ -57,8 +57,8 @@ public class LoginServlet extends HttpServlet {
 					response.sendRedirect(request.getContextPath() + "/signup/add");
 				} // 무슨 이유에서인지 조건을 반대로 바꾸면 일반 로그인 후 redirect가 되지 않음.. 				
 			} else {
-				session.setAttribute("alertTitle", "오류");
-				session.setAttribute("alertMsg", "아이디 또는 비밀번호가 일치하지 않습니다.");
+				session.setAttribute("modalTitle", "로그인 실패");
+				session.setAttribute("modalText", "아이디 또는 비밀번호가 일치하지 않습니다.");
 				System.out.println("로그인 실패");
 				response.sendRedirect("login");
 			}			
