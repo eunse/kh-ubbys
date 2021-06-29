@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <jsp:include page="common/header.jsp" />
-
     <div class="container">
       <a href="#" class="btn btn-primary float-end">작성하기</a>
       <h1 class="h3 my-5">QNA</h1>
@@ -43,28 +42,54 @@
           
           <c:otherwise>
             <c:forEach items="${ qnaList }" var="qna">
-              <a href="#" class="list-group-item list-group-item-action">
-                <div class="d-flex flex-wrap justify-content-between">
-                  <div class="category align-self-center">
-                    <span class="badge bg-primary">${ qna.qnaCategoryName }</span>
-                    <p class="date my-1"><c:out value="${fn:substring(qna.qnaDate,0,10)}"/><br><c:out value="${fn:substring(qna.qnaDate,11,19)}"/></p>
-                  </div>
-                  <div class="flex-md-grow-1 align-self-center">
-                    <h5 class="title mb-1">${ qna.qnaTitle }</h5>
-                    <p class="text-muted mb-0">${ qna.userNickname }</p>
-                  </div>
-                  <div class="board-meta d-flex align-self-center">
-                    <div class="board-meta-like">
-                      <i class="bi bi-heart"></i>
-                      <p class="mb-0">${ qna.qnaLike }</p>
+              <c:if test="${ !empty loginUser }">
+                <a href="qnaView?no=${ qna.qnaPostId }&cp=${ pagination.currentPage }" class="list-group-item list-group-item-action">
+                  <div class="d-flex flex-wrap justify-content-between">
+                    <div class="category align-self-center">
+                      <span class="badge bg-primary">${ qna.qnaCategoryName }</span>
+                      <p class="date my-1"><c:out value="${fn:substring(qna.qnaDate,0,10)}"/><br><c:out value="${fn:substring(qna.qnaDate,11,19)}"/></p>
                     </div>
-                    <div class="board-meta-readcount">
-                      <i class="bi bi-chat-right-text"></i>
-                      <p class="mb-0">${ qna.qnaReplyCount }</p>
+                    <div class="flex-md-grow-1 align-self-center">
+                      <h5 class="title mb-1">${ qna.qnaTitle }</h5>
+                      <p class="text-muted mb-0">${ qna.userNickname }</p>
+                    </div>
+                    <div class="board-meta d-flex align-self-center">
+                      <div class="board-meta-like">
+                        <i class="bi bi-heart"></i>
+                        <p class="mb-0">${ qna.qnaLike }</p>
+                      </div>
+                      <div class="board-meta-readcount">
+                        <i class="bi bi-chat-right-text"></i>
+                        <p class="mb-0">${ qna.qnaReplyCount }</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </a>
+                </a>
+              </c:if>
+              <c:if test="${ empty loginUser }"> <%-- 로그인 모달창 띄우기 --%>
+                <a href="#" class="list-group-item list-group-item-action" data-bs-toggle="modal">
+                  <div class="d-flex flex-wrap justify-content-between">
+                    <div class="category align-self-center">
+                      <span class="badge bg-primary">${ qna.qnaCategoryName }</span>
+                      <p class="date my-1"><c:out value="${fn:substring(qna.qnaDate,0,10)}"/><br><c:out value="${fn:substring(qna.qnaDate,11,19)}"/></p>
+                    </div>
+                    <div class="flex-md-grow-1 align-self-center">
+                      <h5 class="title mb-1">${ qna.qnaTitle }</h5>
+                      <p class="text-muted mb-0">${ qna.userNickname }</p>
+                    </div>
+                    <div class="board-meta d-flex align-self-center">
+                      <div class="board-meta-like">
+                        <i class="bi bi-heart"></i>
+                        <p class="mb-0">${ qna.qnaLike }</p>
+                      </div>
+                      <div class="board-meta-readcount">
+                        <i class="bi bi-chat-right-text"></i>
+                        <p class="mb-0">${ qna.qnaReplyCount }</p>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </c:if>
             </c:forEach>
           </c:otherwise>
       	</c:choose>
