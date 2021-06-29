@@ -437,3 +437,20 @@ CREATE SEQUENCE seq_apps_like_no;
 
 -- tag 번호용
 CREATE SEQUENCE seq_tag_no;
+
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+-- QNA 게시판 목록 출력을 위한 VIEW
+-- 글번호, 카테고리이름, 작성일, 글제목, 작성자, 좋아요수, 댓글수, 글상태
+--------------------------------------------------------------------------------
+CREATE OR REPLACE VIEW QNA_LIST AS
+    SELECT QNA_POST_ID, QNA_CATEGORY_NAME, TO_CHAR(QNA_DATE, 'YYYY-MM-DD HH24:MI:SS') QNA_DATE, 
+               QNA_TITLE, USER_NICKNAME, QNA_LIKE, REPLY_COUNT, QNA_STATUS
+    FROM QNA
+    JOIN QNA_CATEGORIES USING(QNA_CATEGORY_ID)
+    JOIN "USER" USING(USER_ID)
+    LEFT JOIN (SELECT QNA_POST_ID, COUNT(*) REPLY_COUNT
+                    FROM QNA_REPLY 
+                    GROUP BY QNA_POST_ID) USING(QNA_POST_ID)
+;
