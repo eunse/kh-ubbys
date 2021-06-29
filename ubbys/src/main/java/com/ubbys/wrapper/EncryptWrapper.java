@@ -18,6 +18,8 @@ public class EncryptWrapper extends HttpServletRequestWrapper{
 		String value = null;
 		switch(key) {
 		case "inputPw": 
+		case "inputChangePw":	
+		case "inputPresentPw":	
 			value = getSha512(super.getParameter(key));
 			break;
 		default:
