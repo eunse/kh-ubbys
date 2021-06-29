@@ -14,6 +14,7 @@ import com.ubbys.user.vo.User;
 public class UserDAO {
 	private Statement stmt = null;
 	private PreparedStatement pstmt = null;
+	private PreparedStatement pstmtSecond = null;
 	private ResultSet rs = null;
 	
 	private Properties prop = null;
@@ -45,6 +46,30 @@ public class UserDAO {
 			pstmt.setString(2, user.getUserPw());
 			pstmt.setString(3, user.getUserNickname());
 			result = pstmt.executeUpdate();	
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	/**
+	 * 회원가입 후 추가정보 기입 DAO
+	 * @param conn
+	 * @param user
+	 * @return result
+	 * @throws Exception
+	 */
+	public int signUpAddInfo(Connection conn, User user) throws Exception {
+		int result = 0;
+		String sql = prop.getProperty("signUpAddInfo");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, user.getUserNo());
+			pstmt.setString(2, user.getUserPic());
+			pstmt.setString(3, user.getUserLink());
+			pstmt.setString(4, user.getUserInterest());
+			pstmt.setString(5, user.getUserIntroduce());
+			result = pstmt.executeUpdate();
 		} finally {
 			close(pstmt);
 		}
@@ -88,5 +113,93 @@ public class UserDAO {
 			close(pstmt);
 		}		
 		return loginUser;
+	}
+	/**
+	 * 회원정보 수정 DAO
+	 * @param conn
+	 * @param user
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updateUser(Connection conn, User user) throws Exception {
+		int result = 0;
+
+		try {
+			String firstSql = prop.getProperty("editUser");
+			String secondSql = prop.getProperty("editUserInfo");
+			pstmt = conn.prepareStatement(firstSql);
+			pstmtSecond = conn.prepareStatement(secondSql);
+
+			pstmt.setString(1, user.getUserNickname());
+			pstmt.setInt(2, user.getUserNo());
+			
+			pstmtSecond.setString(1, user.getUserPic());
+			pstmtSecond.setString(2, user.getUserLink());
+			pstmtSecond.setString(3, user.getUserInterest());
+			pstmtSecond.setString(4, user.getUserIntroduce());
+			pstmtSecond.setInt(5, user.getUserNo());
+
+			result += pstmt.executeUpdate();
+			result += pstmtSecond.executeUpdate();
+
+		} finally {
+			close(pstmtSecond);
+			close(pstmt);
+		}
+		return result;
+	}
+
+	/** 비밀번호 변경 DAO
+	 * @param conn
+	 * @param currentPw
+	 * @param newPw
+	 * @param userNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int changePw(Connection conn, String currentPw, String newPw, int userNo) throws Exception{
+		int result = 0;
+
+		try {
+			String sql = prop.getProperty("changePw");
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, newPw);
+			pstmt.setInt(2, userNo);
+			pstmt.setString(3, currentPw);
+
+			result = pstmt.executeUpdate();
+
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	/** 회원 탈퇴 DAO
+	 * @param conn
+	 * @param currentPw
+	 * @param userNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int delectAccount(Connection conn, String currentPw, int userNo) throws Exception{
+		int result = 0;
+		System.out.println("DAO : " + currentPw);
+		try {
+			String sql = prop.getProperty("deleteAccount");
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, userNo);
+			pstmt.setString(2, currentPw);
+			
+			result = pstmt.executeUpdate();
+			
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
 	}
 }

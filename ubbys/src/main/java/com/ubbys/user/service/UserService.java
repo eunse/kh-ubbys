@@ -24,7 +24,25 @@ public class UserService {
 		close(conn);
 		return result;
 	}
-
+	
+	/**
+	 * 회원가입 후 추가정보 기입 Service
+	 * @param user
+	 * @return result
+	 * @throws Exception
+	 */
+	public static int signUpAddInfo(User user) throws Exception {
+		Connection conn = getConnection();
+		int result = dao.signUpAddInfo(conn, user);
+		if(result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		close(conn);
+		return result;
+	}
+	
 	/**
 	 * 로그인 Service
 	 * @param userEmail
@@ -37,5 +55,61 @@ public class UserService {
 		User loginUser = dao.login(conn, userEmail, userPw);
 		close(conn);
 		return loginUser;
+	}
+	/**
+	 * 회원정보 수정 Service
+	 * @param user
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updateUser(User user) throws Exception {
+		Connection conn = getConnection();
+		int result = dao.updateUser(conn, user);
+		if(result > 1) {
+			commit(conn);
+		}else {
+			rollback(conn);
+		}
+		close(conn);
+		return result;
+	}
+
+	/** 비밀번호 변경 Service
+	 * @param currentPw
+	 * @param newPw
+	 * @param userNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int changePw(String currentPw, String newPw, int userNo) throws Exception{
+		Connection conn = getConnection();
+		int result = dao.changePw(conn, currentPw, newPw, userNo);
+		if(result > 0) {
+			commit(conn);
+		}else {
+			rollback(conn);
+		}
+		close(conn);
+		return result;
+	}
+
+	/** 회원 탈퇴 Service
+	 * @param currentPw
+	 * @param userNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int delectAccount(String currentPw, int userNo) throws Exception{
+		Connection conn = getConnection();
+		
+		int result = dao.delectAccount(conn, currentPw, userNo);
+		
+		if(result > 0) {
+			commit(conn);
+		}else {
+			rollback(conn);
+		}
+		close(conn);
+		return result;
 	}
 }

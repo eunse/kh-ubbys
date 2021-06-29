@@ -4,7 +4,7 @@
 	<entry key="login">
 		SELECT user_id, user_email, user_nickname, user_regdate, user_is_admin, 
 		       user_pic, user_link, user_interest, user_introduce
-		FROM "USER" JOIN user_info USING(user_id) WHERE user_email = ? AND user_pw = ?
+		FROM "USER" LEFT JOIN user_info USING(user_id) WHERE user_email = ? AND user_pw = ?
 	</entry>
 	<entry key="signUp">
 		INSERT INTO "USER" VALUES(seq_user_no.NEXTVAL, ?, ?, ?, DEFAULT, DEFAULT)
@@ -15,9 +15,25 @@
 	<entry key="idDupCheck">
 	</entry>
 	<entry key="editUser">
+		UPDATE "USER" SET
+		user_nickname = ?
+		WHERE user_id = ?
 	</entry>
-	<entry key="changePwd">
+	<entry key="editUserInfo">
+		UPDATE USER_INFO SET
+		user_pic = ?,
+		user_link = ?,
+		user_interest = ?,
+		user_introduce = ?
+		WHERE user_id = ?
+	</entry>
+	<entry key="changePw">
+		UPDATE "USER" SET
+		user_pw = ?
+		WHERE user_id = ? AND user_pw = ?
 	</entry>
 	<entry key="deleteAccount">
+		DELETE FROM "USER" 
+		WHERE user_id = ? AND user_pw = ?
 	</entry>
 </properties>
