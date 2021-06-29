@@ -14,7 +14,7 @@ import com.ubbys.board.service.SelectQnaService;
 import com.ubbys.board.vo.Qna;
 import com.ubbys.board.vo.QnaPagination;
 
-@WebServlet("/qnaList")
+@WebServlet({"/qnaList", "/qnaView"})
 public class SelectQnaController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -44,10 +44,15 @@ public class SelectQnaController extends HttpServlet {
 			
 			else if(command.equals("View")) { // qna 상세 조회
 				
+				int qnaPostId = Integer.parseInt(request.getParameter("no"));
 				
+				Qna qna = service.selectQna(qnaPostId);
 				
+				request.setAttribute("qna", qna);
+				
+				view = request.getRequestDispatcher("/WEB-INF/views/qnaView.jsp");
+				view.forward(request, response);
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
