@@ -426,6 +426,9 @@ CREATE SEQUENCE seq_qna_like_no;
 -- qna 댓글 번호용 
 CREATE SEQUENCE seq_qna_reply_no;
 
+-- qna 카테고리 번호 용 
+CREATE SEQUENCE seq_qna_category_no;
+
 -- qna 댓글 좋아요 번호용 
 CREATE SEQUENCE seq_qna_reply_like_no;
 
@@ -434,6 +437,9 @@ CREATE SEQUENCE seq_apps_no;
 
 -- apps 게시글 좋아요 번호용
 CREATE SEQUENCE seq_apps_like_no;
+
+-- apps 카테고리 번호 용 
+CREATE SEQUENCE seq_apps_category_no;
 
 -- tag 번호용
 CREATE SEQUENCE seq_tag_no;
@@ -454,3 +460,75 @@ CREATE OR REPLACE VIEW QNA_LIST AS
                     FROM QNA_REPLY 
                     GROUP BY QNA_POST_ID) USING(QNA_POST_ID)
 ;
+
+--------------------------------------------------------------------------------
+-- QNA 게시판 글 상세 조회 VIEW
+-- 글번호, 카테고리 이름, 작성일, 제목, 작성자 닉네임, 좋아요 수, 댓글 수, 글상태, 내용, 회원번호
+--------------------------------------------------------------------------------
+CREATE OR REPLACE VIEW QNA_DETAIL AS
+    SELECT QNA_POST_ID, QNA_CATEGORY_NAME, TO_CHAR(QNA_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분"') QNA_DATE, 
+               QNA_TITLE, USER_NICKNAME, QNA_LIKE, REPLY_COUNT, QNA_STATUS,
+               QNA_CONTENT, USER_ID
+    FROM QNA
+    JOIN QNA_CATEGORIES USING(QNA_CATEGORY_ID)
+    JOIN "USER" USING(USER_ID)
+    LEFT JOIN (SELECT QNA_POST_ID, COUNT(*) REPLY_COUNT
+                    FROM QNA_REPLY 
+                    GROUP BY QNA_POST_ID) USING(QNA_POST_ID)
+;
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+-- apps 게시판 목록 출력을 위한 VIEW
+-- 글번호, 카테고리이름, 카테고리ID, 글 제목, 작성일, 아이콘 경로, 좋아요 수, 상태, 사용자 번호, 해시태그 이름, 해시태그 번호
+--------------------------------------------------------------------------------
+CREATE OR REPLACE VIEW apps_list AS
+    SELECT apps_post_id, apps_category_name, apps_title, apps_date, apps_icon, apps_like, apps_status, user_id, apps_tag_id, apps_tag_name
+    FROM apps
+    JOIN apps_categories USING(apps_category_id)
+    JOIN "USER" USING(user_id)
+    LEFT JOIN (
+        SELECT * FROM apps_tags JOIN tags USING(apps_tag_id)
+    ) USING(apps_post_id);
+
+--------------------------------------------------------------------------------
+-- tags 샘플
+--------------------------------------------------------------------------------
+INSERT INTO tags VALUES(seq_tag_no.NEXTVAL, 'Javascript');
+INSERT INTO tags VALUES(seq_tag_no.NEXTVAL, 'Java');
+INSERT INTO tags VALUES(seq_tag_no.NEXTVAL, 'Oracle');
+INSERT INTO tags VALUES(seq_tag_no.NEXTVAL, 'git');
+COMMIT;
+--------------------------------------------------------------------------------
+-- apps category 샘플
+--------------------------------------------------------------------------------
+INSERT INTO apps_categories VALUES(seq_apps_category_no.NEXTVAL, 'OS');
+INSERT INTO apps_categories VALUES(seq_apps_category_no.NEXTVAL, '개발툴');
+INSERT INTO apps_categories VALUES(seq_apps_category_no.NEXTVAL, '라이브러리');
+COMMIT;
+--------------------------------------------------------------------------------
+-- apps 샘플 게시물
+--------------------------------------------------------------------------------
+INSERT INTO apps 
+VALUES(
+    seq_apps_no.NEXTVAL, 
+    '어떤 앱4', 
+    '어떤 앱의 내용4', 
+    'https://via.placeholder.com/300', 
+    'https://naver.com', 
+    DEFAULT, DEFAULT, DEFAULT, 
+    2, 3
+);
+COMMIT;
+--------------------------------------------------------------------------------
+-- apps 샘플 태그
+--------------------------------------------------------------------------------
+INSERT INTO apps_tags VALUES(1, 1);
+INSERT INTO apps_tags VALUES(1, 2);
+INSERT INTO apps_tags VALUES(2, 3);
+INSERT INTO apps_tags VALUES(2, 4);
+INSERT INTO apps_tags VALUES(3, 1);
+INSERT INTO apps_tags VALUES(3, 2);
+INSERT INTO apps_tags VALUES(3, 3);
+INSERT INTO apps_tags VALUES(3, 4);
+COMMIT;
