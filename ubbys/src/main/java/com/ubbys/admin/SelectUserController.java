@@ -13,12 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 public class SelectUserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public SelectUserController() {
-        super();
-    }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/admin/userList.jsp");
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/admin/adminList.jsp");
 		view.forward(request, response);
 	}
 

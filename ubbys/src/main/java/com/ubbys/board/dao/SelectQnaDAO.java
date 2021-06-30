@@ -86,6 +86,7 @@ public class SelectQnaDAO {
 				
 				Qna qna = new Qna();
 				
+				qna.setQnaPostId(rs.getInt("QNA_POST_ID"));
 				qna.setQnaCategoryName(rs.getString("QNA_CATEGORY_NAME"));
 				qna.setQnaDate(rs.getString("QNA_DATE"));
 				qna.setQnaTitle(rs.getString("QNA_TITLE"));
@@ -101,4 +102,78 @@ public class SelectQnaDAO {
 		}
 		return qnaList;
 	}
+
+	/** Qna 상세 조회 DAO
+	 * @param conn
+	 * @param qnaPostId
+	 * @return qna
+	 * @throws Exception
+	 */
+	public Qna selectQna(Connection conn, int qnaPostId) throws Exception {
+		
+		Qna qna = null;
+		
+		String sql = prop.getProperty("selectQna");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, qnaPostId);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				qna = new Qna();
+				qna.setQnaPostId(rs.getInt("QNA_POST_ID"));
+				qna.setQnaCategoryName(rs.getString("QNA_CATEGORY_NAME"));
+				qna.setQnaDate(rs.getString("QNA_DATE"));
+				qna.setQnaTitle(rs.getString("QNA_TITLE"));
+				qna.setQnaContent(rs.getString("QNA_CONTENT"));
+				qna.setUserNickname(rs.getString("USER_NICKNAME"));
+				qna.setQnaLike(rs.getInt("QNA_LIKE"));
+				qna.setUserId(rs.getInt("USER_ID"));
+			}
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return qna;
+	}
+	
+	/** 내 Qna 목록 조회 DAO
+	 * @param conn
+	 * @param pagination 
+	 * @param pagination
+	 * @param userNo
+	 * @return myQnaList
+	 * @throws Exception
+	 */
+	public List<Qna> selectMyQnaList(Connection conn, int userNo) throws Exception {
+		List<Qna> myQnaList = new ArrayList<Qna>();
+		String sql = prop.getProperty("myQnaList");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userNo);
+			
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+
+				Qna qna = new Qna();
+
+				qna.setQnaPostId(rs.getInt("QNA_POST_ID"));
+				qna.setQnaTitle(rs.getString("QNA_TITLE"));
+				qna.setQnaLike(rs.getInt("QNA_LIKE"));
+				qna.setQnaReplyCount(rs.getInt("REPLY_COUNT"));
+				
+				myQnaList.add(qna);
+			}
+
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return myQnaList;
+	}
+
 }

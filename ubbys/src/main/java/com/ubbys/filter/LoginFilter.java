@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebFilter(filterName = "loginFilter", urlPatterns = {"/user/myPage", "/user/update", "/user/changePwd", "/user/delete"})
+@WebFilter(filterName = "loginFilter", urlPatterns = {"/user/myPage", "/user/update", "/user/changePwd", "/user/delete", "/qnaView"})
 public class LoginFilter implements Filter {
 
 	public void destroy() {
@@ -25,8 +25,8 @@ public class LoginFilter implements Filter {
 			session.setAttribute("modalTitle", "회원 전용");
 			session.setAttribute("modalText", "로그인 후에 이용해주세요.");
 			session.setAttribute("modalButtonText", "로그인");
-			session.setAttribute("modalButtonLink", req.getContextPath() + "/login");
-			((HttpServletResponse)response).sendRedirect(req.getContextPath());
+			session.setAttribute("modalButtonLink", req.getContextPath()+"/login");
+			((HttpServletResponse)response).sendRedirect(req.getHeader("referer"));
 		} else {
 			chain.doFilter(request, response);
 		}

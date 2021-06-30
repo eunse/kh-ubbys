@@ -56,4 +56,75 @@ public class UserService {
 		close(conn);
 		return loginUser;
 	}
+	/**
+	 * 회원정보 수정 Service
+	 * @param user
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updateUser(User user) throws Exception {
+		Connection conn = getConnection();
+		int result = dao.updateUser(conn, user);
+		if(result > 1) {
+			commit(conn);
+		}else {
+			rollback(conn);
+		}
+		close(conn);
+		return result;
+	}
+
+	/** 비밀번호 변경 Service
+	 * @param currentPw
+	 * @param newPw
+	 * @param userNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int changePw(String currentPw, String newPw, int userNo) throws Exception{
+		Connection conn = getConnection();
+		int result = dao.changePw(conn, currentPw, newPw, userNo);
+		if(result > 0) {
+			commit(conn);
+		}else {
+			rollback(conn);
+		}
+		close(conn);
+		return result;
+	}
+
+	/** 회원 탈퇴 Service
+	 * @param currentPw
+	 * @param userNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int delectAccount(String currentPw, int userNo) throws Exception{
+		Connection conn = getConnection();
+		
+		int result = dao.delectAccount(conn, currentPw, userNo);
+		
+		if(result > 0) {
+			commit(conn);
+		}else {
+			rollback(conn);
+		}
+		close(conn);
+		return result;
+	}
+
+	/** 중복 검사 Service
+	 * @param userEmail
+	 * @return result
+	 * @throws Exception
+	 */
+	public int idDupCheck(String userEmail) throws Exception {
+		Connection conn = getConnection();
+		
+		int result = dao.idDupCheck(conn, userEmail);
+		
+		close(conn);
+		
+		return result;
+	}
 }
