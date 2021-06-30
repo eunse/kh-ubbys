@@ -1,30 +1,56 @@
 package com.ubbys.board.vo;
 
+import java.util.List;
+
 public class Apps extends Board {
-	private String postIconUrl;
-	private String postLink;
+	private String appsIconUrl;
+	private String appsLink;
+	private List<Tag> tagList;
+	private String appsSummary;
 	
 	public Apps() {
 		super();
 	}
 
-	public String getPostIconUrl() {
-		return postIconUrl;
+	public String getAppsIconUrl() {
+		return appsIconUrl;
 	}
 
-	public void setPostIconUrl(String postIconUrl) {
-		this.postIconUrl = postIconUrl;
+	public void setAppsIconUrl(String appsIconUrl) {
+		this.appsIconUrl = appsIconUrl;
 	}
 
-	public String getPostLink() {
-		return postLink;
+	public String getAppsLink() {
+		return appsLink;
 	}
 
-	public void setPostLink(String postLink) {
-		this.postLink = postLink;
+	public void setAppsLink(String appsLink) {
+		this.appsLink = appsLink;
 	}
 
-	
-	
-	
+	public List<Tag> getTagList() {
+		return tagList;
+	}
+
+	public void setTagList(List<Tag> tagList) {
+		this.tagList = tagList;
+	}
+
+	public String getAppsSummary() {
+		return appsSummary;
+	}
+
+	public void setAppsSummary(String appsSummary) {
+		this.appsSummary = appsSummary;
+	}
+
+	@Override
+	public String toString() {
+		return "Apps [appsIconUrl=" + appsIconUrl + ", appsLink=" + appsLink + ", tagList=" + tagList + ", appsSummary="
+				+ appsSummary + ", postId=" + postId + ", postTitle=" + postTitle + ", postContent=" + postContent
+				+ ", postDate=" + postDate + ", userNo=" + userNo + ", userName=" + userName + ", postLike=" + postLike
+				+ ", categoryName=" + categoryName + "]";
+	}
+
+
 }

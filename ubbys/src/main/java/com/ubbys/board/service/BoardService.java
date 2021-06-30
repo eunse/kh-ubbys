@@ -3,11 +3,14 @@ package com.ubbys.board.service;
 import static com.ubbys.common.JDBCTemplate.*;
 
 import java.sql.Connection;
-import java.util.Map;
+import java.util.List;
 
+import com.ubbys.board.dao.BoardDAO;
+import com.ubbys.board.vo.Board;
 import com.ubbys.board.vo.Pagination;
 
 public class BoardService {
+	private BoardDAO dao = new BoardDAO();
 	/**
 	 * 페이징 처리 객체 생성용 Service
 	 * @param cp
@@ -15,9 +18,9 @@ public class BoardService {
 	 * @return pagination
 	 * @throws Exception
 	 */
-	public Pagination getPagination(int cp) throws Exception {
+	public Pagination getPagination(String boardTableName, int cp) throws Exception {
 		Connection conn = getConnection();
-		int listCount = dao.getListCount(conn, cp);
+		int listCount = dao.getListCount(conn, boardTableName);
 		close(conn);
 		
 		return new Pagination(cp, listCount);
