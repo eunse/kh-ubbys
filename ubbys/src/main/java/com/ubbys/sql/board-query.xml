@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<!-- 전체 게시글 수 조회 SQL -->
+	<entry key="getListCount">
+		SELECT COUNT(*) FROM ? WHERE ? = 'Y'
+	</entry>
+	<!-- apps 게시판 목록 조회 SQL -->
+	<entry key="selectAppsList">
+		SELECT * FROM (
+			SELECT ROWNUM RNUM, A.* FROM (
+				SELECT * FROM apps_list
+        		WHERE apps_status = 'Y'
+        		ORDER BY apps_post_id DESC
+        	) A
+   		)
+		WHERE RNUM BETWEEN ? AND ?
+	</entry>
+	<entry key="selectAppsTags">
+		SELECT apps_tag_id, apps_tag_name FROM tags JOIN apps_tags USING(apps_tag_id) WHERE apps_post_id = ?
+	</entry>
+</properties>

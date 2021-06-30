@@ -483,13 +483,22 @@ CREATE OR REPLACE VIEW QNA_DETAIL AS
 -- 글번호, 카테고리이름, 카테고리ID, 글 제목, 작성일, 아이콘 경로, 좋아요 수, 상태, 사용자 번호, 해시태그 이름, 해시태그 번호
 --------------------------------------------------------------------------------
 CREATE OR REPLACE VIEW apps_list AS
-    SELECT apps_post_id, apps_category_name, apps_title, apps_date, apps_icon, apps_like, apps_status, user_id, apps_tag_id, apps_tag_name
+    SELECT apps_post_id, apps_category_name, apps_title, apps_date, apps_icon, apps_like, apps_status, user_id, user_nickname, SUBSTR(apps_content,1,60) AS apps_content_substr
     FROM apps
     JOIN apps_categories USING(apps_category_id)
-    JOIN "USER" USING(user_id)
-    LEFT JOIN (
-        SELECT * FROM apps_tags JOIN tags USING(apps_tag_id)
-    ) USING(apps_post_id);
+    JOIN "USER" USING(user_id);
+
+SELECT * FROM apps_list WHERE apps_status = 'Y';
+SELECT * FROM (
+    SELECT ROWNUM RNUM, A.* FROM (
+        SELECT * FROM apps_list
+        WHERE apps_status = 'Y'
+        ORDER BY apps_post_id DESC
+    ) A
+)
+WHERE RNUM BETWEEN 1 AND 10;
+
+SELECT COUNT(*) FROM apps_list WHERE apps_status = 'Y';
 
 --------------------------------------------------------------------------------
 -- tags 샘플
@@ -531,4 +540,10 @@ INSERT INTO apps_tags VALUES(3, 1);
 INSERT INTO apps_tags VALUES(3, 2);
 INSERT INTO apps_tags VALUES(3, 3);
 INSERT INTO apps_tags VALUES(3, 4);
+INSERT INTO apps_tags VALUES(4, 4);
 COMMIT;
+
+--------------------------------------------------------------------------------
+-- apps 게시물 별 태그 조회
+--------------------------------------------------------------------------------
+SELECT apps_tag_id, apps_tag_name FROM apps_tags JOIN tags USING(apps_tag_id) WHERE apps_post_id = 2;

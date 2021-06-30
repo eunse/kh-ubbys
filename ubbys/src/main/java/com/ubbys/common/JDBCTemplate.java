@@ -20,6 +20,7 @@ public class JDBCTemplate {
 	     Context envContext  = (Context)initContext.lookup("java:/comp/env");
 	     DataSource ds = (DataSource)envContext.lookup("jdbc/oracle");
 	     conn = ds.getConnection();
+			 conn.setAutoCommit(false);
 	  }catch (Exception e) {
 	     e.printStackTrace();
 	  }	

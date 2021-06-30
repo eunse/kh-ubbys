@@ -25,8 +25,8 @@
           <a href="${contextPath}" class="d-flex align-items-center mb-2 mb-lg-0 navbar-brand"><img src="${contextPath}/resources/img/logo.png" height="24"/></a>
 
           <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="#" class="nav-link px-2 link-dark">apps</a></li>
-            <li><a href="${ contextPath }/qnaList?" class="nav-link px-2 link-dark">qna</a></li>
+            <li><a href="${contextPath}/apps/list" class="nav-link px-2 link-dark">apps</a></li>
+            <li><a href="${contextPath}/qnaList?" class="nav-link px-2 link-dark">qna</a></li>
           </ul>
           <c:choose>
             <c:when test="${empty sessionScope.loginUser }">

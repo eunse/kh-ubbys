@@ -26,7 +26,6 @@ public class LoginFilter implements Filter {
 			session.setAttribute("modalText", "로그인 후에 이용해주세요.");
 			session.setAttribute("modalButtonText", "로그인");
 			session.setAttribute("modalButtonLink", req.getContextPath()+"/login");
-			//((HttpServletResponse)response).sendRedirect(req.getContextPath());
 			((HttpServletResponse)response).sendRedirect(req.getHeader("referer"));
 		} else {
 			chain.doFilter(request, response);

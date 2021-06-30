@@ -77,6 +77,13 @@ public class Board {
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
+
+	@Override
+	public String toString() {
+		return "Board [postId=" + postId + ", postTitle=" + postTitle + ", postContent=" + postContent + ", postDate="
+				+ postDate + ", userNo=" + userNo + ", userName=" + userName + ", postLike=" + postLike
+				+ ", categoryName=" + categoryName + "]";
+	}
 	
 	
 	
