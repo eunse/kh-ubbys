@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.ubbys.board.service.SelectQnaService2;
+import com.ubbys.board.service.SelectQnaService;
 import com.ubbys.board.vo.Qna;
 import com.ubbys.user.vo.User;
 
@@ -23,11 +23,11 @@ public class MyPageServlet extends HttpServlet {
 		RequestDispatcher view = null;
 		
 		try {
-			SelectQnaService2 service2 = new SelectQnaService2();
+			SelectQnaService service = new SelectQnaService();
 			HttpSession session = request.getSession();
 			int userNo = ((User) session.getAttribute("loginUser")).getUserNo();
 			System.out.println("user넘" + userNo);
-			List<Qna> myQnaList = service2.selectMyQnaList(userNo);
+			List<Qna> myQnaList = service.selectMyQnaList(userNo);
 
 			request.setAttribute("myQnaList", myQnaList);
 			System.out.println(myQnaList);
