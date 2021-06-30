@@ -140,5 +140,40 @@ public class SelectQnaDAO {
 		}
 		return qna;
 	}
+	
+	/** 내 Qna 목록 조회 DAO
+	 * @param conn
+	 * @param pagination 
+	 * @param pagination
+	 * @param userNo
+	 * @return myQnaList
+	 * @throws Exception
+	 */
+	public List<Qna> selectMyQnaList(Connection conn, int userNo) throws Exception {
+		List<Qna> myQnaList = new ArrayList<Qna>();
+		String sql = prop.getProperty("myQnaList");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userNo);
+			
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+
+				Qna qna = new Qna();
+
+				qna.setQnaPostId(rs.getInt("QNA_POST_ID"));
+				qna.setQnaTitle(rs.getString("QNA_TITLE"));
+				qna.setQnaLike(rs.getInt("QNA_LIKE"));
+				qna.setQnaReplyCount(rs.getInt("REPLY_COUNT"));
+				
+				myQnaList.add(qna);
+			}
+
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return myQnaList;
+	}
 
 }

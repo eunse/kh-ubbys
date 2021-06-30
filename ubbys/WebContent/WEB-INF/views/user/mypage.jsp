@@ -76,23 +76,23 @@
 
     <div class="col-md-4 list-sm-qna">
       <c:choose>
-        <c:when test="${empty qnaList }">
+        <c:when test="${empty myQnaList }">
           <h2 class="h4 mb-3">게시글이 존재하지 않습니다.</h2>
         </c:when>
         <%-- 내 qnaList --%>
         <c:otherwise>
           <h2 class="h4 mb-3">내 qna 게시글</h2>
-          <c:forEach items="${qnaList }" var="qna">
+          <c:forEach items="${myQnaList }" var="qna">
             <div class="list-group mb-3">
               <a href="#" class="list-group-item list-group-item-action">
                 <div class="d-flex w-100 justify-content-between">
                   <h5 class="mb-1">${ qna.qnaTitle }</h5>
                 </div> <small><i class="bi bi-heart"></i> ${ qna.qnaLike }</small>
-                <small><i class="bi bi-chat"></i> ${ qna.replyCount }</small>
+                <small><i class="bi bi-chat"></i> ${ qna.qnaReplyCount }</small>
               </a>
             </div>
           </c:forEach>
-          <a href="#" class="btn btn-outline-primary">더 보기</a>
+          <a href="#" class="btn btn-outline-primary" id="load">더 보기</a>
         </c:otherwise>
       </c:choose>
     </div>
