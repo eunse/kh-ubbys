@@ -112,4 +112,19 @@ public class UserService {
 		close(conn);
 		return result;
 	}
+
+	/** 중복 검사 Service
+	 * @param userEmail
+	 * @return result
+	 * @throws Exception
+	 */
+	public int idDupCheck(String userEmail) throws Exception {
+		Connection conn = getConnection();
+		
+		int result = dao.idDupCheck(conn, userEmail);
+		
+		close(conn);
+		
+		return result;
+	}
 }
