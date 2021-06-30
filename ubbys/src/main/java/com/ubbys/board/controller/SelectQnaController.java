@@ -14,7 +14,7 @@ import com.ubbys.board.service.SelectQnaService;
 import com.ubbys.board.vo.Qna;
 import com.ubbys.board.vo.QnaPagination;
 
-@WebServlet({"/qnaList", "/qnaView"})
+@WebServlet({"/qnaList", "/qnaView", "/qnaMyPage"})
 public class SelectQnaController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -53,6 +53,7 @@ public class SelectQnaController extends HttpServlet {
 				view = request.getRequestDispatcher("/WEB-INF/views/qnaView.jsp");
 				view.forward(request, response);
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

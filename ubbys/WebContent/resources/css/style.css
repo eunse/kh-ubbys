@@ -117,6 +117,9 @@ footer {
   font-size: 0.7rem;
   text-align: center;
 }
+.form-write {
+  padding-top: 30px;
+}
 .qna-reply-content .date {
   color: #333;
   font-size: 0.8rem;

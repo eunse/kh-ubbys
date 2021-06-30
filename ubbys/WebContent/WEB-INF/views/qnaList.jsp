@@ -4,7 +4,9 @@
 
 <jsp:include page="common/header.jsp" />
     <div class="container">
-      <a href="#" class="btn btn-primary float-end">작성하기</a>
+      <c:if test="${ !empty loginUser }">
+        <a href="${ contextPath }/qnaWrite?cp=${ pagination.currentPage }" class="btn btn-primary float-end">작성하기</a>
+      </c:if>
       <h1 class="h3 my-5">QNA</h1>
       <div class="row">
         <div class="col-xs-12 col-sm-4">

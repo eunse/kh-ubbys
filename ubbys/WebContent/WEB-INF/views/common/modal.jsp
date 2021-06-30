@@ -14,7 +14,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
        <c:if test="${!empty modalButtonLink}">
-        <a class="btn btn-secondary" href="${modalButtonLink}">${modalButtonText}</a>
+        <a class="btn btn-primary" href="${modalButtonLink}">${modalButtonText}</a>
        </c:if>
       </div>
     </div>
