@@ -24,5 +24,12 @@
 		SELECT * FROM qna_detail WHERE qna_post_id=? AND qna_status='Y'
 	</entry>
 	
+	<!-- 마이페이지 Qna 목록 조회 -->
+	<entry key="myQnaList">
+		SELECT * FROM mypage_qna_list
+		WHERE user_id = ? AND qna_status='Y'
+		ORDER BY qna_post_id DESC
+	</entry>
+	
 
 </properties>
