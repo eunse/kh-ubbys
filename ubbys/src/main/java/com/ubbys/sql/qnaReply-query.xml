@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	
+	<!-- 전체 댓글 수 조회 SQL -->
+	<entry key="getReplyListCount">
+		SELECT COUNT(*) FROM qna_list WHERE qna_status='Y'
+	</entry>
+	
+	
+	<entry key="">
+		SELECT * FROM
+		    (SELECT ROWNUM RN, R.* FROM
+		        (SELECT * FROM qna_list
+			        WHERE qna_status='Y'
+			        ORDER BY qna_post_id DESC
+			    ) R
+			)
+		WHERE RN BETWEEN ? AND ?
+	</entry>
+	
+	<!-- QnaReply 목록 조회 SQL -->
+	<entry key="selectQnaReplyList">
+		SELECT * FROM
+			(SELECT ROWNUM RN, R.* FROM
+				(SELECT * FROM qna_reply_list
+					WHERE reply_status='Y'
+					ORDER BY reply_id DESC
+				) R
+			)
+		WHERE RN BETWEEN ? AND ?
+	</entry>
+	
+	<!-- Qna 상세 조회 SQL -->
+	<entry key="selectQna">
+		SELECT * FROM qna_detail WHERE qna_post_id=? AND qna_status='Y'
+	</entry>
+	
+	<!-- QnaReply 입력 SQL -->
+	<entry key="insertQnaReply">
+		INSERT INTO qna_reply
+		VALUES(SEQ_QRNO.NEXTVAL, ?, 0, DEFAULT, DEFAULT, 1, ?); 
+	</entry>
+	
+
+</properties>
