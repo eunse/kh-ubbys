@@ -68,7 +68,55 @@ public class AppsServlet extends HttpServlet {
 	
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		String command = request.getRequestURI().substring((request.getContextPath() + "/apps/").length());
+		try {
+			int cp = request.getParameter("cp") == null ? 1 : Integer.parseInt(request.getParameter("cp"));
+			
+			// 새로 작성 
+			if(command.equals("new")) {
+				HttpSession session = request.getSession();
+				
+				int maxSize = 2097152;
+				String root = session.getServletContext().getRealPath("/");
+				String filePath = "upload/";
+				MultipartRequest mpRequest = new MultipartRequest(request, root+filePath, maxSize, "UTF-8", new UbbysRenamePolicy());
+				
+				int userNo = ((User)session.getAttribute("loginUser")).getUserNo();
+				String postTitle = mpRequest.getParameter("postTitle");
+				String postContent = mpRequest.getParameter("postContent");
+				int categoryId = Integer.parseInt(mpRequest.getParameter("categoryId"));
+				
+				Apps apps = new Apps();
+				apps.setPostTitle(postTitle);
+				apps.setPostContent(postContent);
+				apps.setCategoryId(categoryId);
+				apps.setUserNo(userNo);
+				
+				Enumeration<String> images = mpRequest.getFileNames();			
+				if(images.hasMoreElements()) {
+					String name = images.nextElement();
+					if(mpRequest.getFilesystemName(name) != null) { 
+						apps.setAppsIconUrl(filePath);
+					}
+				}
+				int result = service.insertApps(apps);
+				if(result > 0) {
+					path = request.getContextPath() + "/apps/view?no=" + result + "&cp=1";
+				} else {
+					modalText = "게시글 등록에 실패했습니다. 관리자에게 문의해주세요.";
+					modalTitle = "게시글 등록 실패";
+					
+					path = request.getHeader("referer");
+				}
+				session.setAttribute("modalTitle", modalTitle);
+				session.setAttribute("modalText", modalText);
+				response.sendRedirect(path);
+			}
+		} catch(Exception err) {
+			err.printStackTrace();
+		}
+		
+		
 	}
 
 }
