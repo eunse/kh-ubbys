@@ -18,9 +18,9 @@
         <div class="col-xs-12 col-sm-4">
           <select class="form-select">
             <option selected>카테고리 전체</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+              <c:forEach items="${ qnaCategory }" var="qc">
+                <option value="${ qc.qnaCategoryId }">${ qc.qnaCategoryName }</option>
+              </c:forEach>
           </select>
         </div>
         <div class="col-xs-12 col-sm-4">
