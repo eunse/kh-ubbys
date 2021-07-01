@@ -19,4 +19,7 @@
 	<entry key="selectAppsTags">
 		SELECT apps_tag_id, apps_tag_name FROM tags JOIN apps_tags USING(apps_tag_id) WHERE apps_post_id = ?
 	</entry>
+	<entry key="selectApps">
+		SELECT * FROM apps_view WHERE apps_post_id = ?
+	</entry>
 </properties>

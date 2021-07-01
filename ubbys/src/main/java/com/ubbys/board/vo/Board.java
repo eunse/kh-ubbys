@@ -10,6 +10,7 @@ public class Board {
 	protected int userNo;
 	protected String userName;
 	protected int postLike;
+	protected int categoryId;
 	protected String categoryName;
 
 	public Board() {}
@@ -70,6 +71,14 @@ public class Board {
 		this.postLike = postLike;
 	}
 
+	public int getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
+	}
+
 	public String getCategoryName() {
 		return categoryName;
 	}
@@ -83,8 +92,5 @@ public class Board {
 		return "Board [postId=" + postId + ", postTitle=" + postTitle + ", postContent=" + postContent + ", postDate="
 				+ postDate + ", userNo=" + userNo + ", userName=" + userName + ", postLike=" + postLike
 				+ ", categoryName=" + categoryName + "]";
-	}
-	
-	
-	
+	}	
 }

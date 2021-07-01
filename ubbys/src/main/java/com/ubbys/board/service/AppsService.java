@@ -13,7 +13,7 @@ public class AppsService extends BoardService {
 	private AppsDAO dao = new AppsDAO();
 	
 	/**
-	 * 게시글 목록 조회 Service
+	 * apps 게시판 목록 조회 Service
 	 * @param pagination
 	 * @return boardList
 	 * @throws Exception
@@ -23,5 +23,23 @@ public class AppsService extends BoardService {
 		List<Apps> appsList = dao.selectAppsList(conn, pagination);
 		close(conn);
 		return appsList;
+	}
+
+	/**
+	 * apps 게시글 상세 조회 Service
+	 * @param postId
+	 * @return
+	 * @throws Exception
+	 */
+	public Apps selectApps(int postId) throws Exception {
+		Connection conn = getConnection();
+		Apps apps = dao.selectApps(conn, postId);
+		close(conn);
+		return apps;
+	}
+
+	public int insertApps(Apps apps) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

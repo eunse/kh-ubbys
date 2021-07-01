@@ -42,8 +42,6 @@ public class BoardDAO {
 		String sql = "SELECT COUNT(*) FROM " + boardViewName + " WHERE " + boardStatusName + "= 'Y'";
 		try {
 			pstmt = conn.prepareStatement(sql);
-//			pstmt.setString(1, boardViewName);
-//			pstmt.setString(2, boardStatusName);
 			rs = pstmt.executeQuery();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
@@ -54,5 +52,4 @@ public class BoardDAO {
 		}
 		return listCount;
 	}
-
 }

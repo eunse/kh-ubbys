@@ -76,4 +76,51 @@ public class AppsDAO extends BoardDAO {
 		}
 		return appsList;
 	}
+
+	/**
+	 * apps 게시글 상세 조회 DAO
+	 * @param conn
+	 * @param postId
+	 * @return apps
+	 * @throws Exception
+	 */
+	public Apps selectApps(Connection conn, int postId) throws Exception {
+		Apps apps = null;
+		String sql = prop.getProperty("selectApps");
+		String sqlForTag = prop.getProperty("selectAppsTags");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, postId);
+			rs = pstmt.executeQuery();
+			apps = new Apps();
+			apps.setTagList(new ArrayList<Tag>());
+			if(rs.next()) {
+				apps.setPostId(rs.getInt("apps_post_id"));
+				apps.setCategoryName(rs.getString("apps_category_name"));
+				apps.setPostTitle(rs.getString("apps_title"));
+				apps.setPostContent(rs.getString("apps_content"));
+				apps.setPostDate(rs.getDate("apps_date"));
+				apps.setAppsIconUrl(rs.getString("apps_icon"));
+				apps.setPostLike(rs.getInt("apps_like"));
+				apps.setUserName(rs.getString("user_nickname"));
+				apps.setAppsLink(rs.getString("apps_url"));
+				apps.setTagList(new ArrayList<Tag>());
+			}
+			pstmtForTag = conn.prepareStatement(sqlForTag);
+			pstmtForTag.setInt(1, rs.getInt("apps_post_Id"));
+			rsForTag = pstmtForTag.executeQuery();
+			while(rsForTag.next()) {
+				Tag tag = new Tag();
+				tag.setTagId(rsForTag.getInt("apps_tag_id"));
+				tag.setTagName(rsForTag.getString("apps_tag_name"));
+				apps.getTagList().add(tag);
+			}
+		} finally {
+			close(rsForTag);
+			close(pstmtForTag);
+			close(rs);
+			close(pstmt);
+		}
+		return apps;
+	}
 }
