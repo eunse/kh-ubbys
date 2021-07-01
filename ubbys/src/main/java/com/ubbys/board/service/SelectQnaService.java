@@ -44,4 +44,33 @@ public class SelectQnaService {
 		return qnaList;
 	}
 
+	/** Qna 상세 조회 Service
+	 * @param qnaPostId
+	 * @return qna
+	 * @throws Exception
+	 */
+	public Qna selectQna(int qnaPostId) throws Exception {
+		
+		Connection conn = getConnection();
+		
+		Qna qna = dao.selectQna(conn, qnaPostId);
+		
+		close(conn);
+		
+		return qna;
+	}
+	/** MyQna 목록 조회 Service
+	 * @param pagination
+	 * @return myQnaList
+	 * @throws Exception
+	 */
+	public List<Qna> selectMyQnaList(int userNo) throws Exception{
+		Connection conn = getConnection();
+		List<Qna> myQnaList = dao.selectMyQnaList(conn, userNo);
+		
+		close(conn);
+		
+		return myQnaList;
+	}
+
 }

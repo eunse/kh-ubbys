@@ -1,40 +1,45 @@
 package com.ubbys.user.controller;
 
 import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-/**
- * Servlet implementation class MyPageServlet
- */
+import com.ubbys.board.service.SelectQnaService;
+import com.ubbys.board.vo.Qna;
+import com.ubbys.user.vo.User;
+
 @WebServlet("/user")
 public class MyPageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public MyPageServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		RequestDispatcher view = null;
+		
+		try {
+			SelectQnaService service = new SelectQnaService();
+			HttpSession session = request.getSession();
+			int userNo = ((User) session.getAttribute("loginUser")).getUserNo();
+			System.out.println("user넘" + userNo);
+			List<Qna> myQnaList = service.selectMyQnaList(userNo);
+
+			request.setAttribute("myQnaList", myQnaList);
+			System.out.println(myQnaList);
+			view = request.getRequestDispatcher("/WEB-INF/views/user/mypage.jsp");
+			view.forward(request, response);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

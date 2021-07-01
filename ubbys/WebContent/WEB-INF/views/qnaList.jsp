@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <jsp:include page="common/header.jsp" />
-
     <div class="container">
       <a href="#" class="btn btn-primary float-end">작성하기</a>
       <h1 class="h3 my-5">QNA</h1>
@@ -43,7 +42,7 @@
           
           <c:otherwise>
             <c:forEach items="${ qnaList }" var="qna">
-              <a href="#" class="list-group-item list-group-item-action">
+              <a href="qnaView?no=${ qna.qnaPostId }&cp=${ pagination.currentPage }" class="list-group-item list-group-item-action">
                 <div class="d-flex flex-wrap justify-content-between">
                   <div class="category align-self-center">
                     <span class="badge bg-primary">${ qna.qnaCategoryName }</span>
