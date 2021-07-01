@@ -65,8 +65,16 @@ public class UserService {
 	public int updateUser(User user) throws Exception {
 		Connection conn = getConnection();
 		int result = dao.updateUser(conn, user);
-		if(result > 1) {
-			commit(conn);
+		
+		if(result > 0) {
+			
+			result = dao.updateUserInfo(conn, user);
+			
+			if(result > 0) {
+				commit(conn);
+			}else {
+				rollback(conn);
+			}
 		}else {
 			rollback(conn);
 		}
