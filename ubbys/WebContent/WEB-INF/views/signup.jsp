@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <jsp:include page="common/header.jsp" />
 <div class="container d-flex justify-content-center">
-	<form class="form-signup col-4 needs-validation" method="POST"
-		name="signUpForm" action="${contextPath}/signup" novalidate>
+	<form class="form-signup col-4 needs-validation" method="POST" onsubmit="return validate()"
+		name="signUpForm" action="${contextPath}/signup" >
 		<h1 class="h3 mb-3 fw-normal">회원가입</h1>
 		<div class="form-floating input-group mb-3">
 			<input type="email" class="form-control" id="inputEmail"
