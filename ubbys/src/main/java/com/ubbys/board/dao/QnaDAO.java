@@ -116,5 +116,32 @@ public class QnaDAO {
 		return result;
 	}
 
+	/** qna 게시글 수정 DAO
+	 * @param conn
+	 * @param qna
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updateQna(Connection conn, Qna qna) throws Exception {
+		
+		int result = 0;
+		
+		String sql = prop.getProperty("updateQna");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, qna.getQnaTitle());
+			pstmt.setString(2, qna.getQnaContent());
+			pstmt.setInt(3, qna.getQnaCategoryId());
+			pstmt.setInt(4, qna.getQnaPostId());
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
 
 }

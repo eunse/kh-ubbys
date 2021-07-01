@@ -17,7 +17,7 @@ import com.ubbys.board.vo.Qna;
 import com.ubbys.board.vo.QnaCategory;
 import com.ubbys.user.vo.User;
 
-@WebServlet({"/qnaWrite", "/qnaInsert"})
+@WebServlet({"/qnaWrite", "/qnaInsert", "/qnaUpdateForm", "/qnaUpdate"})
 public class QnaController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -33,7 +33,8 @@ public class QnaController extends HttpServlet {
 			
 			int cp = request.getParameter("cp")==null? 1 : Integer.parseInt(request.getParameter("cp"));
 			
-			if(command.equals("Write")){ // qna 글 작성 입력페이지로 이동
+			// qna 글 작성 입력페이지 이동 Controller
+			if(command.equals("Write")){
 				
 				List<QnaCategory> qnaCategory = service.selectQnaCategory();
 				request.setAttribute("qnaCategory", qnaCategory);
@@ -42,7 +43,8 @@ public class QnaController extends HttpServlet {
 				view.forward(request, response);
 			}
 			
-			else if(command.equals("Insert")) { // qna 글 삽입
+			// qna 글 삽입 Controller
+			else if(command.equals("Insert")) {
 				
 				int qnaCategoryId = Integer.parseInt(request.getParameter("qnaCategoryId"));
 				String qnaTitle = request.getParameter("inputTitle");
@@ -70,6 +72,57 @@ public class QnaController extends HttpServlet {
 					session.setAttribute("modalText", "QNA 글 등록에 실패했습니다.");
 					session.setAttribute("modalButtonText", "작성 취소");
 					session.setAttribute("modalButtonLink", request.getContextPath()+"/qnaList");
+					path = request.getHeader("referer");
+				}
+				response.sendRedirect(path);
+			}
+			
+			// qna 글 수정 페이지로 이동 Controller
+			else if(command.equals("UpdateForm")) {
+				
+				List<QnaCategory> qnaCategory = service.selectQnaCategory();
+				
+				int qnaPostId = Integer.parseInt(request.getParameter("qnaPostId"));
+				Qna qna = new SelectQnaService().selectQna(qnaPostId);
+				qna.setQnaContent(qna.getQnaContent().replaceAll("<br>", "\r\n"));
+				System.out.println(qna);
+				
+				request.setAttribute("qnaCategory", qnaCategory);
+				request.setAttribute("qna", qna);
+				
+				request.getRequestDispatcher("/WEB-INF/views/qnaUpdate.jsp").forward(request, response);
+			}
+			
+			// qna 글 수정 Controller
+			else if(command.equals("Update")) {
+				
+				int qnaPostId = Integer.parseInt(request.getParameter("qnaPostId"));
+				int qnaCategoryId = Integer.parseInt(request.getParameter("qnaCategoryId"));
+				String qnaTitle = request.getParameter("inputTitle");
+				String qnaContent = request.getParameter("inputContent");
+				
+				Qna qna = new Qna();
+				qna.setQnaPostId(qnaPostId);
+				qna.setQnaCategoryId(qnaCategoryId);
+				qna.setQnaTitle(qnaTitle);
+				qna.setQnaContent(qnaContent);
+				
+				int result = service.updateQna(qna);
+				
+				HttpSession session = request.getSession();
+				cp = Integer.parseInt(request.getParameter("cp"));
+				if(result>0) {
+					session.setAttribute("modalTitle", "글 수정 성공");
+					session.setAttribute("modalText", "QNA 글이 성공적으로 수정되었습니다.");
+					session.setAttribute("modalButtonText", "목록으로");
+					session.setAttribute("modalButtonLink", request.getContextPath()+"/qnaList?cp="+cp);
+					path = "qnaView?no="+qnaPostId+"&cp="+cp;
+					
+				} else {
+					session.setAttribute("modalTitle", "글 수정 실패");
+					session.setAttribute("modalText", "QNA 글 수정에 실패했습니다.");
+					session.setAttribute("modalButtonText", "수정 취소");
+					session.setAttribute("modalButtonLink", request.getContextPath()+"/qnaView?no="+qnaPostId);
 					path = request.getHeader("referer");
 				}
 				response.sendRedirect(path);

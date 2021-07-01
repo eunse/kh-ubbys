@@ -18,5 +18,12 @@
 		INSERT INTO qna VALUES
 		(?, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, ?)
 	</entry>
+	
+	<!-- qna 게시글 수정 SQL -->
+	<entry key="updateQna">
+		UPDATE qna SET
+		    qna_title=?, qna_content=?, qna_category_id=?
+		WHERE qna_post_id=?
+	</entry>
 
 </properties>

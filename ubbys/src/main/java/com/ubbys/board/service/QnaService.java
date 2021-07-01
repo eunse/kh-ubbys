@@ -44,6 +44,7 @@ public class QnaService {
 		if(qnaPostId>0) {
 			qna.setQnaPostId(qnaPostId);
 			qna.setQnaContent(replaceParameter(qna.getQnaContent()));
+			qna.setQnaTitle(replaceParameter(qna.getQnaTitle()));
 			qna.setQnaContent(qna.getQnaContent().replace("\r\n", "<br>"));
 			
 			result = dao.insertQna(conn, qna);
@@ -75,6 +76,29 @@ public class QnaService {
 			result = result.replaceAll(">", "&gt;");
 			result = result.replaceAll("\"", "&quot;");
 		}
+		return result;
+	}
+
+	/** qna 수정 Service
+	 * @param qna
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updateQna(Qna qna) throws Exception {
+		
+		Connection conn = getConnection();
+		
+		qna.setQnaContent(replaceParameter(qna.getQnaContent()));
+		qna.setQnaTitle(replaceParameter(qna.getQnaTitle()));
+		qna.setQnaContent(qna.getQnaContent().replace("\r\n", "<br>"));
+		
+		int result = dao.updateQna(conn, qna);
+		
+		if(result>0) commit(conn);
+		else		 rollback(conn);
+		
+		close(conn);
+		
 		return result;
 	}
 
