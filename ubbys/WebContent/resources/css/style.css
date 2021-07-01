@@ -122,6 +122,13 @@ footer {
   font-size: 0.8rem;
 }
 
+.card .card-body {
+  position: relative;
+}
+.apps-link {
+  text-decoration: none;
+}
+
 @media (max-width: 575.98px) {
   .qna-list .category {
     display: block;

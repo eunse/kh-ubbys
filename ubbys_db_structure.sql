@@ -483,7 +483,7 @@ CREATE OR REPLACE VIEW QNA_DETAIL AS
 -- 글번호, 카테고리이름, 카테고리ID, 글 제목, 작성일, 아이콘 경로, 좋아요 수, 상태, 사용자 번호, 해시태그 이름, 해시태그 번호
 --------------------------------------------------------------------------------
 CREATE OR REPLACE VIEW apps_list AS
-    SELECT apps_post_id, apps_category_name, apps_title, apps_date, apps_icon, apps_like, apps_status, user_id, user_nickname, SUBSTR(apps_content,1,60) AS apps_content_substr
+    SELECT apps_post_id, apps_category_name, apps_title, apps_date, apps_icon, apps_like, apps_status, user_id, user_nickname, SUBSTR(apps_content,1,30) AS apps_content_substr
     FROM apps
     JOIN apps_categories USING(apps_category_id)
     JOIN "USER" USING(user_id);
@@ -499,6 +499,17 @@ SELECT * FROM (
 WHERE RNUM BETWEEN 1 AND 10;
 
 SELECT COUNT(*) FROM apps_list WHERE apps_status = 'Y';
+
+--------------------------------------------------------------------------------
+-- apps 게시판 상세 출력을 위한 VIEW
+-- 글번호, 카테고리이름, 카테고리ID, 글 제목, 작성일, 아이콘 경로, 좋아요 수, 상태, 사용자 번호, 해시태그 이름, 해시태그 번호
+--------------------------------------------------------------------------------
+CREATE OR REPLACE VIEW apps_view AS
+    SELECT apps_post_id, apps_icon, apps_category_name, apps_title, user_nickname, apps_content, apps_url, apps_like, apps_date 
+    FROM apps 
+    JOIN apps_categories USING(apps_category_id)
+    JOIN "USER" USING(user_id);
+
 
 --------------------------------------------------------------------------------
 -- tags 샘플
