@@ -4,7 +4,7 @@
 <jsp:include page="common/header.jsp" />
 
     <div class="container">
-      <h1 class="h3 my-5">apps</h1>
+      <h1 class="h3 my-5">QNA</h1>
       <div class="row mb-4">
         <div class="col mb-sm-3">
           <span class="badge rounded-pill bg-secondary">${ qna.qnaCategoryName }</span>
@@ -19,15 +19,29 @@
         <p>${ qna.qnaContent }</p>
       </div>
       <hr>
-    
-    
+      <div>
+        <small class="float-end">작성일시 : ${ qna.qnaDate }</small><br>
+      </div>
+      
+      
+      
       <!-- 댓글이 include될 부분 -->
     
     
+    
+    
+      <a href="qnaList?cp=${ param.cp }" class="btn btn-outline-primary">이전 목록</a>
+      
       <c:if test="${ qna.userId == sessionScope.loginUser.userNo }">
-        <a href="#" class="btn btn-outline-primary">수정</a>
-        <a href="#" class="btn btn-outline-danger">삭제</a>
+        <button class="btn btn-primary float-end" id="qnqUpdateBtn" onclick="fnRequest('UpdateForm');">수정</button>
+        <button class="btn btn-danger float-end me-2" id="qnqDeleteBtn">삭제</button>
       </c:if>
-      <small class="float-end">작성일시 : ${ qna.qnaDate }</small>
     </div>
 <jsp:include page="common/footer.jsp" />
+
+<form action="#" method="POST" name="requestForm">
+  <input type="hidden" name="qnaPostId" value="${ qna.qnaPostId }">
+  <input type="hidden" name="cp" value="${ param.cp }">
+</form>
+
+<script src="${contextPath}/resources/js/qnaView_fn.js"></script>
