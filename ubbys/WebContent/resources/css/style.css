@@ -117,7 +117,7 @@ footer {
   font-size: 0.7rem;
   text-align: center;
 }
-.form-write, .form-modify {
+.form-write, .form-update {
   padding-top: 30px;
 }
 .qna-reply-content .date {
