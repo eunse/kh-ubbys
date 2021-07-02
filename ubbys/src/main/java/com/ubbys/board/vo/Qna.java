@@ -16,6 +16,9 @@ public class Qna {
 	private String qnaContent;		// 내용
 	private int userId;				// 회원번호
 	
+	// 삽입 시
+	private int qnaCategoryId;
+	
 	public Qna() {}
 
 	public int getQnaPostId() {
@@ -90,11 +93,20 @@ public class Qna {
 		this.userId = userId;
 	}
 
+	public int getQnaCategoryId() {
+		return qnaCategoryId;
+	}
+
+	public void setQnaCategoryId(int qnaCategoryId) {
+		this.qnaCategoryId = qnaCategoryId;
+	}
+
 	@Override
 	public String toString() {
 		return "Qna [qnaPostId=" + qnaPostId + ", qnaCategoryName=" + qnaCategoryName + ", qnaDate=" + qnaDate
 				+ ", qnaTitle=" + qnaTitle + ", userNickname=" + userNickname + ", qnaLike=" + qnaLike
-				+ ", qnaReplyCount=" + qnaReplyCount + ", qnaContent=" + qnaContent + ", userId=" + userId + "]";
+				+ ", qnaReplyCount=" + qnaReplyCount + ", qnaContent=" + qnaContent + ", userId=" + userId
+				+ ", qnaCategoryId=" + qnaCategoryId + "]";
 	}
 
 }

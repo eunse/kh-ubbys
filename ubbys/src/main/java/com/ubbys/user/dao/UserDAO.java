@@ -122,25 +122,42 @@ public class UserDAO {
 		int result = 0;
 
 		try {
-			String firstSql = prop.getProperty("editUser");
-			String secondSql = prop.getProperty("editUserInfo");
-			pstmt = conn.prepareStatement(firstSql);
-			pstmtSecond = conn.prepareStatement(secondSql);
-
+			String sql = prop.getProperty("editUser");
+			pstmt = conn.prepareStatement(sql);
+			
 			pstmt.setString(1, user.getUserNickname());
 			pstmt.setInt(2, user.getUserNo());
-
-			pstmtSecond.setString(1, user.getUserPic());
-			pstmtSecond.setString(2, user.getUserLink());
-			pstmtSecond.setString(3, user.getUserInterest());
-			pstmtSecond.setString(4, user.getUserIntroduce());
-			pstmtSecond.setInt(5, user.getUserNo());
-
 			result += pstmt.executeUpdate();
-			result += pstmtSecond.executeUpdate();
 
 		} finally {
-			close(pstmtSecond);
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	/** 회원 추가정보 수정 DAO
+	 * @param conn
+	 * @param user
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updateUserInfo(Connection conn, User user) throws Exception{
+		int result = 0;
+		
+		try {
+			
+			String sql = prop.getProperty("editUserInfo");
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, user.getUserPic());
+			pstmt.setString(2, user.getUserLink());
+			pstmt.setString(3, user.getUserInterest());
+			pstmt.setString(4, user.getUserIntroduce());
+			pstmt.setInt(5, user.getUserNo());
+			
+			result = pstmt.executeUpdate();
+		} finally {
 			close(pstmt);
 		}
 		return result;

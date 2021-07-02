@@ -3,7 +3,8 @@
 const checkObj = {
     "inputEmail": false,
     "inputPw": false,
-    "name": false
+    "inputPwConfirm": false
+
 };
 
 $("#inputEmail").on("input", function () {
@@ -66,10 +67,10 @@ $("#inputPw").on("input", function () {
 
     if (regExp.test(pwd1)) {
        $("#checkPwd1").text("유효한 비밀번호 입니다.").css("color", "green");
-        checkObj.pwd1 = true;
+        checkObj.inputPW = true;
     } else {
         $("#checkPwd1").text("비밀번호는 영어, 숫자, 특수문자 포함 6~20자리로 입력하세요.").css("color", "red");
-        checkObj.pwd1 = false;
+        checkObj.inputPW = false;
     }
 });
 
@@ -83,13 +84,13 @@ $("#inputPw, #inputPwConfirm").on("input", function () {
     if (pwd1.trim() == "" && pwd2.trim() == "") { // 둘다 비어있을 때
         $("#checkPwd2").html("&nbsp;");
         $("#checkPwd1").html("&nbsp;");
-        checkObj.pwd2 = false;
+        checkObj.inputPwConfirm = false;
     } else if (pwd1 == pwd2) {
         $("#checkPwd2").text("비밀번호 일치").css("color", "green");
-        checkObj.pwd2 = true;
+        checkObj.inputPwConfirm = true;
     } else {
         $("#checkPwd2").text("비밀번호 불일치").css("color", "red");
-        checkObj.pwd2 = false;
+        checkObj.inputPwConfirm = false;
     }
 });
 
@@ -117,10 +118,10 @@ function validate() {
                 case "inputEmail":
                     msg = "아이디가 유효하지 않습니다.";
                     break;
-                case "pwd1":
+                case "inputPw":
                     msg = "비밀번호가 유효하지 않습니다.";
                     break;
-                case "pwd2":
+                case "inputPwConfirm":
                     msg = "비밀번호가 일치하지 않습니다. ";
                     break;
                 // case "name":
