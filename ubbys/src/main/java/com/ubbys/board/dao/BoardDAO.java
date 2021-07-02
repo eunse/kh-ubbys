@@ -7,7 +7,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
 import java.util.Properties;
+
+import com.ubbys.board.vo.Category;
 
 public class BoardDAO {
 	protected Statement stmt = null;
@@ -51,5 +56,52 @@ public class BoardDAO {
 			close(pstmt);
 		}
 		return listCount;
+	}
+
+	/**
+	 * 카테고리 목록 조회 DAO
+	 * @param conn
+	 * @return category
+	 * @throws Exception
+	 */
+	public List<Category> selectCategoryList(Connection conn, String boardTableName) throws Exception {
+		List<Category> category = new ArrayList<Category>();
+		String sql = prop.getProperty("selectCategoryList");
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			while(rs.next()) {
+				Category ca = new Category();
+				ca.setCategoryId(rs.getInt(boardTableName + "_category_id"));
+				ca.setCategoryName(rs.getString(boardTableName + "_category_name"));
+				category.add(ca);
+			}
+		} finally {
+			close(rs);
+			close(stmt);
+		}
+		return category;
+	}
+	
+	/**
+	 * 다음 게시글 번호 조회 DAO
+	 * @param conn
+	 * @return postId
+	 * @throws Exception
+	 */
+	public int nextPostId(Connection conn) throws Exception {
+		int postId = 0;
+		String sql = prop.getProperty("nextPostId");
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			if(rs.next()) {
+				postId = rs.getInt(1);
+			}
+		} finally {
+			close(rs);
+			close(stmt);
+		}
+		return postId;
 	}
 }

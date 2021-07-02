@@ -1,11 +1,9 @@
 package com.ubbys.board.vo;
 
-import java.util.List;
-
 public class Apps extends Board {
 	private String appsIconUrl;
 	private String appsLink;
-	private List<Tag> tagList;
+	private String tagString;
 	private String appsSummary;
 	
 	public Apps() {
@@ -28,12 +26,12 @@ public class Apps extends Board {
 		this.appsLink = appsLink;
 	}
 
-	public List<Tag> getTagList() {
-		return tagList;
+	public String getTagString() {
+		return tagString;
 	}
 
-	public void setTagList(List<Tag> tagList) {
-		this.tagList = tagList;
+	public void setTagList(String tagString) {
+		this.tagString = tagString;
 	}
 
 	public String getAppsSummary() {
@@ -46,11 +44,11 @@ public class Apps extends Board {
 
 	@Override
 	public String toString() {
-		return "Apps [appsIconUrl=" + appsIconUrl + ", appsLink=" + appsLink + ", tagList=" + tagList + ", appsSummary="
-				+ appsSummary + ", postId=" + postId + ", postTitle=" + postTitle + ", postContent=" + postContent
-				+ ", postDate=" + postDate + ", userNo=" + userNo + ", userName=" + userName + ", postLike=" + postLike
-				+ ", categoryName=" + categoryName + "]";
+		return "Apps [appsIconUrl=" + appsIconUrl + ", appsLink=" + appsLink + ", tagString=" + tagString
+				+ ", appsSummary=" + appsSummary + "]";
 	}
+
+	
 
 
 }

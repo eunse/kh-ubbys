@@ -131,6 +131,14 @@ footer {
 .apps-link {
   text-decoration: none;
 }
+.apps-image__preview {
+  display: block;
+  width: 125px;
+  height: 125px;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: cover;
+}
 
 @media (max-width: 575.98px) {
   .qna-list .category {
