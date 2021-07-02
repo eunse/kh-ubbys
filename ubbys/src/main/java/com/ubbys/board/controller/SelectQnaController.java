@@ -15,6 +15,7 @@ import com.ubbys.board.service.SelectQnaService;
 import com.ubbys.board.vo.Qna;
 import com.ubbys.board.vo.QnaCategory;
 import com.ubbys.board.vo.QnaPagination;
+import com.ubbys.user.vo.User;
 
 @WebServlet({"/qnaList", "/qnaView", "/qnaMyPage"})
 public class SelectQnaController extends HttpServlet {
