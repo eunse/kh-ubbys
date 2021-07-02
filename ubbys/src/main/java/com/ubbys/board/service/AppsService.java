@@ -4,6 +4,7 @@ import static com.ubbys.common.JDBCTemplate.*;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Locale.Category;
 
 import com.ubbys.board.dao.AppsDAO;
 import com.ubbys.board.vo.Apps;
@@ -38,8 +39,43 @@ public class AppsService extends BoardService {
 		return apps;
 	}
 
-	public int insertApps(Apps apps) {
-		// TODO Auto-generated method stub
-		return 0;
+	/**
+	 * apps 게시물 + 태그 삽입 Service
+	 * @param apps
+	 * @return
+	 * @throws Exception
+	 */
+	public int insertApps(Apps apps) throws Exception {
+		Connection conn = getConnection();
+		int result = 0;
+		int postId = dao.nextPostId(conn);
+		if(postId > 0) {
+			apps.setPostId(postId);
+			String postContent = apps.getPostContent();
+			postContent = replaceParameter(postContent);
+			postContent = postContent.replaceAll("(\r\n|\r|\n|\n\r)", "<br>");
+			apps.setPostContent(postContent);
+			apps.setPostTitle(replaceParameter(apps.getPostTitle()));
+			result = dao.insertTags(conn, apps, postId);
+			
+			result = dao.insertApps(conn, apps);
+			if(result > 0) {
+				
+			}
+		}
+		
+		return result;
 	}
+	// XSS 방지 메소드
+	private String replaceParameter(String param) {
+		String result = param;
+		if(param != null) {
+			result = result.replaceAll("&", "&amp;");
+			result = result.replaceAll("<", "&lt;");
+			result = result.replaceAll(">", "&gt;");
+			result = result.replaceAll("\"", "&quot;");
+		}		
+		return result;
+	}
+
 }

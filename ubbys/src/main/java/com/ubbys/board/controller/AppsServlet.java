@@ -3,8 +3,10 @@ package com.ubbys.board.controller;
 import static com.ubbys.common.JDBCTemplate.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,7 +19,9 @@ import javax.servlet.http.HttpSession;
 import com.oreilly.servlet.MultipartRequest;
 import com.ubbys.board.service.AppsService;
 import com.ubbys.board.vo.Apps;
+import com.ubbys.board.vo.Category;
 import com.ubbys.board.vo.Pagination;
+import com.ubbys.board.vo.Tag;
 import com.ubbys.common.UbbysRenamePolicy;
 import com.ubbys.user.vo.User;
 
@@ -61,6 +65,14 @@ public class AppsServlet extends HttpServlet {
 				view = request.getRequestDispatcher("/WEB-INF/views/board/apps_view.jsp");
 				view.forward(request, response);
 			}
+			// 작성
+			else if(command.equals("write")) {
+				List<Category> category = service.selectCategoryList(boardTableName);
+				request.setAttribute("category", category);
+				path = "/WEB-INF/views/board/apps_write.jsp";
+				view = request.getRequestDispatcher(path);
+				view.forward(request, response);
+			}
 		} catch(Exception err) {
 			err.printStackTrace();
 		}
@@ -73,7 +85,7 @@ public class AppsServlet extends HttpServlet {
 			int cp = request.getParameter("cp") == null ? 1 : Integer.parseInt(request.getParameter("cp"));
 			
 			// 새로 작성 
-			if(command.equals("new")) {
+			if(command.equals("write")) {
 				HttpSession session = request.getSession();
 				
 				int maxSize = 2097152;
@@ -85,6 +97,7 @@ public class AppsServlet extends HttpServlet {
 				String postTitle = mpRequest.getParameter("postTitle");
 				String postContent = mpRequest.getParameter("postContent");
 				int categoryId = Integer.parseInt(mpRequest.getParameter("categoryId"));
+				String tagString = mpRequest.getParameter("tagString");
 				
 				Apps apps = new Apps();
 				apps.setPostTitle(postTitle);
@@ -99,7 +112,12 @@ public class AppsServlet extends HttpServlet {
 						apps.setAppsIconUrl(filePath);
 					}
 				}
-				int result = service.insertApps(apps);
+				
+				
+				int result = service.insertTags(apps);
+				
+				
+				result = service.insertApps(apps);
 				if(result > 0) {
 					path = request.getContextPath() + "/apps/view?no=" + result + "&cp=1";
 				} else {

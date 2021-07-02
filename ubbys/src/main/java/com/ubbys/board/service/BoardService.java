@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.ubbys.board.dao.BoardDAO;
 import com.ubbys.board.vo.Board;
+import com.ubbys.board.vo.Category;
 import com.ubbys.board.vo.Pagination;
 
 public class BoardService {
@@ -24,5 +25,17 @@ public class BoardService {
 		close(conn);
 		
 		return new Pagination(cp, listCount);
+	}
+	
+	/**
+	 * 카테고리 목록 조회 Service
+	 * @return category
+	 * @throws Exception
+	 */
+	public List<Category> selectCategoryList(String boardTableName) throws Exception {
+		Connection conn = getConnection();
+		List<Category> category = dao.selectCategoryList(conn, boardTableName);
+		close(conn);
+		return category;
 	}
 }

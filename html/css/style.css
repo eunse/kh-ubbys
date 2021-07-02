@@ -91,6 +91,12 @@ footer {
   height: 125px;
 }
 
+.apps-image__preview {
+  display: inlin-block;
+  width: 125px;
+  height: 125px;
+}
+
 .badge.tag {
   cursor: pointer;
   padding-left: 1.7rem;
