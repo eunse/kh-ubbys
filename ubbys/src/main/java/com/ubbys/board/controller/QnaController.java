@@ -85,7 +85,6 @@ public class QnaController extends HttpServlet {
 				int qnaPostId = Integer.parseInt(request.getParameter("qnaPostId"));
 				Qna qna = new SelectQnaService().selectQna(qnaPostId);
 				qna.setQnaContent(qna.getQnaContent().replaceAll("<br>", "\r\n"));
-				System.out.println(qna);
 				
 				request.setAttribute("qnaCategory", qnaCategory);
 				request.setAttribute("qna", qna);

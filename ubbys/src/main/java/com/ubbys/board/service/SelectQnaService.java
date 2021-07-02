@@ -46,6 +46,7 @@ public class SelectQnaService {
 
 	/** Qna 상세 조회 Service
 	 * @param qnaPostId
+	 * @param loginUserId 
 	 * @return qna
 	 * @throws Exception
 	 */
@@ -54,11 +55,12 @@ public class SelectQnaService {
 		Connection conn = getConnection();
 		
 		Qna qna = dao.selectQna(conn, qnaPostId);
-		
+
 		close(conn);
 		
 		return qna;
 	}
+	
 	/** MyQna 목록 조회 Service
 	 * @param pagination
 	 * @return myQnaList
