@@ -17,12 +17,12 @@ import com.ubbys.admin.qna.vo.Qna;
 import com.ubbys.board.vo.Pagination;
 
 public class SelectQnaDAO {
-	// 자주 사용하는 JDBC 객체 참조 변수 선언
+	
 	private Statement stmt = null;
 	private PreparedStatement pstmt = null;
 	private ResultSet rs = null;
 
-	// 외부 XML 파일에 작성된 SQL 구문을 읽어와 저장할 Properties객체 참조 변수 선언
+	
 	private Properties prop = null;
 	
 	public SelectQnaDAO() {
@@ -31,7 +31,7 @@ public class SelectQnaDAO {
 		try {
 			prop = new Properties();
 
-			// filePath 변수에 저장된 경로로 부터 XML 파일을 읽어와 prop에 저장
+			
 			prop.loadFromXML(new FileInputStream(filePath));
 
 		} catch (Exception e) {
@@ -45,40 +45,22 @@ public class SelectQnaDAO {
 	 * @return map
 	 * @throws Exception
 	 */
-	public Map<String, Object> getListCount(Connection conn, int cp, Qna qna) throws Exception {
+	public Map<String, Object> getListCount(Connection conn, int cp) throws Exception {
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		String sql = prop.getProperty("getListCount");
 		
-		// 조회 조건
-		boolean isSearchCond = false;
-		if (qna.getSearchQnaCond().equals("qnaCategoryName") && !"".equals(qna.getSearchQnaCondText())) {
-			sql = sql.replaceAll("#\\{searchCond\\}", "AND QNA_CATEGORY_NAME LIKE ?");
-			isSearchCond = true;
-		} else if (qna.getSearchQnaCond().equals("qnaTitle") && !"".equals(qna.getSearchQnaCondText())) {
-			sql = sql.replaceAll("#\\{searchCond\\}", "AND QNA_TITLE LIKE ?");
-			isSearchCond = true;
-		} else if (qna.getSearchQnaCond().equals("userNickname") && !"".equals(qna.getSearchQnaCondText())) {
-			sql = sql.replaceAll("#\\{searchCond\\}", "AND USER_NICKNAME LIKE ?");
-			isSearchCond = true;
-		} else {
-			sql = sql.replaceAll("#\\{searchCond\\}", "");
-		}
 		
 		try {
-			pstmt = conn.prepareStatement(sql);
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
 			
-			if (isSearchCond) {
-				pstmt.setString(1, "%" + qna.getSearchQnaCondText() + "%");
+			if(rs.next()) {
+				map.put( "listCount", rs.getInt(1) );
 			}
 			
-			rs = pstmt.executeQuery();
-			
-			if( rs.next() ) {
-				map.put( "listCount", rs.getInt(1));
-			}
-			
-		} finally {
+		}finally {
 			close(rs);
 			close(pstmt);
 		}
@@ -86,55 +68,36 @@ public class SelectQnaDAO {
 		return map;
 	}
 	
-	public List<Qna> selectQnaList(Connection conn, Pagination pagination, Qna qna) throws Exception {
+	
+	/** Qna 목록 조회 DAO
+	 * @param conn
+	 * @param pagination
+	 * @return qnaList
+	 * @throws Exception
+	 */
+	public List<Qna> selectQnaList(Connection conn, Pagination pagination) throws Exception {
+		
 		List<Qna> qnaList = new ArrayList<Qna>();
 		
 		String sql = prop.getProperty("selectQnaList");
 		
-		// 조회 조건
-		boolean isSearchCond = false;
-		if (qna.getSearchQnaCond().equals("qnaCategoryName") && !"".equals(qna.getSearchQnaCondText())) {
-			sql = sql.replaceAll("#\\{searchCond\\}", "AND QNA_CATEGORY_NAME LIKE ?");
-			isSearchCond = true;
-		} else if (qna.getSearchQnaCond().equals("qnaTitle") && !"".equals(qna.getSearchQnaCondText())) {
-			sql = sql.replaceAll("#\\{searchCond\\}", "AND QNA_TITLE LIKE ?");
-			isSearchCond = true;
-		} else if (qna.getSearchQnaCond().equals("userNickname") && !"".equals(qna.getSearchQnaCondText())) {
-			sql = sql.replaceAll("#\\{searchCond\\}", "AND USER_NICKNAME LIKE ?");
-			isSearchCond = true;
-		} else {
-			sql = sql.replaceAll("#\\{searchCond\\}", "");
-		}
-		
-		// 정렬 조건
-		if (qna.getSearchOrder().equals("qnaLike")) {
-			sql = sql.replaceAll("#\\{orderBy\\}", "ORDER BY QNA_LIKE DESC");
-		} else if (qna.getSearchOrder().equals("qnaDate")) {
-			sql = sql.replaceAll("#\\{orderBy\\}", "ORDER BY QNA_DATE DESC");
-		} else {
-			sql = sql.replaceAll("#\\{orderBy\\}", "ORDER BY QNA_DATE DESC");
-		}
-		
+
 		try {
 			pstmt = conn.prepareStatement(sql);
 			
 			// 조회할 범위를 지정할 변수 선언
 			int startRow = (pagination.getCurrentPage() - 1) * pagination.getLimit() + 1;
 			int endRow = startRow + pagination.getLimit() - 1;
-					
-			if (isSearchCond) {
-				pstmt.setString(1, "%" + qna.getSearchQnaCondText() + "%");
-				pstmt.setInt(2, startRow);
-				pstmt.setInt(3, endRow);
-			} else {
-				pstmt.setInt(1, startRow);
-				pstmt.setInt(2, endRow);
-			}
+			
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+			
+
 			
 			rs = pstmt.executeQuery();
 						
 			while(rs.next()) {
-				// 조회된 한 행의 정보를 qna에 set
+				
 				Qna vo = new Qna();
 				
 				vo.setQnaPostId(rs.getInt("QNA_POST_ID"));
@@ -145,7 +108,7 @@ public class SelectQnaDAO {
 				vo.setUserNickname(rs.getString("USER_NICKNAME"));
 				vo.setQnaDate(rs.getString("QNA_DATE"));
 				
-				// set 완료된 qna를 qnaList에 추가
+				
 				qnaList.add(vo);
 			}
 			
@@ -156,4 +119,49 @@ public class SelectQnaDAO {
 		
 		return qnaList;
 	}
+
+	
+	
+	/** Qna 상세 조회 dao
+	 * @param conn
+	 * @param qnaPostId
+	 * @return
+	 * @throws Exception
+	 */
+	public Qna selectQna(Connection conn, int qnaPostId) throws Exception {
+		
+		Qna qna = null;
+		
+		String sql = prop.getProperty("selectQna");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, qnaPostId);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				qna = new Qna();
+				qna.setQnaPostId(rs.getInt("QNA_POST_ID"));
+				qna.setQnaCategoryName(rs.getString("QNA_CATEGORY_NAME"));
+				qna.setQnaDate(rs.getString("QNA_DATE"));
+				qna.setQnaTitle(rs.getString("QNA_TITLE"));
+				qna.setQnaContent(rs.getString("QNA_CONTENT"));
+				qna.setUserNickname(rs.getString("USER_NICKNAME"));
+				qna.setQnaLike(rs.getInt("QNA_LIKE"));
+				qna.setUserId(rs.getInt("USER_ID"));
+			}
+			
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return qna;
+	}
+
+
+
+
 }

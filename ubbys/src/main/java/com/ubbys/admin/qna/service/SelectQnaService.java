@@ -12,33 +12,59 @@ import com.ubbys.board.vo.Pagination;
 public class SelectQnaService {
 	private SelectQnaDAO dao = new SelectQnaDAO();
 	
-	/** 페이징 처리 객체 생성용 Service
+
+
+	/** 페이징 객체 생성용 Service
 	 * @param cp
-	 * @param boardType
 	 * @return pagination
 	 * @throws Exception
 	 */
-	public Pagination getPagination(int cp, Qna qna) throws Exception {
+	public Pagination getPagination(int cp) throws Exception {
 		
 		Connection conn = getConnection();
 
-		// DB에서 전체 게시글 수 + 게시판 이름을 얻어옴
-		Map<String, Object> map = dao.getListCount(conn, cp, qna);
+		
+		Map<String, Object> map = dao.getListCount(conn, cp);
 		
 		close(conn);
 		
-		// map의 value를 object로 해놨기 때문에 형변환을 해야함
 		int listCount = (int)map.get("listCount");
 		
 		return new Pagination(cp, listCount);
 	}
+
 	
-	public List<Qna> selectQnaList(Pagination pagination, Qna qna) throws Exception {
+	
+	/** qna 목록 조회 service
+	 * @param pagination
+	 * @return qnaList
+	 * @throws Exception
+	 */
+	public List<Qna> selectQnaList(Pagination pagination) throws Exception {
 		Connection conn = getConnection();
 		
-		List<Qna> qnaList = dao.selectQnaList(conn, pagination, qna);
+		List<Qna> qnaList = dao.selectQnaList(conn, pagination);
 		
 		close(conn);
 		return qnaList;
+	}
+
+
+	
+	/** qna 상세 조회 service
+	 * @param qnaPostId
+	 * @return qna
+	 * @throws Exception
+	 */
+	public Qna selectQna(int qnaPostId) throws Exception {
+		
+		Connection conn = getConnection();
+		
+		Qna qna = dao.selectQna(conn, qnaPostId);
+		
+		close(conn);
+		
+		return qna;
+
 	}
 }
