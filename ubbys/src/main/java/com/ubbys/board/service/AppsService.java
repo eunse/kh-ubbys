@@ -66,7 +66,6 @@ public class AppsService extends BoardService {
 			postContent = postContent.replaceAll("(\r\n|\r|\n|\n\r)", "<br>");
 			apps.setPostContent(postContent);
 			apps.setPostTitle(replaceParameter(apps.getPostTitle()));
-			
 			result = dao.insertApps(conn, apps);
 			if(result > 0) {
 				commit(conn);
@@ -147,4 +146,5 @@ public class AppsService extends BoardService {
 		close(conn);
 		return tagList;
 	}
+
 }

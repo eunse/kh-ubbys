@@ -35,7 +35,6 @@
       inputTag.value = '';
     }
   });
-
 })()
 
 

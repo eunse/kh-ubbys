@@ -74,7 +74,6 @@ public class AppsServlet extends HttpServlet {
 				view = request.getRequestDispatcher(path);
 				view.forward(request, response);
 			}
-			
 			// 임시 태그 목록 조회 (ajax)
 			else if(command.equals("tag")) {
 				List<Tag> tagList = service.selectTagList();
@@ -128,6 +127,7 @@ public class AppsServlet extends HttpServlet {
 				if(postId > 0) {
 					path = request.getContextPath() + "/apps/view?no=" + postId + "&cp=1";
 					System.out.println("6");
+
 				} else {
 					modalText = "게시글 등록에 실패했습니다. 관리자에게 문의해주세요.";
 					modalTitle = "게시글 등록 실패";
