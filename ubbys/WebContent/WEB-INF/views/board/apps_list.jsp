@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <jsp:include page="../common/header.jsp" />
     <div class="container">
-      <a href="#" class="btn btn-primary float-end">작성하기</a>
+      <a href="write" class="btn btn-primary float-end">작성하기</a>
       <h1 class="h3 my-5">apps</h1>
       <div class="row">
         <div class="col-xs-12 col-sm-4">
@@ -38,14 +38,17 @@
            <div class="card">
             <div class="card-body">
               <img src="${apps.appsIconUrl}" width="45" height="45" class="rounded-3 float-start me-2" alt="">
-              <button class="btn btn-outline-secondary btn-like float-end"><i class="bi bi-heart"></i> {apps.postLike}</button>
-              <h5 class="card-title">{apps.postTitle}</h5>
-              <h6 class="card-subtitle mb-2 text-muted">{apps.categoryName}</h6>
+              <span class="btn btn-outline-secondary btn-like float-end"><i class="bi bi-heart"></i> ${apps.postLike}</span>
+              
+              <h5 class="card-title"><a href="view?no=${apps.postId}&cp=${pagination.currentPage}" class="apps-link stretched-link">${apps.postTitle}</a></h5>
+              <h6 class="card-subtitle mb-2 text-muted">${apps.categoryName}</h6>
         
-              <p class="card-text">{apps.appsSummary}</p>
+              <p class="card-text">${apps.appsSummary}</p>
+            </div>
+            <div class="card-footer">
               <c:forEach items="${apps.tagList}" var="tag">
                 <a href="#" class="card-hashtag">#${tag.tagName}</a>
-              </c:forEach>
+              </c:forEach> 
             </div>
            </div>
           </div>
@@ -53,21 +56,34 @@
         </c:otherwise> 
        </c:choose>
       </div>
+      <c:set var="prev" value="list&cp=${pagination.prevPage}"/>
+      <c:set var="next" value="list&cp=${pagination.nextPage}"/>
       <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
+         <c:if test="${pagination.currentPage > pagination.pageSize}">
           <li class="page-item disabled">
             <a class="page-link" href="#" aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
             </a>
           </li>
-          <li class="page-item active"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
+         </c:if>
+         <c:forEach var="p" begin="${pagination.startPage}" end="${pagination.endPage}">
+          <c:choose>
+           <c:when test="${p == pagination.currentPage}">
+            <li class="page-item active"><a class="page-link" href="#">${p}</a></li>
+           </c:when>
+           <c:otherwise>
+            <li class="page-item"><a class="page-link" href="list&cp=${p}">${p}</a></li>
+           </c:otherwise>
+           </c:choose>
+          </c:forEach>
+          <c:if test="${pagination.currentPage - pagination.maxPage + pagination.pageSize < 1}">
           <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
+            <a class="page-link" href="${next}" aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
             </a>
           </li>
+          </c:if>
         </ul>
       </nav>
     </div>

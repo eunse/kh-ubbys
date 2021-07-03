@@ -18,5 +18,47 @@
 		INSERT INTO qna VALUES
 		(?, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, ?)
 	</entry>
+	
+	<!-- qna 게시글 수정 SQL -->
+	<entry key="updateQna">
+		UPDATE qna SET
+		    qna_title=?, qna_content=?, qna_category_id=?
+		WHERE qna_post_id=?
+	</entry>
+	
+	<!-- qna 게시글에 좋아요를 누른 userList 반환 SQL -->
+	<entry key="selectUserList">
+		SELECT user_id FROM qna_likes WHERE qna_post_id=?
+	</entry>
+	
+	<!-- qna 좋아요 확인 SQL -->
+	<entry key="qnaLikeCheck">
+		SELECT qna_post_id, user_id FROM qna_likes WHERE qna_post_id=? AND user_id=?
+	</entry>
+	
+	<!-- qna 좋아요 삽입 SQL -->
+	<entry key="qnaLike">
+		INSERT INTO qna_likes VALUES(seq_qna_like_no.NEXTVAL, ?, ?)
+	</entry>
+	
+	<!-- qna 좋아요 수 증가 SQL -->
+	<entry key="qnaLikeIncrease">
+		UPDATE qna SET qna_like = qna_like+1 WHERE qna_post_id=?
+	</entry>
+	
+	<!-- qna 좋아요 취소(삭제) SQL -->
+	<entry key="qnaLikeCancel">
+		DELETE FROM qna_likes WHERE qna_post_id=? AND user_id=?
+	</entry>
+	
+	<!-- qna 좋아요 수 감소 SQL -->
+	<entry key="qnaLikeDecrease">
+		UPDATE qna SET qna_like = qna_like-1 WHERE qna_post_id=?
+	</entry>
+	
+	<!-- qna 좋아요 수 SQL -->
+	<entry key="qnaLikeCount">
+		SELECT qna_like FROM qna WHERE qna_post_id=?
+	</entry>
 
 </properties>

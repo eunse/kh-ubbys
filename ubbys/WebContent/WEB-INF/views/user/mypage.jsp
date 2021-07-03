@@ -62,8 +62,7 @@
                     <h6 class="card-subtitle mb-2 text-muted">카테고리
                       : ${apps.categoryName }</h6>
                     <p class="card-text">본문 : ${apps.appsContent }</p>
-                    <a href="#" class="card-hashtag">#${apps.hashTag
-                      }</a> <a href="#" class="card-hashtag">#해시태그</a>
+                    <a href="#" class="card-hashtag">#${apps.hashTag}</a> <a href="#" class="card-hashtag">#해시태그</a>
                   </div>
                 </div>
               </div>
@@ -121,4 +120,6 @@
 
   </div>
 </div>
+
+<a href="${contextPath}/qnaReplyList" class="nav-link px-2 link-dark">qnaReply</a>
 <jsp:include page="../common/footer.jsp" />

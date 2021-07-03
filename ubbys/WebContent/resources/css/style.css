@@ -117,12 +117,27 @@ footer {
   font-size: 0.7rem;
   text-align: center;
 }
-.form-write {
+.form-write, .form-update {
   padding-top: 30px;
 }
 .qna-reply-content .date {
   color: #333;
   font-size: 0.8rem;
+}
+
+.card .card-body {
+  position: relative;
+}
+.apps-link {
+  text-decoration: none;
+}
+.apps-image__preview {
+  display: block;
+  width: 125px;
+  height: 125px;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: cover;
 }
 
 @media (max-width: 575.98px) {

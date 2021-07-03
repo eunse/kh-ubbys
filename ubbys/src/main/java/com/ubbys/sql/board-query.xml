@@ -19,4 +19,19 @@
 	<entry key="selectAppsTags">
 		SELECT apps_tag_id, apps_tag_name FROM tags JOIN apps_tags USING(apps_tag_id) WHERE apps_post_id = ?
 	</entry>
+	<entry key="selectApps">
+		SELECT * FROM apps_view WHERE apps_post_id = ?
+	</entry>
+	<entry key="selectCategoryList">
+		SELECT * FROM apps_categories
+	</entry>
+	<entry key="nextPostId">
+		SELECT seq_apps_no.NEXTVAL FROM DUAL
+	</entry>
+	<entry key="insertApps">
+		INSERT INTO apps VALUES(seq_apps_no.NEXTVAL, ?, ?, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, ?)
+	</entry>
+	<entry key="insertTags">
+		INSERT INTO tags VALUES(seq_tag_no.NEXTVAL, ?)
+	</entry>
 </properties>

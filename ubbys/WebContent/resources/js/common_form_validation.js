@@ -15,9 +15,9 @@
 })()
 
 const loadFile = function (event) {
-  const output = document.getElementById('userImagePreview');
-  output.src = URL.createObjectURL(event.target.files[0]);
-  output.onload = function () {
-    URL.revokeObjectURL(output.src);
-  }
+  const output = document.getElementById('uploadImagePreview');
+  output.style.backgroundImage = "url('" + URL.createObjectURL(event.target.files[0]) + "')"
+  output.addEventListener('onload', function() {
+    URL.revokeObjectURL(output.style.backgroundImage);
+  })
 };

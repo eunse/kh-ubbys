@@ -18,9 +18,9 @@
         <div class="col-xs-12 col-sm-4">
           <select class="form-select">
             <option selected>카테고리 전체</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+              <c:forEach items="${ qnaCategory }" var="qc">
+                <option value="${ qc.qnaCategoryId }">${ qc.qnaCategoryName }</option>
+              </c:forEach>
           </select>
         </div>
         <div class="col-xs-12 col-sm-4">
@@ -55,7 +55,7 @@
                     <p class="text-muted mb-0">${ qna.userNickname }</p>
                   </div>
                   <div class="board-meta d-flex align-self-center">
-                    <div class="board-meta-like">
+                    <div class="board-meta-like" id="qnaList-like-area">
                       <i class="bi bi-heart"></i>
                       <p class="mb-0">${ qna.qnaLike }</p>
                     </div>
@@ -111,3 +111,37 @@
     </div>
 
 <jsp:include page="common/footer.jsp" />
+
+<script>
+/* const loginUserId = ${loginUser.userNo};
+const qnaList = ${ qnaList };
+
+qnaListLikeCheck();
+
+function qnaListLikeCheck(){
+	
+	$.ajax({
+		url : "qnaListLikeCheck",
+		data : {"qnaList" : qnaList},
+		type : "POST",
+		dataType : "JSON",
+		
+		success : function(uList){
+			
+			$.each(uList, function(index, item){
+				
+				if(item.userNo == loginUserId){
+					$("#qnaList-like-area").html("");
+					var i = $("<i>").addClass("bi bi-heart-fill");
+					var p = $("<p>").addClass("mb-0").text(qnaLike);
+					
+					$("#qnaList-like-area").append(i).append(p);
+				}
+			});
+		},
+		error : function(e){
+			console.log(e);
+		}
+	});
+} */
+</script>

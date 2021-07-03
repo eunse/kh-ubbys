@@ -76,4 +76,97 @@ public class AppsDAO extends BoardDAO {
 		}
 		return appsList;
 	}
+
+	/**
+	 * apps 게시글 상세 조회 DAO
+	 * @param conn
+	 * @param postId
+	 * @return apps
+	 * @throws Exception
+	 */
+	public Apps selectApps(Connection conn, int postId) throws Exception {
+		Apps apps = null;
+		String sql = prop.getProperty("selectApps");
+		String sqlForTag = prop.getProperty("selectAppsTags");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, postId);
+			rs = pstmt.executeQuery();
+			apps = new Apps();
+			apps.setTagList(new ArrayList<Tag>());
+			if(rs.next()) {
+				apps.setPostId(rs.getInt("apps_post_id"));
+				apps.setCategoryName(rs.getString("apps_category_name"));
+				apps.setPostTitle(rs.getString("apps_title"));
+				apps.setPostContent(rs.getString("apps_content"));
+				apps.setPostDate(rs.getDate("apps_date"));
+				apps.setAppsIconUrl(rs.getString("apps_icon"));
+				apps.setPostLike(rs.getInt("apps_like"));
+				apps.setUserName(rs.getString("user_nickname"));
+				apps.setAppsLink(rs.getString("apps_url"));
+				apps.setTagList(new ArrayList<Tag>());
+			}
+			pstmtForTag = conn.prepareStatement(sqlForTag);
+			pstmtForTag.setInt(1, rs.getInt("apps_post_Id"));
+			rsForTag = pstmtForTag.executeQuery();
+			while(rsForTag.next()) {
+				Tag tag = new Tag();
+				tag.setTagId(rsForTag.getInt("apps_tag_id"));
+				tag.setTagName(rsForTag.getString("apps_tag_name"));
+				apps.getTagList().add(tag);
+			}
+		} finally {
+			close(rsForTag);
+			close(pstmtForTag);
+			close(rs);
+			close(pstmt);
+		}
+		return apps;
+	}
+	
+	/**
+	 * apps 게시물 삽입 DAO
+	 * @param conn
+	 * @param apps
+	 * @return result
+	 * @throws Exception
+	 */
+	public int insertApps(Connection conn, Apps apps) throws Exception {
+		int result = 0;
+		String sql = prop.getProperty("insertApps");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, apps.getPostTitle());
+			pstmt.setString(2, apps.getPostContent());
+			pstmt.setString(3, apps.getAppsIconUrl());
+			pstmt.setString(4, apps.getAppsLink());
+			pstmt.setInt(5, apps.getCategoryId());
+			pstmt.setInt(6, apps.getUserNo());
+			
+			result = pstmt.executeUpdate();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	/**
+	 * apps 태그 삽입 DAO
+	 * @param conn
+	 * @param postId
+	 * @return result
+	 * @throws Exception
+	 */
+	public int insertTags(Connection conn, Apps apps, int postId) throws Exception {
+		int result = 0;
+		String sql = prop.getProperty("insertTags");
+		try {
+			pstmt = conn.prepareStatement(sql);
+		} finally {
+			
+		}
+		return result;
+	}
+
+
 }
