@@ -5,13 +5,13 @@
 <jsp:include page="../common/header.jsp" />
     <div class="container">
       <h1 class="h3 mt-5">apps</h1>
-      <form class="needs-validation" id="apps-write" method="post" enctype="multipart/form-data" role="form" action="new" novalidate>
+      <form class="needs-validation" id="apps-write" method="post" enctype="multipart/form-data" role="form" action="write" novalidate>
         <div class="row align-items-end">
           <div class="col-md-4">
             <div class="mb-3">
               <label for="userImage" class="form-label">앱 아이콘</label>
               <div id="uploadImagePreview" class="apps-image__preview rounded-3 mb-3" style="background-image: url(https://via.placeholder.com/150.png?text=No+Image);"></div>
-              <input accept="image/*" class="form-control" type="file" id="userImageInput" onchange="loadFile(event)" required>
+              <input accept="image/*" class="form-control" type="file" id="userImageInput" onchange="loadFile(event)" name="appIcon" required>
               <div class="invalid-feedback">
                 이미지를 등록해주세요.
               </div>
@@ -36,7 +36,7 @@
           <div class="col-md-4">
             <div class="mb-3">
               <label class="form-label" for="inputTitle">앱 이름</label>
-              <input type="email" class="form-control" id="inputTitle" name="inputTitle" placeholder="앱 이름을 입력해주세요" required>
+              <input type="text" class="form-control" id="inputTitle" name="inputTitle" placeholder="앱 이름을 입력해주세요" required>
               <div class="invalid-feedback">
                 앱/프로그램의 이름을 입력해주세요.
               </div>
@@ -63,10 +63,10 @@
           <div class="tag-list my-3 h5">
             
           </div>
-          <input type="hidden" id="tagString" name="tagString" value=""/> <!-- submit 동작을 할 때 .tag-list 내부의 span 요소들의 text를 ,를 구분자로 해 value에 삽입하는 과정 필요 -->
+          <input type="hidden" id="tagString" name="tagString" value=""/>
         </div>
       <hr>
-      <button href="#" class="btn btn-outline-primary">작성 완료</button>
+      <button class="btn btn-outline-primary" type="submit">작성 완료</button>
       </form>
     </div>
     <script src="${contextPath}/resources/js/common_form_validation.js" defer></script>
