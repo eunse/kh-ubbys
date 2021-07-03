@@ -1,5 +1,7 @@
 package com.ubbys.board.vo;
 
+import java.util.List;
+
 public class Apps extends Board {
 	private String appsIconUrl;
 	private String appsLink;
