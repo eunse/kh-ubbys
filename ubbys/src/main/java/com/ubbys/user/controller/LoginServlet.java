@@ -39,6 +39,7 @@ public class LoginServlet extends HttpServlet {
 			if(loginUser != null) {
 				session.setAttribute("loginUser", loginUser);
 				session.setMaxInactiveInterval(3600);
+
 				
 				Cookie cookie = new Cookie("saveId", userEmail);
 				if(saveId != null) {
@@ -56,6 +57,9 @@ public class LoginServlet extends HttpServlet {
 				} else {
 					response.sendRedirect(request.getContextPath() + "/signup/add");
 				} // 무슨 이유에서인지 조건을 반대로 바꾸면 일반 로그인 후 redirect가 되지 않음.. 				
+				
+				
+				
 			} else {
 				session.setAttribute("modalTitle", "로그인 실패");
 				session.setAttribute("modalText", "아이디 또는 비밀번호가 일치하지 않습니다.");
