@@ -69,7 +69,7 @@ $("#inputPw").on("input", function () {
        $("#checkPwd1").text("유효한 비밀번호 입니다.").css("color", "green");
         checkObj.inputPW = true;
     } else {
-        $("#checkPwd1").text("비밀번호는 영어, 숫자, 특수문자 포함 6~20자리로 입력하세요.").css("color", "red");
+        $("#checkPwd1").text("비밀번호는 영어, 숫자 10자리로 입력하세요.").css("color", "red");
         checkObj.inputPW = false;
     }
 });
@@ -82,8 +82,8 @@ $("#inputPw, #inputPwConfirm").on("input", function () {
     const pwd2 = $("#inputPwConfirm").val();
 
     if (pwd1.trim() == "" && pwd2.trim() == "") { // 둘다 비어있을 때
-        $("#checkPwd2").html("&nbsp;");
         $("#checkPwd1").html("&nbsp;");
+        $("#checkPwd2").html("&nbsp;");
         checkObj.inputPwConfirm = false;
     } else if (pwd1 == pwd2) {
         $("#checkPwd2").text("비밀번호 일치").css("color", "green");

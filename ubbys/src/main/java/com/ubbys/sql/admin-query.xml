@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+	<!-- 로그인 -->
+	<entry key="adminLogin">
+	SELECT user_id, user_email, user_nickname, user_regdate, user_is_admin, 
+		       user_pic, user_link, user_interest, user_introduce 
+	FROM "USER"
+	LEFT JOIN user_info USING(user_id) 
+	WHERE user_email =? AND user_pw = ? AND user_is_admin = 'Y'
+	</entry>
+
+
+
+
+</properties>
