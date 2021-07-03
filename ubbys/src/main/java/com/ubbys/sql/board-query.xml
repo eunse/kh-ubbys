@@ -29,9 +29,18 @@
 		SELECT seq_apps_no.NEXTVAL FROM DUAL
 	</entry>
 	<entry key="insertApps">
-		INSERT INTO apps VALUES(seq_apps_no.NEXTVAL, ?, ?, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, ?)
+		INSERT INTO apps VALUES(?, ?, ?, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, ?)
 	</entry>
 	<entry key="insertTags">
 		INSERT INTO tags VALUES(seq_tag_no.NEXTVAL, ?)
+	</entry>
+	<entry key="selectTagList">
+		SELECT * FROM tags
+	</entry>
+	<entry key="isExistTag">
+		SELECT * FROM tags WHERE apps_tag_name = ?
+	</entry>
+	<entry key="insertAppsTags">
+		INSERT INTO apps_tags VALUES(?, ?)
 	</entry>
 </properties>
