@@ -5,7 +5,7 @@
 
     <div class="container d-flex justify-content-center">
       <form class="form-signin text-center col-4" method="POST" action="${contextPath}/login">
-        <img class="mb-4" src="img/logo.png" alt="" height="57">
+        <img class="mb-4" src="${contextPath}/resources/img/logo.png" alt="" height="57">
         <h1 class="h3 mb-3 fw-normal">로그인</h1>
 
         <div class="form-floating">
