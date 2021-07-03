@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebFilter(filterName = "loginFilter", urlPatterns = {"/user/myPage", "/user/update", "/user/changePwd", "/user/delete", "/qnaView"})
+@WebFilter(filterName = "loginFilter", urlPatterns = {"/user/myPage", "/user/update", "/user/changePwd", "/user/delete", "/qnaView", "/apps/write"})
 public class LoginFilter implements Filter {
 
 	public void destroy() {
