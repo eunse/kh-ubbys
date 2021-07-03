@@ -5,6 +5,8 @@ public class Apps extends Board {
 	private String appsLink;
 	private String tagString;
 	private String appsSummary;
+	private List<Tag> tagList;
+	private String[] tagArr;
 	
 	public Apps() {
 		super();
@@ -30,7 +32,7 @@ public class Apps extends Board {
 		return tagString;
 	}
 
-	public void setTagList(String tagString) {
+	public void setTagString(String tagString) {
 		this.tagString = tagString;
 	}
 
@@ -40,6 +42,23 @@ public class Apps extends Board {
 
 	public void setAppsSummary(String appsSummary) {
 		this.appsSummary = appsSummary;
+	}
+	
+	public List<Tag> getTagList() {
+		return tagList;
+	}
+
+	public void setTagList(List<Tag> tagList) {
+		this.tagList = tagList;
+	}
+
+
+	public String[] getTagArr() {
+		return tagArr;
+	}
+
+	public void setTagArr(String[] tagArr) {
+		this.tagArr = tagArr;
 	}
 
 	@Override
