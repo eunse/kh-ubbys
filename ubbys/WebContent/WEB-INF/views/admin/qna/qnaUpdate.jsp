@@ -5,14 +5,14 @@
 
     <div class="container">
       <h1 class="h3 mt-5">QNA 글수정</h1>
-      <form class="form-update" id="form-update" action="${ contextPath }/qnaUpdate?cp=${ param.cp }" method="POST">
+      <form class="form-update" id="form-update" action="${ contextPath }/admin/qnaUpdate?cp=${ param.cp }" method="POST">
         <div class="row align-items-end">
           <div class="col-md-2">
             <div class="mb-3">
               <label class="form-label" for="selectCategory">카테고리</label>
               <select class="form-select" id="selectCategory" name="qnaCategoryId">
                 <c:forEach items="${ qnaCategory }" var="qc">
-                  <option value="${ qc.qnaCategoryId }">${ qc.qnaCategoryName }</option>
+                  <option value="${ qc.qnaCategoryId }" ${ qc.qnaCategoryName eq qna.qnaCategoryName ? 'selected' : '' }>${ qc.qnaCategoryName }</option>
                 </c:forEach>
               </select>
             </div>

@@ -102,23 +102,7 @@ public class QnaService {
 		
 		return result;
 	}
-	
-	/** qna 게시글 삭제 Service
-	 * @param qnaPostId
-	 * @return result
-	 * @throws Exception
-	 */
-	public int deleteQna(int qnaPostId) throws Exception {
-		
-		Connection conn = getConnection();
-		
-		int result = dao.deleteQna(conn, qnaPostId);
-		
-		if(result>0) commit(conn);
-		else		 rollback(conn);
-		
-		return result;
-	}
+
 	
 	/** qna 게시글에 좋아요를 누른 userList Service
 	 * @param qnaPostId

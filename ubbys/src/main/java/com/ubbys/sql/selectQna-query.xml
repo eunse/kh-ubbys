@@ -31,41 +31,5 @@
 		ORDER BY qna_post_id DESC
 	</entry>
 	
-	
-	<!-- qna 제목이 일치하는 글 수 카운트 SQL -->
-	<entry key="getTListCount">
-		SELECT COUNT(*) FROM qna_list WHERE qna_status='Y' AND qna_title LIKE ?
-	</entry>
-	
-	<!-- qna 제목 조건 검색 SQL -->
-	<entry key="searchQnaTitle">
-		SELECT * FROM
-		    (SELECT ROWNUM RN, R.* FROM
-		        (SELECT * FROM qna_list
-			        WHERE qna_status='Y'
-			        AND qna_title LIKE ?
-			        ORDER BY qna_post_id DESC
-			    ) R
-			)
-		WHERE RN BETWEEN ? AND ?
-	</entry>
-	
-	<!-- qna 작성자가 일치하는 글 수 카운트 SQL -->
-	<entry key="getNListCount">
-		SELECT COUNT(*) FROM qna_list WHERE qna_status='Y' AND user_nickname LIKE ?
-	</entry>
-	
-	<!-- qna 작성자 조건 검색 SQL -->
-	<entry key="searchQnaAuthor">
-		SELECT * FROM
-		    (SELECT ROWNUM RN, R.* FROM
-		        (SELECT * FROM qna_list
-			        WHERE qna_status='Y'
-			        AND user_nickname LIKE ?
-			        ORDER BY qna_post_id DESC
-			    ) R
-			)
-		WHERE RN BETWEEN ? AND ?
-	</entry>
 
 </properties>

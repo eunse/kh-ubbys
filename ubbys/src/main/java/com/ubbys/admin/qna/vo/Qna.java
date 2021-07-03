@@ -19,6 +19,8 @@ public class Qna {
 	private String searchQnaCondText;
 	private String searchOrder;
 	
+	private int qnaCategoryId;
+	
 	public Qna() {}
 
 	public int getQnaPostId() {
@@ -115,6 +117,14 @@ public class Qna {
 
 	public void setSearchOrder(String searchOrder) {
 		this.searchOrder = searchOrder;
+	}
+
+	public int getQnaCategoryId() {
+		return qnaCategoryId;
+	}
+
+	public void setQnaCategoryId(int qnaCategoryId) {
+		this.qnaCategoryId = qnaCategoryId;
 	}
 
 	@Override

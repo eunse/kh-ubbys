@@ -32,10 +32,8 @@
 
       <a href="qnaList?cp=${ param.cp }" class="btn btn-outline-primary">이전 목록</a>
 
-      <c:if test="${ qna.userId == sessionScope.loginUser.userNo }">
         <button class="btn btn-primary float-end" id="qnqUpdateBtn" onclick="fnRequest('UpdateForm');">수정</button>
-        <button class="btn btn-danger float-end me-2" id="qnqDeleteBtn">삭제</button>
-      </c:if>
+        <button class="btn btn-danger float-end me-2" id="qnqDeleteBtn" onclick="fnRequest('Delete');">삭제</button>
     </div>
 <jsp:include page="../footer.jsp" />
 

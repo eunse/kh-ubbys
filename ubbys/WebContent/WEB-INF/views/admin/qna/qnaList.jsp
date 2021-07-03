@@ -7,17 +7,7 @@
       <h2>QNA</h2>
       
       <form action="${contextPath }/admin/qna/qnaList" name="formQna" method="POST" >
-        <div class="input-group mb-3 w-50" style="float: left;">
-          <select class="form-select" id="searchQnaCond" name="searchQnaCond">
-            <option>검색 조건</option>
-            <option value="qnaCategoryName">카테고리</option>
-            <option value="qnaTitle">제목</option>
-            <option value="userNickname">닉네임</option>
-          </select>
-          <input type="text" name="searchQnaCondText" value="${qna.searchQnaCondText }" class="form-control" placeholder="카테고리,제목,닉네임으로 검색하세요">
-          <button class="btn btn-outline-secondary" type="submit" id="searchQna" name="searchQna">검색</button>
-        </div>
-        <div class="input-group mb-3 w-50" style="width: 150px !important; float: right;">
+      	<div class="input-group mb-3 w-50" style="width: 150px !important; float: left; margin-right: 15px;">
 
         
           <select class="form-select" id="searchOrder" name="searchOrder">
@@ -25,6 +15,25 @@
             <option value="qnaLike">좋아요 내림차순</option>
             <option value="qnaDate">날짜 내림차순</option>
           </select>
+        </div>
+        
+      	<div class="input-group mb-3" style="width: 250px !important; float: left; margin-right: 15px;">
+          <select name="searchQnaCategory" class="form-select">
+            <option selected>카테고리 전체</option>
+              <c:forEach items="${ qnaCategory }" var="qc">
+                <option value="${ qc.qnaCategoryId }">${ qc.qnaCategoryName }</option>
+              </c:forEach>
+          </select>
+        </div>
+        
+        <div class="input-group mb-3 w-50" style="float: right;">
+          <select class="form-select" id="searchQnaCond" name="searchQnaCond">
+            <option>검색 조건</option>
+            <option value="qnaTitle">제목</option>
+            <option value="userNickname">닉네임</option>
+          </select>
+          <input type="text" name="searchQnaCondText" value="${qna.searchQnaCondText }" class="form-control" placeholder="제목,닉네임으로 검색하세요">
+          <button class="btn btn-outline-secondary" type="submit" id="searchQna" name="searchQna">검색</button>
         </div>
         
         <div class="container my-5">
@@ -55,18 +64,18 @@
           				<tr>
           					<td>${qna.qnaPostId }</td>
           					<td>${qna.qnaCategoryName }</td>
-          					<td>${qna.qnaTitle }</td>
+          					<td>
+          						<a href="qnaView?no=${ qna.qnaPostId }&cp=${ pagination.currentPage }">${qna.qnaTitle }</a>
+          					</td>
           					<td>${qna.qnaLike }</td>
           					<td>${qna.qnaReplyCount }</td>
           					<td>${qna.userNickname }</td>
           					<td>${qna.qnaDate }</td>
           					<td>
-          						<a href="${contextPath }/admin/qna/qnaUpdateForm" class="btn btn-primary btn-sm">수정</a>
-                				<a href="#" class="btn btn-danger btn-sm">삭제</a>
+          						<a href="${contextPath }/admin/qnaUpdateForm?qnaPostId=${qna.qnaPostId}&cp=${param.cp}" class="btn btn-primary btn-sm">수정</a>
+                				<a href="${contextPath }/admin/qnaDelete?qnaPostId=${qna.qnaPostId}&cp=${param.cp}" class="btn btn-danger btn-sm">삭제</a>
           					</td>
           				</tr>
-          				
-          				
           			</c:forEach>
           		</c:otherwise>
           	</c:choose>
@@ -83,7 +92,7 @@
     <%---------------------- Pagination start----------------------%>
 	<%-- 페이징 처리 시 주소를 쉽게 작성할 수 있도록 필요한 변수를 미리 선언 --%>
 	
-	<c:set var="pageURL" value="list?"/>
+	<c:set var="pageURL" value="qnaList?"/>
     <c:set var="prev" value="${ pageURL }cp=${ pagination.prevPage }"/>
     <c:set var="next" value="${ pageURL }cp=${ pagination.nextPage }"/>
 

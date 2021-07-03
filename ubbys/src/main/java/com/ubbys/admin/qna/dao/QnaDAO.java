@@ -1,6 +1,6 @@
 package com.ubbys.admin.qna.dao;
 
-import static com.ubbys.common.JDBCTemplate.*;
+import static com.ubbys.common.JDBCTemplate.close;
 
 import java.io.FileInputStream;
 import java.sql.Connection;
@@ -11,9 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import com.ubbys.board.vo.Qna;
-import com.ubbys.board.vo.QnaCategory;
-import com.ubbys.board.vo.QnaPagination;
+import com.ubbys.admin.qna.vo.Qna;
+import com.ubbys.admin.qna.vo.QnaCategory;
 
 public class QnaDAO {
 	
@@ -24,7 +23,7 @@ public class QnaDAO {
 	
 	public QnaDAO() {
 		
-		String filePath = QnaDAO.class.getResource("/com/ubbys/sql/selectAdminQna-query.xml").getPath();
+		String filePath = QnaDAO.class.getResource("/com/ubbys/sql/qnaAdmin-query.xml").getPath();
 		
 		try {
 			prop = new Properties();
@@ -115,6 +114,79 @@ public class QnaDAO {
 		}
 		return result;
 	}
-
-
+	
+	/** qna 게시글 수정 DAO
+	 * @param conn
+	 * @param qna
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updateQna(Connection conn, Qna qna) throws Exception {
+		
+		int result = 0;
+		
+		String sql = prop.getProperty("updateQna");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, qna.getQnaTitle());
+			pstmt.setString(2, qna.getQnaContent());
+			pstmt.setInt(3, qna.getQnaCategoryId());
+			pstmt.setInt(4, qna.getQnaPostId());
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	/** qna 게시글 삭제 DAO
+	 * @param conn
+	 * @param qna
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updateQnaStatus(Connection conn, Qna qna) throws Exception {
+		
+		int result = 0;
+		
+		String sql = prop.getProperty("updateQnaStatus");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "N");
+			pstmt.setInt(2, qna.getQnaPostId());
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	/** 좋아요 수 반환 DAO
+	 * @param conn
+	 * @param qnaPostId
+	 * @return result
+	 * @throws Exception
+	 */
+	public int qnaLikeCount(Connection conn, int qnaPostId) throws Exception {
+		
+		int result = 0;
+		String sql = prop.getProperty("qnaLikeCount");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, qnaPostId);
+			rs = pstmt.executeQuery();
+			if(rs.next()) result = rs.getInt(1);
+			
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return result;
+	}
 }

@@ -26,6 +26,13 @@
 		WHERE qna_post_id=?
 	</entry>
 	
+	<!-- qna 게시글 삭제 SQL -->
+	<entry key="updateQnaStatus">
+		UPDATE qna SET
+		    qna_status=?
+		WHERE qna_post_id=?
+	</entry>
+	
 	<!-- qna 게시글에 좋아요를 누른 userList 반환 SQL -->
 	<entry key="selectUserList">
 		SELECT user_id FROM qna_likes WHERE qna_post_id=?
