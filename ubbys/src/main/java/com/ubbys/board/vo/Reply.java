@@ -1,7 +1,7 @@
 package com.ubbys.board.vo;
 
 
-public class QnaReply {
+public class Reply {
 	
 	private int replyId;			// 댓글 번호
 	private String replyContent;	// 댓글 내용
@@ -11,7 +11,7 @@ public class QnaReply {
 	private int qnaPostId;			// 해당 댓글의 본문 번호
 	private int userId;				// 작성자 번호
 	
-	public QnaReply() {}
+	public Reply() {}
 
 	public int getReplyId() {
 		return replyId;

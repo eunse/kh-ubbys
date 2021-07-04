@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
 import com.oreilly.servlet.MultipartRequest;
 import com.ubbys.board.service.AppsService;
 import com.ubbys.board.vo.Apps;
@@ -73,6 +74,12 @@ public class AppsServlet extends HttpServlet {
 				view = request.getRequestDispatcher(path);
 				view.forward(request, response);
 			}
+			// 임시 태그 목록 조회 (ajax)
+			else if(command.equals("tag")) {
+				List<Tag> tagList = service.selectTagList();
+				Gson gson = new Gson();
+				gson.toJson(tagList, response.getWriter());
+			}
 		} catch(Exception err) {
 			err.printStackTrace();
 		}
@@ -87,39 +94,40 @@ public class AppsServlet extends HttpServlet {
 			// 새로 작성 
 			if(command.equals("write")) {
 				HttpSession session = request.getSession();
-				
 				int maxSize = 2097152;
 				String root = session.getServletContext().getRealPath("/");
-				String filePath = "upload/";
+				String filePath = "/upload/";
 				MultipartRequest mpRequest = new MultipartRequest(request, root+filePath, maxSize, "UTF-8", new UbbysRenamePolicy());
-				
+				System.out.println(session.getAttribute("loginUser"));
 				int userNo = ((User)session.getAttribute("loginUser")).getUserNo();
-				String postTitle = mpRequest.getParameter("postTitle");
-				String postContent = mpRequest.getParameter("postContent");
-				int categoryId = Integer.parseInt(mpRequest.getParameter("categoryId"));
+				String postTitle = mpRequest.getParameter("inputTitle");
+				String postContent = mpRequest.getParameter("inputContent");
+				int categoryId = Integer.parseInt(mpRequest.getParameter("selectCategory"));
+				String appsLink = mpRequest.getParameter("inputDownloadUrl");
 				String tagString = mpRequest.getParameter("tagString");
-				
 				Apps apps = new Apps();
 				apps.setPostTitle(postTitle);
 				apps.setPostContent(postContent);
 				apps.setCategoryId(categoryId);
 				apps.setUserNo(userNo);
+				apps.setAppsLink(appsLink);
+				String[] tagArr = tagString.split(",");
+				apps.setTagArr(tagArr);
+				List<Tag> tagList = service.insertTagInAppsTags(tagArr);
+				apps.setTagList(tagList);
 				
-				Enumeration<String> images = mpRequest.getFileNames();			
+				Enumeration<String> images = mpRequest.getFileNames();
 				if(images.hasMoreElements()) {
 					String name = images.nextElement();
 					if(mpRequest.getFilesystemName(name) != null) { 
-						apps.setAppsIconUrl(filePath);
+						apps.setAppsIconUrl(request.getContextPath() + filePath + mpRequest.getFilesystemName(name));
 					}
 				}
-				
-				
-				int result = service.insertTags(apps);
-				
-				
-				result = service.insertApps(apps);
-				if(result > 0) {
-					path = request.getContextPath() + "/apps/view?no=" + result + "&cp=1";
+				int postId = service.insertApps(apps, tagList);
+				if(postId > 0) {
+					path = request.getContextPath() + "/apps/view?no=" + postId + "&cp=1";
+					System.out.println("6");
+
 				} else {
 					modalText = "게시글 등록에 실패했습니다. 관리자에게 문의해주세요.";
 					modalTitle = "게시글 등록 실패";

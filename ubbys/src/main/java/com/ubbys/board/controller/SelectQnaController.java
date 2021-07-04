@@ -11,10 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ubbys.board.service.QnaService;
+import com.ubbys.board.service.ReplyService;
 import com.ubbys.board.service.SelectQnaService;
 import com.ubbys.board.vo.Qna;
 import com.ubbys.board.vo.QnaCategory;
 import com.ubbys.board.vo.QnaPagination;
+import com.ubbys.board.vo.Reply;
 import com.ubbys.user.vo.User;
 
 @WebServlet({"/qnaList", "/qnaView", "/qnaMyPage"})
@@ -55,6 +57,9 @@ public class SelectQnaController extends HttpServlet {
 				Qna qna = service.selectQna(qnaPostId);
 				
 				request.setAttribute("qna", qna);
+				
+				List<Reply> rList = new ReplyService().selectList(qnaPostId);
+				request.setAttribute("rList", rList);
 				
 				view = request.getRequestDispatcher("/WEB-INF/views/qnaView.jsp");
 				view.forward(request, response);

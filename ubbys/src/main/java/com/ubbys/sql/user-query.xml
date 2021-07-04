@@ -38,4 +38,8 @@
 		DELETE FROM "USER" 
 		WHERE user_id = ? AND user_pw = ?
 	</entry>
+	<entry key="userInfo">
+		SELECT user_pic FROM user_info
+		WHERE user_id = ?
+	</entry>
 </properties>

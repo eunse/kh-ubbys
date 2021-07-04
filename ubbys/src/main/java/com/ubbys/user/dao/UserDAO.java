@@ -254,4 +254,34 @@ public class UserDAO {
 
 		return result;
 	}
+
+	/** 마이페이지 유저 정보 DAO
+	 * @param conn
+	 * @param userNo
+	 * @return
+	 * @throws Exception
+	 */
+	public User userInfo(Connection conn, int userNo) throws Exception{
+		User user = null;
+		String sql = prop.getProperty("userInfo");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userNo);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				user = new User();
+				user.setUserPic(rs.getString("USER_PIC"));
+			}
+			
+			
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return user;
+	}
 }
