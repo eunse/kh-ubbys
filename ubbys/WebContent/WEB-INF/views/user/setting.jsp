@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <jsp:include page="../common/header.jsp" />
 <div class="container">
-  <form method="POST" action="${contextPath}/user/update"
+  <form enctype="multipart/form-data" method="POST" action="${contextPath}/user/update"
     class="form-signup col-4 mx-auto needs-validation" novalidate>
     <h1 class="h3 mb-3 fw-normal">내 정보 수정</h1>
     <div class="form-floating mb-3">
