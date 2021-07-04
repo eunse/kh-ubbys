@@ -12,112 +12,56 @@
         <div class="col-md-8 list-apps">
           <h2 class="mb-3">recently_added_apps</h2>
           <div class="row">
-            <div class="col-6 mb-3">
-              <div class="card">
+            <c:choose>
+            <c:when test="${empty appsList}">
+              <p>등록된 게시물이 없습니다.</p>
+            </c:when>
+            <c:otherwise>       
+             <c:forEach items="${appsList}" var="apps">
+              <div class="col-md-6 mb-3">
+               <div class="card">
                 <div class="card-body">
-                  <img src="https://via.placeholder.com/150" width="45" height="45" class="rounded-3 float-start me-2" alt="">
-                  <button class="btn btn-outline-secondary btn-like float-end"><i class="bi bi-heart"></i> 123</button>
-                  <h5 class="card-title">이곳에 제목입력</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">카테고리</h6>
-            
-                  <p class="card-text">본문의 일부가 들어갑니다. FHD 해상도의 환경에서 두 줄을 출력할 수 있는 정도로 조정합니다.
-                  </p>
-                  <a href="#" class="card-hashtag">#해시태그</a>
-                  <a href="#" class="card-hashtag">#해시태그</a>
-                </div>
-              </div>
-            </div>
-            <div class="col-6 mb-3">
-              <div class="card">
-                <div class="card-body">
-                  <img src="https://via.placeholder.com/150" width="45" height="45" class="rounded-3 float-start me-2" alt="">
-                  <button class="btn btn-outline-secondary btn-like float-end"><i class="bi bi-heart"></i> 123</button>
-                  <h5 class="card-title">이곳에 제목입력</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">카테고리</h6>
-            
-                  <p class="card-text">본문의 일부가 들어갑니다. FHD 해상도의 환경에서 두 줄을 출력할 수 있는 정도로 조정합니다.
-                  </p>
-                  <a href="#" class="card-hashtag">#해시태그</a>
-                  <a href="#" class="card-hashtag">#해시태그</a>
-                </div>
-              </div>
-            </div>
-            <div class="col-6 mb-3">
-              <div class="card">
-                <div class="card-body">
-                  <img src="https://via.placeholder.com/150" width="45" height="45" class="rounded-3 float-start me-2" alt="">
-                  <button class="btn btn-outline-secondary btn-like float-end"><i class="bi bi-heart"></i> 123</button>
-                  <h5 class="card-title">이곳에 제목입력</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">카테고리</h6>
-            
-                  <p class="card-text">본문의 일부가 들어갑니다. FHD 해상도의 환경에서 두 줄을 출력할 수 있는 정도로 조정합니다.
-                  </p>
-                  <a href="#" class="card-hashtag">#해시태그</a>
-                  <a href="#" class="card-hashtag">#해시태그</a>
-                </div>
-              </div>
-            </div>
-            <div class="col-6 mb-3">
-              <div class="card">
-                <div class="card-body">
-                  <img src="https://via.placeholder.com/150" width="45" height="45" class="rounded-3 float-start me-2" alt="">
-                  <button class="btn btn-outline-secondary btn-like float-end"><i class="bi bi-heart"></i> 123</button>
-                  <h5 class="card-title">이곳에 제목입력</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">카테고리</h6>
+                  <img src="${apps.appsIconUrl}" width="45" height="45" class="rounded-3 float-start me-2" alt="">
+                  <span class="btn btn-outline-secondary btn-like float-end"><i class="bi bi-heart"></i> ${apps.postLike}</span>
                   
-                  <p class="card-text">본문의 일부가 들어갑니다. FHD 해상도의 환경에서 두 줄을 출력할 수 있는 정도로 조정합니다.
-                  </p>
-                  <a href="#" class="card-hashtag">#해시태그</a>
-                  <a href="#" class="card-hashtag">#해시태그</a>
+                  <h5 class="card-title"><a href="view?no=${apps.postId}&cp=${pagination.currentPage}" class="apps-link stretched-link">${apps.postTitle}</a></h5>
+                  <h6 class="card-subtitle mb-2 text-muted">${apps.categoryName}</h6>
+            
+                  <p class="card-text">${apps.appsSummary}</p>
                 </div>
+                <div class="card-footer">
+                  <c:forEach items="${apps.tagList}" var="tag">
+                    <a href="#" class="card-hashtag">#${tag.tagName}</a>
+                  </c:forEach> 
+                </div>
+               </div>
               </div>
-            </div>
+             </c:forEach>
+            </c:otherwise> 
+           </c:choose>
           </div>
           <a href="#" class="btn btn-outline-primary">더 보기</a>
         </div>
         <div class="col-md-4 list-sm-qna">
           <h2 class="mb-3">recently_added_qna</h2>
           <div class="list-group mb-3">
-            <a href="#" class="list-group-item list-group-item-action">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">List group item heading</h5>
-              </div>
-              <small>{작성자명}</small>
-              <small><i class="bi bi-heart"></i> 123</small>
-              <small><i class="bi bi-chat"></i> 123</small>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">List group item heading</h5>
-              </div>
-              <small>{작성자명}</small>
-              <small><i class="bi bi-heart"></i> 123</small>
-              <small><i class="bi bi-chat"></i> 123</small>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">List group item heading</h5>
-              </div>
-              <small>{작성자명}</small>
-              <small><i class="bi bi-heart"></i> 123</small>
-              <small><i class="bi bi-chat"></i> 123</small>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">List group item heading</h5>
-              </div>
-              <small>{작성자명}</small>
-              <small><i class="bi bi-heart"></i> 123</small>
-              <small><i class="bi bi-chat"></i> 123</small>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">List group item heading</h5>
-              </div>
-              <small>{작성자명}</small>
-              <small><i class="bi bi-heart"></i> 123</small>
-              <small><i class="bi bi-chat"></i> 123</small>
-            </a>
+           <c:choose>
+            <c:when test="${empty qnaList}">
+              <p>등록된 게시물이 없습니다.</p>
+            </c:when>
+            <c:otherwise>
+             <c:forEach items="${ qnaList }" var="qna">
+              <a href="#" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">${ qna.qnaTitle }</h5>
+                </div>
+                <small>${ qna.userNickname }</small>
+                <small><i class="bi bi-heart"></i> ${ qna.qnaLike }</small>
+                <small><i class="bi bi-chat"></i> ${ qna.qnaReplyCount }</small>
+              </a>
+             </c:forEach>
+            </c:otherwise>
+           </c:choose>
           </div>
           <a href="#" class="btn btn-outline-primary">더 보기</a>
         </div>
