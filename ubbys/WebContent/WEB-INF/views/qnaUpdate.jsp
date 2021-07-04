@@ -47,4 +47,4 @@
   });
 </script>
 
-<script src="${contextPath}/resources/js/qnaUpdate_fn.js"></script>
+<script src="${contextPath}/resources/js/qnaWrite_check.js"></script> 
