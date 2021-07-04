@@ -24,7 +24,7 @@
                   <img src="${apps.appsIconUrl}" width="45" height="45" class="rounded-3 float-start me-2" alt="">
                   <span class="btn btn-outline-secondary btn-like float-end"><i class="bi bi-heart"></i> ${apps.postLike}</span>
                   
-                  <h5 class="card-title"><a href="view?no=${apps.postId}&cp=${pagination.currentPage}" class="apps-link stretched-link">${apps.postTitle}</a></h5>
+                  <h5 class="card-title"><a href="apps/view?no=${apps.postId}&cp=${pagination.currentPage}" class="apps-link stretched-link">${apps.postTitle}</a></h5>
                   <h6 class="card-subtitle mb-2 text-muted">${apps.categoryName}</h6>
             
                   <p class="card-text">${apps.appsSummary}</p>
@@ -40,7 +40,7 @@
             </c:otherwise> 
            </c:choose>
           </div>
-          <a href="#" class="btn btn-outline-primary">더 보기</a>
+          <a href="apps/list" class="btn btn-outline-primary">더 보기</a>
         </div>
         <div class="col-md-4 list-sm-qna">
           <h2 class="mb-3">recently_added_qna</h2>
@@ -51,7 +51,7 @@
             </c:when>
             <c:otherwise>
              <c:forEach items="${ qnaList }" var="qna">
-              <a href="#" class="list-group-item list-group-item-action">
+              <a href="qnaView?no=${ qna.qnaPostId }" class="list-group-item list-group-item-action">
                 <div class="d-flex w-100 justify-content-between">
                   <h5 class="mb-1">${ qna.qnaTitle }</h5>
                 </div>
@@ -63,7 +63,7 @@
             </c:otherwise>
            </c:choose>
           </div>
-          <a href="#" class="btn btn-outline-primary">더 보기</a>
+          <a href="qnaList" class="btn btn-outline-primary">더 보기</a>
         </div>
       </div>
     </div>
