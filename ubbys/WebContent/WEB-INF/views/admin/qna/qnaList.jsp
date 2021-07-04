@@ -84,7 +84,7 @@
         </div>
       </form>
       
-             <c:if test="${!empty loginUser }">
+        <c:if test="${!empty loginUser }">
          <a href="${contextPath }/admin/qnaWrite?cp=${pagination.currentPage}" class="btn btn-primary float-end">작성하기</a>
         </c:if>
       

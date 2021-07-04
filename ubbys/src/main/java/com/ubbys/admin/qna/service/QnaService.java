@@ -47,6 +47,7 @@ public class QnaService {
 		if(qnaPostId>0) {
 			qna.setQnaPostId(qnaPostId);
 			qna.setQnaContent(replaceParameter(qna.getQnaContent()));
+			qna.setQnaTitle(replaceParameter(qna.getQnaTitle()));
 			qna.setQnaContent(qna.getQnaContent().replace("\r\n", "<br>"));
 			
 			result = dao.insertQna(conn, qna);
