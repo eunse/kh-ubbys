@@ -40,7 +40,7 @@ public class MyPageServlet extends HttpServlet {
 			
 			request.setAttribute("pagination", pagination); // Service, DAO 부분 추가필요
 			request.setAttribute("myQnaList", myQnaList);
-			
+			System.out.println("내질문"+myQnaList);
 
 			// 내 apps 목록 관련
 //			SelectAppsService appsService = new SelectAppsService();
@@ -51,6 +51,7 @@ public class MyPageServlet extends HttpServlet {
 			ReplyService replyService = new ReplyService();
 			List<Reply> myReplyList = replyService.selectMyReplyList(userNo);
 			request.setAttribute("myReplyList", myReplyList);
+			System.out.println("내댓글"+myReplyList);
 			
 			// 프로필 관련
 			UserService userService = new UserService();

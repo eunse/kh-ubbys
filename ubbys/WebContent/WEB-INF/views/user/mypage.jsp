@@ -108,7 +108,7 @@
         <h2 class="h4 mb-3">내가 쓴 댓글</h2>
         <div class="list-group">
           <c:forEach items="${myReplyList }" var="myReplyList">
-            <a href="#" class="list-group-item list-group-item-action">
+            <a href="qnaView?no=${myReplyList.qnaPostId }&cp=${pagination.currentPage}" class="list-group-item list-group-item-action">
               <p class="mb-1">${myReplyList.replyContent }</p> 
               <small class="text-muted">${myReplyList.replyDate }</small>
             </a>
