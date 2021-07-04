@@ -10,7 +10,7 @@
     <div class="row d-flex justify-content-center">
       <div class="col-2">
         <c:choose>
-          <c:when test="${ empty sessionScope.loginUser.userPic }">
+          <c:when test="${ empty user.userPic }">
             <img class="user-image rounded-circle mb-3 mx-auto d-block"
               id="userImagePreview"
               src="https://via.placeholder.com/150" />
@@ -18,7 +18,7 @@
           <c:otherwise>
             <img class="user-image rounded-circle mb-3 mx-auto d-block"
               id="userImage"
-              src="${contextPath}/${sessionScope.loginUser.userPic}">
+              src="${contextPath}/${user.userPic}">
           </c:otherwise>
         </c:choose>
         <h2 class="h4 text-center">${sessionScope.loginUser.userNickname}</h2>
@@ -99,27 +99,23 @@
 
   </div>
   <div class="col-12">
-
     <c:choose>
-      <c:when test="${empty qnaReply }">
+      <c:when test="${empty myReplyList }">
         <h2 class="h4 mb-3">게시글이 존재하지 않습니다.</h2>
       </c:when>
+      <%-- 내 댓글 목록 --%>
       <c:otherwise>
         <h2 class="h4 mb-3">내가 쓴 댓글</h2>
         <div class="list-group">
-          <c:forEach items="${qnaReply }" var="qnaReply">
+          <c:forEach items="${myReplyList }" var="myReplyList">
             <a href="#" class="list-group-item list-group-item-action">
-              <p class="mb-1">${qnaReply.replyContent }내댓글 내용</p> <small
-              class="text-muted">${qnaReply.replyDate }0000년 00월
-                00일</small>
+              <p class="mb-1">${myReplyList.replyContent }</p> 
+              <small class="text-muted">${myReplyList.replyDate }</small>
             </a>
           </c:forEach>
         </div>
       </c:otherwise>
     </c:choose>
-
   </div>
 </div>
-
-<a href="${contextPath}/qnaReplyList" class="nav-link px-2 link-dark">qnaReply</a>
 <jsp:include page="../common/footer.jsp" />

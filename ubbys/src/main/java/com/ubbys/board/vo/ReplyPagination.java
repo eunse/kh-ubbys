@@ -1,6 +1,6 @@
 package com.ubbys.board.vo;
 
-public class QnaReplyPagination {
+public class ReplyPagination {
 	
 	private int currentPage;  // 현재 페이스
 	private int listCount;	  // 게시글 전체 수
@@ -15,7 +15,7 @@ public class QnaReplyPagination {
 	private int prevPage;	  // 이전 페이지 번호 목록 중 끝 번호
 	private int nextPage;	  // 다음 페이지 번호 목록 중 시작 번호
 	
-	public QnaReplyPagination(int currentPage, int listCount) {
+	public ReplyPagination(int currentPage, int listCount) {
 		this.currentPage = currentPage;
 		this.listCount = listCount;
 		mkPage();

@@ -1,14 +1,16 @@
-package com.ubbys.board.service;
+package com.ubbys.admin.qna.service;
 
-import static com.ubbys.common.JDBCTemplate.*;
+import static com.ubbys.common.JDBCTemplate.close;
+import static com.ubbys.common.JDBCTemplate.commit;
+import static com.ubbys.common.JDBCTemplate.getConnection;
+import static com.ubbys.common.JDBCTemplate.rollback;
+
 import java.sql.Connection;
 import java.util.List;
 
-import com.ubbys.board.dao.QnaDAO;
-import com.ubbys.board.vo.Qna;
-import com.ubbys.board.vo.QnaCategory;
-import com.ubbys.board.vo.QnaPagination;
-import com.ubbys.user.vo.User;
+import com.ubbys.admin.qna.dao.QnaDAO;
+import com.ubbys.admin.qna.vo.Qna;
+import com.ubbys.admin.qna.vo.QnaCategory;
 
 public class QnaService {
 	
@@ -79,7 +81,7 @@ public class QnaService {
 		}
 		return result;
 	}
-
+	
 	/** qna 수정 Service
 	 * @param qna
 	 * @return result
@@ -103,64 +105,25 @@ public class QnaService {
 		return result;
 	}
 
-	
-	/** qna 게시글에 좋아요를 누른 userList Service
-	 * @param qnaPostId
-	 * @return uList
-	 * @throws Exception
-	 */
-	public List<User> selectUserList(int qnaPostId) throws Exception {
-		
-		Connection conn = getConnection();
-		
-		List<User> uList = dao.selectUserList(conn, qnaPostId);
-		
-		close(conn);
-		
-		return uList;
-	}
-	
-	
-	/** qna 게시글 좋아요 처리 Service
-	 * @param qnaPostId
-	 * @param userId
+	/** qna 삭제 Service
+	 * @param qna
 	 * @return result
 	 * @throws Exception
 	 */
-	public int qnaLike(int qnaPostId, int userId) throws Exception {
+	public int updateQnaStatus(Qna qna) throws Exception {
 		
 		Connection conn = getConnection();
 		
-		// DB에 qnaPostId, userId 가 일치하는 좋아요 행이 있는지 확인하기
-		int result = dao.qnaLikeCheck(conn, qnaPostId, userId);
+		int result = dao.updateQnaStatus(conn, qna);
 		
-		if(result==0) { // 해당하는 행이 없는 경우이므로 좋아요 insert 후 해당 포스트에 좋아요 수 증가처리
-			
-			result = dao.qnaLike(conn, qnaPostId, userId);
-			if(result>0) {
-				result = dao.qnaLikeIncrease(conn, qnaPostId);
-				if(result>0) commit(conn);
-				else		 rollback(conn);
-				result = 1;
-			} else {
-				rollback(conn);
-			}
-			
-		} else { //좋아요 delete 후 해당 포스트에 좋아요 수 감소처리
-			
-			result = dao.qnaLikeCancel(conn, qnaPostId, userId);
-			if(result>0) {
-				result = dao.qnaLikeDecrease(conn, qnaPostId);
-				if(result>0) commit(conn);
-				else		 rollback(conn);
-				result = 0;
-			} else {
-				rollback(conn);
-			}
-		}
+		if(result>0) commit(conn);
+		else		 rollback(conn);
+		
+		close(conn);
+		
 		return result;
 	}
-
+	
 	/** 좋아요 수 반환 Service
 	 * @param qnaPostId
 	 * @return result
@@ -176,5 +139,4 @@ public class QnaService {
 		
 		return result;
 	}
-
 }

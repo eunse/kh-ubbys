@@ -1,6 +1,9 @@
 package com.ubbys.user.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.oreilly.servlet.MultipartRequest;
+import com.ubbys.common.MyFileRenamePolicy;
 import com.ubbys.user.service.UserService;
 import com.ubbys.user.vo.User;
 
@@ -25,20 +30,50 @@ public class UserUpdateServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		User loginUser = (User)session.getAttribute("loginUser");
 		int userNo = loginUser.getUserNo();
-		
-		String userNickName = request.getParameter("inputName");
-		String userPic = request.getParameter("userImageInput"); 
-		String userLink = request.getParameter("inputWebsite"); 
-		String userInterest = request.getParameter("inputInterest"); 
-		String userIntroduce = request.getParameter("inputIntroduce"); 
-		
 		User user = new User();
-		user.setUserNo(userNo);
+		
+		
+		int maxSize = 1024 * 1024 * 20;
+		String root = session.getServletContext().getRealPath("/");
+		String filePath = "resources/img/userPic/";
+		
+//		String userPicPath = filePath+userPic;
+//		System.out.println(userPicPath);
+		
+		MultipartRequest mpRequest = new MultipartRequest(request, root + filePath, maxSize, "UTF-8", new MyFileRenamePolicy());
+		
+		
+		List<User> picList = new ArrayList<User>();
+		
+		Enumeration<String> images = mpRequest.getFileNames();
+		
+		while(images.hasMoreElements()) {
+			String name = images.nextElement();
+			System.out.println("name : " + name); //확인
+			
+			if(mpRequest.getFilesystemName(name) != null) {
+				String picName = mpRequest.getFilesystemName(name);
+				
+				user.setUserPic(filePath+picName);
+				user.setUserNo(userNo);
+				
+				picList.add(user);
+			}
+		}
+		String userNickName = mpRequest.getParameter("inputName");
+		String userPic = mpRequest.getParameter("userImageInput"); 
+		String userLink = mpRequest.getParameter("inputWebsite"); 
+		String userInterest = mpRequest.getParameter("inputInterest"); 
+		String userIntroduce = mpRequest.getParameter("inputIntroduce"); 
+		
+//		user.setUserNo(userNo);
 		user.setUserNickname(userNickName);
-		user.setUserPic(userPic);
+//		user.setUserPic(userPic); //
 		user.setUserLink(userLink);
 		user.setUserInterest(userInterest);
 		user.setUserIntroduce(userIntroduce);
+		
+//		request.setAttribute("user", user);
 		
 		
 		try {
