@@ -37,7 +37,7 @@
 <body>
   <main>
     <div class="flex-shrink-0 p-3 bg-white" style="width: 280px;">
-      <a href="#" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+      <a href="${contextPath}" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
         <img src="${contextPath}/resources/img/logo.png" height="24" />
         <span class="fs-5 fw-semibold"> ADMIN</span>
       </a>

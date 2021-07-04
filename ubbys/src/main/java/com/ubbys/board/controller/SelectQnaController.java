@@ -19,7 +19,7 @@ import com.ubbys.board.vo.QnaPagination;
 import com.ubbys.board.vo.Reply;
 import com.ubbys.user.vo.User;
 
-@WebServlet({"/qnaList", "/qnaView", "/qnaSearch"})
+@WebServlet({"/qnaList", "/qnaView", "/qnaMyPage"})
 public class SelectQnaController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -34,8 +34,7 @@ public class SelectQnaController extends HttpServlet {
 			
 			int cp = request.getParameter("cp")==null? 1 : Integer.parseInt(request.getParameter("cp"));
 			
-			// qna 목록 조회 Controller
-			if(command.equals("List")){
+			if(command.equals("List")){ // qna 목록 조회
 				
 				QnaPagination pagination = service.getPagination(cp);
 				
@@ -51,8 +50,7 @@ public class SelectQnaController extends HttpServlet {
 				view.forward(request, response);
 			}
 			
-			// qna 상세 조회 Controller
-			else if(command.equals("View")) {
+			else if(command.equals("View")) { // qna 상세 조회
 				
 				int qnaPostId = Integer.parseInt(request.getParameter("no"));
 				
@@ -65,42 +63,6 @@ public class SelectQnaController extends HttpServlet {
 				
 				view = request.getRequestDispatcher("/WEB-INF/views/qnaView.jsp");
 				view.forward(request, response);
-			}
-			
-			// qna 검색 Controller
-			else if(command.equals("Search")) {
-				
-				String searchCondition = request.getParameter("searchCondition");
-				
-				// qna 제목 조건 검색
-				if(searchCondition.equals("T")) {
-					String qnaTitle = request.getParameter("searchValue");
-					
-					QnaPagination pagination = service.getSearchTPage(cp, qnaTitle);
-					List<Qna> qnaList = service.searchQnaTitle(pagination, qnaTitle);
-					List<QnaCategory> qnaCategory = new QnaService().selectQnaCategory();
-					
-					request.setAttribute("pagination", pagination);
-					request.setAttribute("qnaList", qnaList);
-					request.setAttribute("qnaCategory", qnaCategory);
-					
-					request.getRequestDispatcher("/WEB-INF/views/qnaList.jsp").forward(request, response);
-				}
-				
-				// qna 작성자 조건 검색
-				else if(searchCondition.equals("N")) {
-					String userNickname = request.getParameter("searchValue");
-					
-					QnaPagination pagination = service.getSearchNPage(cp, userNickname);
-					List<Qna> qnaList = service.searchQnaAuthor(pagination, userNickname);
-					List<QnaCategory> qnaCategory = new QnaService().selectQnaCategory();
-					
-					request.setAttribute("pagination", pagination);
-					request.setAttribute("qnaList", qnaList);
-					request.setAttribute("qnaCategory", qnaCategory);
-					
-					request.getRequestDispatcher("/WEB-INF/views/qnaList.jsp").forward(request, response);
-				}
 			}
 			
 		} catch (Exception e) {

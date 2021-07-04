@@ -1,6 +1,6 @@
-package com.ubbys.board.dao;
+package com.ubbys.admin.qna.dao;
 
-import static com.ubbys.common.JDBCTemplate.*;
+import static com.ubbys.common.JDBCTemplate.close;
 
 import java.io.FileInputStream;
 import java.sql.Connection;
@@ -11,10 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import com.ubbys.board.vo.Qna;
-import com.ubbys.board.vo.QnaCategory;
-import com.ubbys.board.vo.QnaPagination;
-import com.ubbys.user.vo.User;
+import com.ubbys.admin.qna.vo.Qna;
+import com.ubbys.admin.qna.vo.QnaCategory;
 
 public class QnaDAO {
 	
@@ -25,7 +23,7 @@ public class QnaDAO {
 	
 	public QnaDAO() {
 		
-		String filePath = QnaDAO.class.getResource("/com/ubbys/sql/qna-query.xml").getPath();
+		String filePath = QnaDAO.class.getResource("/com/ubbys/sql/qnaAdmin-query.xml").getPath();
 		
 		try {
 			prop = new Properties();
@@ -116,7 +114,7 @@ public class QnaDAO {
 		}
 		return result;
 	}
-
+	
 	/** qna 게시글 수정 DAO
 	 * @param conn
 	 * @param qna
@@ -144,144 +142,31 @@ public class QnaDAO {
 		return result;
 	}
 	
+	/** qna 게시글 삭제 DAO
+	 * @param conn
+	 * @param qna
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updateQnaStatus(Connection conn, Qna qna) throws Exception {
+		
+		int result = 0;
+		
+		String sql = prop.getProperty("updateQnaStatus");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "N");
+			pstmt.setInt(2, qna.getQnaPostId());
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
 	
-	/** qna 게시글에 좋아요를 누른 userList DAO
-	 * @param conn
-	 * @param qnaPostId
-	 * @return uList
-	 * @throws Exception
-	 */
-	public List<User> selectUserList(Connection conn, int qnaPostId) throws Exception {
-		
-		List<User> uList = new ArrayList<User>();
-		String sql = prop.getProperty("selectUserList");
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, qnaPostId);
-			rs = pstmt.executeQuery();
-			while(rs.next()) {
-				User u = new User();
-				u.setUserNo(rs.getInt("USER_ID"));
-				uList.add(u);
-			}
-		} finally {
-			close(rs);
-			close(pstmt);
-		}
-		return uList;
-	}
-
-	
-	/** qna 좋아요 확인용 DAO
-	 * @param qnaPostId
-	 * @param userId
-	 * @return result
-	 * @throws Exception
-	 */
-	public int qnaLikeCheck(Connection conn, int qnaPostId, int userId) throws Exception {
-		
-		int result = 0;
-		String sql = prop.getProperty("qnaLikeCheck");
-		
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, qnaPostId);
-			pstmt.setInt(2, userId);
-			rs = pstmt.executeQuery();
-			if(rs.next()) result = 1;
-			
-		} finally {
-			close(rs);
-			close(pstmt);
-		}
-		return result;
-	}
-	/** qna 게시글 좋아요 삽입 DAO
-	 * @param qnaPostId
-	 * @param userId
-	 * @return result
-	 * @throws Exception
-	 */
-	public int qnaLike(Connection conn, int qnaPostId, int userId) throws Exception {
-		
-		int result = 0;
-		String sql = prop.getProperty("qnaLike");
-		
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, qnaPostId);
-			pstmt.setInt(2, userId);
-			result = pstmt.executeUpdate();
-			
-		} finally {
-			close(pstmt);
-		}
-		return result;
-	}
-	/** qna 게시글 좋아요 수 증가 DAO
-	 * @param conn
-	 * @param qnaPostId
-	 * @return result
-	 * @throws Exception
-	 */
-	public int qnaLikeIncrease(Connection conn, int qnaPostId) throws Exception {
-		
-		int result = 0;
-		String sql = prop.getProperty("qnaLikeIncrease");
-		
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, qnaPostId);
-			result = pstmt.executeUpdate();
-			
-		} finally {
-			close(pstmt);
-		}
-		return result;
-	}
-	/** qna 게시글 좋아요 취소(삭제) DAO
-	 * @param conn
-	 * @param qnaPostId
-	 * @param userId
-	 * @return result
-	 * @throws Exception
-	 */
-	public int qnaLikeCancel(Connection conn, int qnaPostId, int userId) throws Exception {
-		
-		int result = 0;
-		String sql = prop.getProperty("qnaLikeCancel");
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, qnaPostId);
-			pstmt.setInt(2, userId);
-			result = pstmt.executeUpdate();
-			
-		} finally {
-			close(pstmt);
-		}
-		return result;
-	}
-	/** qna 게시글 종아요 수 감소 DAO
-	 * @param conn
-	 * @param qnaPostId
-	 * @return result
-	 * @throws Exception
-	 */
-	public int qnaLikeDecrease(Connection conn, int qnaPostId) throws Exception {
-		
-		int result = 0;
-		String sql = prop.getProperty("qnaLikeDecrease");
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, qnaPostId);
-			result = pstmt.executeUpdate();
-			
-		} finally {
-			close(pstmt);
-		}
-		return result;
-	}
-
 	/** 좋아요 수 반환 DAO
 	 * @param conn
 	 * @param qnaPostId
@@ -304,5 +189,4 @@ public class QnaDAO {
 		}
 		return result;
 	}
-
 }

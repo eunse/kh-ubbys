@@ -7,7 +7,7 @@
 		SELECT * FROM qna_categories
 	</entry>
 	
-	<!-- qna 다음 게시글 번호 얻어오기 SQL -->
+	<!-- na 다음 게시글 번호 얻어오기 SQL -->
 	<entry key="nextQnaPostId">
 		SELECT seq_qna_no.NEXTVAL FROM DUAL
 	</entry>
@@ -59,12 +59,6 @@
 	<!-- qna 좋아요 수 SQL -->
 	<entry key="qnaLikeCount">
 		SELECT qna_like FROM qna WHERE qna_post_id=?
-	</entry>
-	
-	
-	<!-- qna 게시글 삭제 SQL -->
-	<entry key="deleteQna">
-		UPDATE qna SET qna_status='N' WHERE qna_post_id=?
 	</entry>
 
 </properties>
