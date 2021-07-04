@@ -103,6 +103,22 @@ public class QnaService {
 		return result;
 	}
 	
+	
+	/** qna 게시글 삭제 접근권한 확인 Service
+	 * @param qnaPostId
+	 * @return userId
+	 * @throws Exception
+	 */
+	public int postingUserCheck(int qnaPostId) throws Exception {
+		
+		Connection conn = getConnection();
+		
+		int userId = dao.postingUserCheck(conn, qnaPostId);
+		
+		close(conn);
+		
+		return userId;
+	}
 	/** qna 게시글 삭제 Service
 	 * @param qnaPostId
 	 * @return result
@@ -192,5 +208,7 @@ public class QnaService {
 		
 		return result;
 	}
+
+
 
 }

@@ -39,7 +39,7 @@ public class QnaController extends HttpServlet {
 				List<QnaCategory> qnaCategory = service.selectQnaCategory();
 				request.setAttribute("qnaCategory", qnaCategory);
 				
-				view = request.getRequestDispatcher("/WEB-INF/views/qnaWrite.jsp");
+				view = request.getRequestDispatcher("/WEB-INF/views/board/qnaWrite.jsp");
 				view.forward(request, response);
 			}
 			
@@ -89,7 +89,7 @@ public class QnaController extends HttpServlet {
 				request.setAttribute("qnaCategory", qnaCategory);
 				request.setAttribute("qna", qna);
 				
-				request.getRequestDispatcher("/WEB-INF/views/qnaUpdate.jsp").forward(request, response);
+				request.getRequestDispatcher("/WEB-INF/views/board/qnaUpdate.jsp").forward(request, response);
 			}
 			
 			// qna 글 수정 Controller
@@ -132,7 +132,7 @@ public class QnaController extends HttpServlet {
 				int qnaPostId = Integer.parseInt(request.getParameter("qnaPostId"));
 				
 				HttpSession session = request.getSession();
-				session.setAttribute("modalTitle", "글 삭제 성공");
+				session.setAttribute("modalTitle", "글 삭제 알림");
 				session.setAttribute("modalText", "QNA 글을 삭제하시겠습니까?");
 				session.setAttribute("modalButtonText", "삭제하기");
 				session.setAttribute("modalButtonLink", "qnaDelete?no="+qnaPostId+"&cp="+cp);
@@ -144,23 +144,38 @@ public class QnaController extends HttpServlet {
 				
 				int qnaPostId = Integer.parseInt(request.getParameter("no"));
 				
-				int result = service.deleteQna(qnaPostId);
-				HttpSession session = request.getSession();
-				if(result>0) {
-					session.setAttribute("modalTitle", "글 삭제 성공");
-					session.setAttribute("modalText", "QNA 글이 삭제되었습니다.");
-					session.setAttribute("modalButtonText", "목록으로");
-					session.setAttribute("modalButtonLink", "qnaList?cp="+cp);
-					path = "qnaList";
+				// 글 삭제 페이지에 접근한 사용자가 해당 글의 작성자인지 확인
+				int loginUserId = ((User)request.getSession().getAttribute("loginUser")).getUserNo();
+				int userId = service.postingUserCheck(qnaPostId);
+				
+				if(loginUserId == userId) {
+					
+					int result = service.deleteQna(qnaPostId);
+					HttpSession session = request.getSession();
+					if(result>0) {
+						session.setAttribute("modalTitle", "글 삭제 성공");
+						session.setAttribute("modalText", "QNA 글이 삭제되었습니다.");
+						session.setAttribute("modalButtonText", "목록으로");
+						session.setAttribute("modalButtonLink", "qnaList?cp="+cp);
+						path = "qnaList";
+						
+					} else {
+						session.setAttribute("modalTitle", "글 삭제 실패");
+						session.setAttribute("modalText", "QNA 글 삭제에 실패했습니다.");
+						session.setAttribute("modalButtonText", "목록으로");
+						session.setAttribute("modalButtonLink", request.getContextPath()+"/qnaList?cp="+cp);
+						path = request.getHeader("referer");
+					}
+					response.sendRedirect(path);
 					
 				} else {
-					session.setAttribute("modalTitle", "글 삭제 실패");
-					session.setAttribute("modalText", "QNA 글 삭제에 실패했습니다.");
-					session.setAttribute("modalButtonText", "목록으로");
-					session.setAttribute("modalButtonLink", request.getContextPath()+"/qnaList?cp="+cp);
-					path = request.getHeader("referer");
+					HttpSession session = request.getSession();
+					session.setAttribute("modalTitle", "접근 경고");
+					session.setAttribute("modalText", "올바른 경로로 접근해주세요.");
+					session.setAttribute("modalButtonText", "확인");
+					session.setAttribute("modalButtonLink", request.getContextPath()+"/main");
+					response.sendRedirect(request.getContextPath()+"/main");
 				}
-				response.sendRedirect(path);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -62,6 +62,10 @@
 	</entry>
 	
 	
+	<!-- qna 게시글 삭제 접근권한 확인 SQL -->
+	<entry key="postingUserCheck">
+		SELECT user_id FROM qna_detail WHERE qna_post_id=?
+	</entry>
 	<!-- qna 게시글 삭제 SQL -->
 	<entry key="deleteQna">
 		UPDATE qna SET qna_status='N' WHERE qna_post_id=?

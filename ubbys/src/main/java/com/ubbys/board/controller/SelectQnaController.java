@@ -45,7 +45,7 @@ public class SelectQnaController extends HttpServlet {
 				request.setAttribute("qnaList", qnaList);
 				request.setAttribute("qnaCategory", qnaCategory);
 				
-				view = request.getRequestDispatcher("/WEB-INF/views/qnaList.jsp");
+				view = request.getRequestDispatcher("/WEB-INF/views/board/qnaList.jsp");
 				view.forward(request, response);
 			}
 			
@@ -58,7 +58,7 @@ public class SelectQnaController extends HttpServlet {
 				
 				request.setAttribute("qna", qna);
 				
-				view = request.getRequestDispatcher("/WEB-INF/views/qnaView.jsp");
+				view = request.getRequestDispatcher("/WEB-INF/views/board/qnaView.jsp");
 				view.forward(request, response);
 			}
 			
@@ -66,36 +66,32 @@ public class SelectQnaController extends HttpServlet {
 			else if(command.equals("Search")) {
 				
 				String searchCondition = request.getParameter("searchCondition");
+				QnaPagination pagination = null;
+				List<Qna> qnaList = null;
 				
 				// qna 제목 조건 검색
 				if(searchCondition.equals("T")) {
 					String qnaTitle = request.getParameter("searchValue");
 					
-					QnaPagination pagination = service.getSearchTPage(cp, qnaTitle);
-					List<Qna> qnaList = service.searchQnaTitle(pagination, qnaTitle);
-					List<QnaCategory> qnaCategory = new QnaService().selectQnaCategory();
-					
-					request.setAttribute("pagination", pagination);
-					request.setAttribute("qnaList", qnaList);
-					request.setAttribute("qnaCategory", qnaCategory);
-					
-					request.getRequestDispatcher("/WEB-INF/views/qnaList.jsp").forward(request, response);
+					pagination = service.getSearchTPage(cp, qnaTitle);
+					qnaList = service.searchQnaTitle(pagination, qnaTitle);
 				}
 				
 				// qna 작성자 조건 검색
 				else if(searchCondition.equals("N")) {
 					String userNickname = request.getParameter("searchValue");
 					
-					QnaPagination pagination = service.getSearchNPage(cp, userNickname);
-					List<Qna> qnaList = service.searchQnaAuthor(pagination, userNickname);
-					List<QnaCategory> qnaCategory = new QnaService().selectQnaCategory();
-					
-					request.setAttribute("pagination", pagination);
-					request.setAttribute("qnaList", qnaList);
-					request.setAttribute("qnaCategory", qnaCategory);
-					
-					request.getRequestDispatcher("/WEB-INF/views/qnaList.jsp").forward(request, response);
+					pagination = service.getSearchNPage(cp, userNickname);
+					qnaList = service.searchQnaAuthor(pagination, userNickname);
 				}
+				
+				List<QnaCategory> qnaCategory = new QnaService().selectQnaCategory();
+				
+				request.setAttribute("pagination", pagination);
+				request.setAttribute("qnaList", qnaList);
+				request.setAttribute("qnaCategory", qnaCategory);
+				
+				request.getRequestDispatcher("/WEB-INF/views/board/qnaList.jsp").forward(request, response);
 			}
 			
 		} catch (Exception e) {

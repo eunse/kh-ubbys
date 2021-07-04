@@ -144,6 +144,30 @@ public class QnaDAO {
 		return result;
 	}
 	
+	
+	/** qna 게시글 삭제 접근권한 확인 Service
+	 * @param conn
+	 * @param qnaPostId
+	 * @return useId
+	 * @throws Exception
+	 */
+	public int postingUserCheck(Connection conn, int qnaPostId) throws Exception {
+		
+		int userId = 0;
+		String sql = prop.getProperty("postingUserCheck");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, qnaPostId);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) userId = rs.getInt("USER_ID");
+			
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return userId;
+	}
 	/** qna 게시글 삭제 DAO
 	 * @param conn
 	 * @param qnaPostId
@@ -164,6 +188,7 @@ public class QnaDAO {
 		}
 		return result;
 	}
+	
 	
 	/** qna 게시글에 좋아요를 누른 userList DAO
 	 * @param conn
@@ -324,5 +349,6 @@ public class QnaDAO {
 		}
 		return result;
 	}
+
 
 }
