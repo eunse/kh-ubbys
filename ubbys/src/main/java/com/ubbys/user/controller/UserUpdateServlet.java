@@ -32,10 +32,14 @@ public class UserUpdateServlet extends HttpServlet {
 		String userInterest = request.getParameter("inputInterest"); 
 		String userIntroduce = request.getParameter("inputIntroduce"); 
 		
+		String root = session.getServletContext().getRealPath("/");
+		String filePath = "resources/img/userPic/";
+		String userPicPath = filePath+userPic;
+		System.out.println(userPicPath);
 		User user = new User();
 		user.setUserNo(userNo);
 		user.setUserNickname(userNickName);
-		user.setUserPic(userPic);
+		user.setUserPic(userPicPath);
 		user.setUserLink(userLink);
 		user.setUserInterest(userInterest);
 		user.setUserIntroduce(userIntroduce);
@@ -54,7 +58,7 @@ public class UserUpdateServlet extends HttpServlet {
 				alertMsg = "회원정보 수정이 완료되었습니다.";
 //				System.out.println(alertTitle);
 				loginUser.setUserNickname(userNickName);
-				loginUser.setUserPic(userPic);
+				loginUser.setUserPic(userPicPath);
 				loginUser.setUserLink(userLink);
 				loginUser.setUserInterest(userInterest);
 				loginUser.setUserIntroduce(userIntroduce);

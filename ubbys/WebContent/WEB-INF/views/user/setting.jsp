@@ -29,7 +29,7 @@
           src="https://via.placeholder.com/150" /> 
       </c:when>
       <c:otherwise>
-        <img class="user-image rounded-circle mb-3 mx-auto d-block" src="${contextPath}/${sessionScope.loginUser.userPic}" height="150">
+        <img class="user-image mb-3 mx-auto d-block" src="${contextPath}/${sessionScope.loginUser.userPic}" height="150">
       </c:otherwise>
       </c:choose>
         <input accept="image/*" class="form-control" type="file" id="userImageInput" 

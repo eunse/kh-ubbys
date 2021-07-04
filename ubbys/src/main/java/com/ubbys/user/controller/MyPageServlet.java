@@ -11,9 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.ubbys.board.service.ReplyService;
 import com.ubbys.board.service.SelectQnaService;
 import com.ubbys.board.vo.Qna;
 import com.ubbys.board.vo.QnaPagination;
+import com.ubbys.board.vo.Reply;
 import com.ubbys.user.vo.User;
 
 @WebServlet("/user")
@@ -41,19 +43,13 @@ public class MyPageServlet extends HttpServlet {
 
 			// 내 apps 목록 관련
 //			SelectAppsService appsService = new SelectAppsService();
-//			int cp = request.getParameter("cp")==null? 1 : Integer.parseInt(request.getParameter("cp"));
-//			AppsPagination appPagination = service.getAppsPagination(cp);
-//			List<Qna> myAppsList = service.selectMyAppsList(userNo);
-//			request.setAttribute("appPagination", appPagination);
+//			List<Apps> myAppsList = service.selectMyAppsList(userNo);
 //			request.setAttribute("myAppsList", myAppsList);
 			
 			// 내 댓글 목록 관련
-//			SelectQnaReplyService replyService = new SelectQnaReplyService();
-//			int cp = request.getParameter("cp")==null? 1 : Integer.parseInt(request.getParameter("cp"));
-//			QnaReplyPagination qnaReplyPagination = service.getQnaReplyPagination(cp);
-//			List<Qna> myReplyList = service.selectMyReplyList(userNo);
-//			request.setAttribute("qnaReplyPagination", qnaReplyPagination);
-//			request.setAttribute("myReplyList", myReplyList);
+			ReplyService replyService = new ReplyService();
+			List<Reply> myReplyList = replyService.selectMyReplyList(userNo);
+			request.setAttribute("myReplyList", myReplyList);
 			
 			view = request.getRequestDispatcher("/WEB-INF/views/user/mypage.jsp");
 			view.forward(request, response);
