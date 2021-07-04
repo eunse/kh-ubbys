@@ -25,7 +25,11 @@ import com.ubbys.board.vo.Pagination;
 import com.ubbys.board.vo.Tag;
 import com.ubbys.common.UbbysRenamePolicy;
 import com.ubbys.user.vo.User;
-
+/**
+ * 
+ * @author 백승훈
+ *
+ */
 @WebServlet("/apps/*")
 public class AppsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -80,6 +84,36 @@ public class AppsServlet extends HttpServlet {
 				Gson gson = new Gson();
 				gson.toJson(tagList, response.getWriter());
 			}
+			
+			// 삭제
+			else if(command.equals("delete")) {
+				HttpSession session = request.getSession();
+				int postId = Integer.parseInt(request.getParameter("no"));
+				User loginUserNo = ((User)session.getAttribute("loginUser"));
+				if(loginUserNo != null) {
+					int userNo = ((User)session.getAttribute("loginUser")).getUserNo();
+					int author = service.selectAuthor(postId);
+					System.out.println("userNo:" + userNo);
+					System.out.println("author:" + author);
+					if(userNo != author) {
+						path = request.getContextPath();
+					} else {
+						int result = service.deleteApps(postId, userNo);
+						if(result > 0) { 
+							path = request.getContextPath() + "/apps/list?cp=" + cp;
+						} else {
+							modalText = "게시글 삭제에 실패했습니다. 관리자에게 문의해주세요.";
+							modalTitle = "게시글 삭제 실패";
+							session.setAttribute("modalTitle", modalTitle);
+							session.setAttribute("modalText", modalText);
+							path = request.getHeader("referer");
+						}
+					}
+				} else {
+					path = request.getHeader("referer");
+				}
+				response.sendRedirect(path);
+			}
 		} catch(Exception err) {
 			err.printStackTrace();
 		}
@@ -98,7 +132,6 @@ public class AppsServlet extends HttpServlet {
 				String root = session.getServletContext().getRealPath("/");
 				String filePath = "/upload/";
 				MultipartRequest mpRequest = new MultipartRequest(request, root+filePath, maxSize, "UTF-8", new UbbysRenamePolicy());
-				System.out.println(session.getAttribute("loginUser"));
 				int userNo = ((User)session.getAttribute("loginUser")).getUserNo();
 				String postTitle = mpRequest.getParameter("inputTitle");
 				String postContent = mpRequest.getParameter("inputContent");
@@ -126,7 +159,6 @@ public class AppsServlet extends HttpServlet {
 				int postId = service.insertApps(apps, tagList);
 				if(postId > 0) {
 					path = request.getContextPath() + "/apps/view?no=" + postId + "&cp=1";
-					System.out.println("6");
 
 				} else {
 					modalText = "게시글 등록에 실패했습니다. 관리자에게 문의해주세요.";
@@ -138,6 +170,7 @@ public class AppsServlet extends HttpServlet {
 				session.setAttribute("modalText", modalText);
 				response.sendRedirect(path);
 			}
+
 		} catch(Exception err) {
 			err.printStackTrace();
 		}
