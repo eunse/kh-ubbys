@@ -16,6 +16,7 @@ import com.ubbys.board.service.SelectQnaService;
 import com.ubbys.board.vo.Qna;
 import com.ubbys.board.vo.QnaPagination;
 import com.ubbys.board.vo.Reply;
+import com.ubbys.user.service.UserService;
 import com.ubbys.user.vo.User;
 
 @WebServlet("/user")
@@ -50,6 +51,13 @@ public class MyPageServlet extends HttpServlet {
 			ReplyService replyService = new ReplyService();
 			List<Reply> myReplyList = replyService.selectMyReplyList(userNo);
 			request.setAttribute("myReplyList", myReplyList);
+			
+			// 프로필 관련
+			UserService userService = new UserService();
+			userNo = ((User) session.getAttribute("loginUser")).getUserNo();
+			User user = userService.userInfo(userNo);
+			request.setAttribute("user", user);
+			
 			
 			view = request.getRequestDispatcher("/WEB-INF/views/user/mypage.jsp");
 			view.forward(request, response);

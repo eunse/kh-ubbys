@@ -135,4 +135,16 @@ public class UserService {
 		
 		return result;
 	}
+
+	/** 마이페이지 유저 정보 Service
+	 * @param userNo
+	 * @return user
+	 * @throws Exception
+	 */
+	public User userInfo(int userNo) throws Exception{
+		Connection conn = getConnection();
+		User user = dao.userInfo(conn, userNo);
+		close(conn);		
+		return user;
+	}
 }

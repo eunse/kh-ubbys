@@ -10,7 +10,7 @@
     <div class="row d-flex justify-content-center">
       <div class="col-2">
         <c:choose>
-          <c:when test="${ empty sessionScope.loginUser.userPic }">
+          <c:when test="${ empty user.userPic }">
             <img class="user-image rounded-circle mb-3 mx-auto d-block"
               id="userImagePreview"
               src="https://via.placeholder.com/150" />
@@ -18,7 +18,7 @@
           <c:otherwise>
             <img class="user-image rounded-circle mb-3 mx-auto d-block"
               id="userImage"
-              src="${contextPath}/${sessionScope.loginUser.userPic}">
+              src="${contextPath}/${user.userPic}">
           </c:otherwise>
         </c:choose>
         <h2 class="h4 text-center">${sessionScope.loginUser.userNickname}</h2>
