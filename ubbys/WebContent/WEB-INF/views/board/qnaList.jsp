@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<jsp:include page="common/header.jsp" />
+<jsp:include page="../common/header.jsp" />
     <div class="container">
       <c:if test="${ !empty loginUser }">
         <a href="${ contextPath }/qnaWrite?cp=${ pagination.currentPage }" class="btn btn-primary float-end">작성하기</a>
@@ -24,15 +24,17 @@
           </select>
         </div>
         <div class="col-xs-12 col-sm-4">
-          <div class="input-group mb-3">
-            <select class="form-select" id="searchCond">
-              <option selected>검색 조건</option>
-              <option value="1">제목</option>
-              <option value="2">작성자명</option>
-            </select>
-            <input type="text" class="form-control" placeholder="검색어 입력">
-            <button class="btn btn-outline-secondary" type="button" id="searchQna"><i class="bi bi-search"></i> 검색</button>
-          </div>
+          <form action="${ contextPath }/qnaSearch" method="POST" name="searchForm" id="searchForm">
+            <div class="input-group mb-3" class="qna-search-area">
+                <select class="form-select" id="searchCondition" name="searchCondition">
+                  <option value="" selected>검색 조건</option>
+                  <option value="T">제목</option>
+                  <option value="N">작성자</option>
+                </select>
+                <input type="text" class="form-control" placeholder="검색어 입력" id="searchValue" name="searchValue">
+                <button class="btn btn-outline-secondary" id="searchQnaBtn"><i class="bi bi-search"></i></button>
+            </div>
+          </form>
         </div>
       </div>
       <div class="qna-list list-group mb-3">
@@ -110,7 +112,9 @@
       </nav>
     </div>
 
-<jsp:include page="common/footer.jsp" />
+<jsp:include page="../common/footer.jsp" />
+
+<script src="${ contextPath }/resources/js/qnaSearch_check.js"></script>
 
 <script>
 /* const loginUserId = ${loginUser.userNo};
