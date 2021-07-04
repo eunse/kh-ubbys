@@ -168,7 +168,9 @@ public class ReplyDAO {
 				reply.setReplyContent(rs.getString("REPLY_CONTENT"));
 				reply.setReplyDate(rs.getString("REPLY_DATE"));
 				reply.setUserNickname(rs.getString("USER_NICKNAME"));
-				
+				reply.setQnaPostId(rs.getInt("QNA_POST_ID"));
+				reply.setReplyLike(rs.getInt("REPLY_LIKE"));
+				reply.setUserId(rs.getInt("USER_ID"));
 				myReplyList.add(reply);
 			}
 
