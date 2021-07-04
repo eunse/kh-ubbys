@@ -43,4 +43,13 @@
 	<entry key="insertAppsTags">
 		INSERT INTO apps_tags VALUES(?, ?)
 	</entry>
+	<entry key="deleteApps">
+		DELETE FROM apps WHERE apps_post_id = ? AND user_id = ? 
+	</entry>
+	<entry key="deleteAppsTags">
+		DELETE FROM apps_tags WHERE apps_post_id = ?
+	</entry>
+	<entry key="selectAuthor">
+		SELECT user_id FROM apps WHERE apps_post_id = ?
+	</entry>
 </properties>

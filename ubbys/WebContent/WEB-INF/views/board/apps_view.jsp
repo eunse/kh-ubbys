@@ -23,8 +23,9 @@
       <div class="app-content col-md-9">${apps.postContent}</div>
       <hr>
       <a href="#" class="btn btn-outline-primary">수정</a>
-      <a href="#" class="btn btn-outline-danger">삭제</a>
+      <button type="button" id="deleteBtn" class="btn btn-outline-danger">삭제</button>
       <fmt:formatDate var="postDate" value="${apps.postDate}" pattern="YYYY년 M월 d일 HH:mm:ss"/>  
       <small class="float-end">작성일시: ${postDate}</small>
     </div>
+    <script src="${contextPath}/resources/js/board_view.js" defer></script>
 <jsp:include page="../common/footer.jsp" />

@@ -146,5 +146,43 @@ public class AppsService extends BoardService {
 		close(conn);
 		return tagList;
 	}
+	
+	/**
+	 * apps 삭제 Service
+	 * @param postId
+	 * @param userNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int deleteApps(int postId, int userNo) throws Exception {
+		Connection conn = getConnection();
+		int result = dao.deleteAppsTags(conn, postId);
+		System.out.println("dao실행결과:" + result);
+		if(result > 0) {
+			result = dao.deleteApps(conn, postId, userNo);
+			if(result > 0) {
+				commit(conn);
+			} else {
+				rollback(conn);
+			}
+		} else {
+			rollback(conn);
+		}
+		close(conn);
+		return result;
+	}
+
+	/**
+	 * apps 게시물 작성자 Serivce
+	 * @param postId
+	 * @return result
+	 * @throws Exception
+	 */
+	public int selectAuthor(int postId) throws Exception {
+		Connection conn = getConnection();
+		int result = dao.selectAuthor(conn, postId);
+		close(conn);
+		return result;
+	}
 
 }
