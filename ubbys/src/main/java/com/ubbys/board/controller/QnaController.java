@@ -39,7 +39,7 @@ public class QnaController extends HttpServlet {
 				List<QnaCategory> qnaCategory = service.selectQnaCategory();
 				request.setAttribute("qnaCategory", qnaCategory);
 				
-				view = request.getRequestDispatcher("/WEB-INF/views/qnaWrite.jsp");
+				view = request.getRequestDispatcher("/WEB-INF/views/board/qnaWrite.jsp");
 				view.forward(request, response);
 			}
 			
@@ -89,7 +89,7 @@ public class QnaController extends HttpServlet {
 				request.setAttribute("qnaCategory", qnaCategory);
 				request.setAttribute("qna", qna);
 				
-				request.getRequestDispatcher("/WEB-INF/views/qnaUpdate.jsp").forward(request, response);
+				request.getRequestDispatcher("/WEB-INF/views/board/qnaUpdate.jsp").forward(request, response);
 			}
 			
 			// qna 글 수정 Controller

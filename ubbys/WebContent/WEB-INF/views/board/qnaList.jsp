@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<jsp:include page="common/header.jsp" />
+<jsp:include page="../common/header.jsp" />
     <div class="container">
       <c:if test="${ !empty loginUser }">
         <a href="${ contextPath }/qnaWrite?cp=${ pagination.currentPage }" class="btn btn-primary float-end">작성하기</a>
@@ -112,7 +112,7 @@
       </nav>
     </div>
 
-<jsp:include page="common/footer.jsp" />
+<jsp:include page="../common/footer.jsp" />
 
 <script src="${ contextPath }/resources/js/qnaSearch_check.js"></script>
 

@@ -47,7 +47,7 @@ public class SelectQnaController extends HttpServlet {
 				request.setAttribute("qnaList", qnaList);
 				request.setAttribute("qnaCategory", qnaCategory);
 				
-				view = request.getRequestDispatcher("/WEB-INF/views/qnaList.jsp");
+				view = request.getRequestDispatcher("/WEB-INF/views/board/qnaList.jsp");
 				view.forward(request, response);
 			}
 			
@@ -63,7 +63,7 @@ public class SelectQnaController extends HttpServlet {
 				List<Reply> rList = new ReplyService().selectList(qnaPostId);
 				request.setAttribute("rList", rList);
 				
-				view = request.getRequestDispatcher("/WEB-INF/views/qnaView.jsp");
+				view = request.getRequestDispatcher("/WEB-INF/views/board/qnaView.jsp");
 				view.forward(request, response);
 			}
 			
