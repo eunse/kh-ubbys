@@ -102,6 +102,39 @@ public class QnaService {
 		
 		return result;
 	}
+	
+
+	/** qna 게시글 삭제 접근권한 확인 Service
+	 * @param qnaPostId
+	 * @return userId
+	 * @throws Exception
+	 */
+	public int postingUserCheck(int qnaPostId) throws Exception {
+
+		Connection conn = getConnection();
+
+		int userId = dao.postingUserCheck(conn, qnaPostId);
+
+		close(conn);
+
+		return userId;
+	}
+	/** qna 게시글 삭제 Service
+	 * @param qnaPostId
+	 * @return result
+	 * @throws Exception
+	 */
+	public int deleteQna(int qnaPostId) throws Exception {
+
+		Connection conn = getConnection();
+
+		int result = dao.deleteQna(conn, qnaPostId);
+
+		if(result>0) commit(conn);
+		else		 rollback(conn);
+
+		return result;
+	}
 
 	
 	/** qna 게시글에 좋아요를 누른 userList Service
