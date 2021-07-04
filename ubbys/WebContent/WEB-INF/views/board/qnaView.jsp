@@ -28,7 +28,7 @@
       
       
       <!-- 댓글이 include될 부분 -->
-      <%-- <jsp:include page="reply.jsp"></jsp:include>  --%>
+      <jsp:include page="../reply.jsp"></jsp:include>
     
     
     
