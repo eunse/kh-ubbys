@@ -20,7 +20,7 @@
 	<!-- 댓글 삽입 -->
 	<entry key="insertReply">
 		INSERT INTO qna_reply
-		VALUES(SEQ_QRNO.NEXTVAL, ?, DEFAULT, DEFAULT, DEFAULT, ?, ?)
+		VALUES(SEQ_QNA_REPLY.NEXTVAL, ?, DEFAULT, DEFAULT, DEFAULT, ?, ?)
 	</entry>
 	
 	<!-- 댓글 수정 -->
