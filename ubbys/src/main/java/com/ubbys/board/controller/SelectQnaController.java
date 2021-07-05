@@ -75,6 +75,7 @@ public class SelectQnaController extends HttpServlet {
 				request.setAttribute("qnaCategory", qnaCategory);
 				
 				request.getRequestDispatcher("/WEB-INF/views/board/qnaList.jsp").forward(request, response);
+				
 			}
 			
 			// qna 상세 조회 Controller
@@ -95,6 +96,8 @@ public class SelectQnaController extends HttpServlet {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMsg", "조회 중 오류가 발생했습니다.");
+			request.getRequestDispatcher("/WEB-INF/views/common/error.jsp").forward(request, response);
 		}
 	}
 
