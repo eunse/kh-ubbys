@@ -179,6 +179,53 @@ public class SelectQnaDAO {
 		return myQnaList;
 	}
 	
+	
+
+	/** qna 정렬 목록 조회 DAO
+	 * @param conn
+	 * @param pagination
+	 * @param condition
+	 * @return qnaList
+	 * @throws Exception
+	 */
+	public List<Qna> sortQnaList(Connection conn, QnaPagination pagination, String condition) throws Exception {
+		
+		List<Qna> qnaList = new ArrayList<Qna>();
+		
+		String sql = prop.getProperty("sortQnaList1") + condition + prop.getProperty("sortQnaList2");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			int start = (pagination.getCurrentPage()-1)*pagination.getLimit()+1;
+			int end = start+pagination.getLimit()-1;
+			
+			pstmt.setInt(1, start);
+			pstmt.setInt(2, end);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				Qna qna = new Qna();
+				
+				qna.setQnaPostId(rs.getInt("QNA_POST_ID"));
+				qna.setQnaCategoryName(rs.getString("QNA_CATEGORY_NAME"));
+				qna.setQnaDate(rs.getString("QNA_DATE"));
+				qna.setQnaTitle(rs.getString("QNA_TITLE"));
+				qna.setUserNickname(rs.getString("USER_NICKNAME"));
+				qna.setQnaLike(rs.getInt("QNA_LIKE"));
+				qna.setQnaReplyCount(rs.getInt("REPLY_COUNT"));
+				
+				qnaList.add(qna);
+			}
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return qnaList;
+	}
+	
 
 	/** 검색 조건이 일치하는 전체 게시글 수 조회 DAO
 	 * @param conn
@@ -248,30 +295,5 @@ public class SelectQnaDAO {
 		}
 		return qnaList;
 	}
-
-
-	/** qna 목록의 글에서 좋아요를 누른 userList DAO
-	 * @param conn
-	 * @param qnaList
-	 * @return qnaLikeList
-	 * @throws Exception
-	 */
-	/*
-	public Map<Integer, List<Integer>> qnaLikeList(Connection conn, List<Qna> qnaList) throws Exception {
-		
-		Map<Integer, List<Integer>> qnaLikeList = new HashMap<Integer, List<Integer>>();
-		String sql = prop.getProperty("qnaLikeList");
-		try {
-			Iterator<Qna> it = qnaList.iterator();
-			while(it.hasNext()) {
-				
-			}
-			
-		} finally {
-			// TODO: handle finally clause
-		}
-		return null;
-	}
-	*/
 
 }
