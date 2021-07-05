@@ -41,13 +41,13 @@
     <div class="col-md-8 list-apps">
       <div class="row">
         <c:choose>
-          <c:when test="${empty appsList }">
+          <c:when test="${empty myAppsList }">
             <h2 class="h4 mb-3">게시글이 존재하지 않습니다.</h2>
           </c:when>
 
           <c:otherwise>
             <h2 class="h4 mb-3">내 apps 게시글</h2>
-            <c:forEach items="${appsList }" var="apps">
+            <c:forEach items="${myAppsList }" var="apps">
               <div class="col-6 mb-3">
                 <div class="card">
                   <div class="card-body">
@@ -56,18 +56,17 @@
                       class="rounded-3 float-start me-2" alt="">
                     <button
                       class="btn btn-outline-secondary btn-like float-end">
-                      <i class="bi bi-heart"></i> 123
+                      <i class="bi bi-heart"></i> ${apps.postLike }
                     </button>
-                    <h5 class="card-title">${apps.appsTitle }</h5>
+                    <h5 class="card-title">${apps.postTitle }</h5>
                     <h6 class="card-subtitle mb-2 text-muted">카테고리
                       : ${apps.categoryName }</h6>
-                    <p class="card-text">본문 : ${apps.appsContent }</p>
-                    <a href="#" class="card-hashtag">#${apps.hashTag}</a> <a href="#" class="card-hashtag">#해시태그</a>
+                    <p class="card-text">본문 : ${apps.postContent }</p>
                   </div>
                 </div>
               </div>
             </c:forEach>
-            <a href="#" class="btn btn-outline-primary">더 보기</a>
+            <a href="apps/list" class="btn btn-outline-primary">Apps 게시글 목록</a>
           </c:otherwise>
         </c:choose>
       </div>
@@ -80,10 +79,10 @@
         </c:when>
         <%-- 내 qnaList --%>
         <c:otherwise>
-          <h2 class="h4 mb-3">내 qna 게시글</h2>
+          <h2 class="h4 mb-3">내 QnA 게시글</h2>
           <c:forEach items="${myQnaList }" var="qna">
             <div class="list-group mb-3">
-              <a href="#" class="list-group-item list-group-item-action">
+              <a href="qnaView?no=${qna.qnaPostId }&cp=${pagination.currentPage}" class="list-group-item list-group-item-action">
                 <div class="d-flex w-100 justify-content-between">
                   <h5 class="mb-1">${ qna.qnaTitle }</h5>
                 </div> <small><i class="bi bi-heart"></i> ${ qna.qnaLike }</small>
@@ -91,12 +90,10 @@
               </a>
             </div>
           </c:forEach>
-          <a href="#" class="btn btn-outline-primary" id="load">더 보기</a>
+          <a href="qnaList" class="btn btn-outline-primary" id="load">QnA 게시글 목록</a>
         </c:otherwise>
       </c:choose>
     </div>
-
-
   </div>
   <div class="col-12">
     <c:choose>
