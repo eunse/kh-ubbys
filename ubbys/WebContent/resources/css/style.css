@@ -131,7 +131,7 @@ footer {
 .apps-link {
   text-decoration: none;
 }
-.apps-image__preview {
+.apps-image__preview, .user-image__preview {
   display: block;
   width: 125px;
   height: 125px;

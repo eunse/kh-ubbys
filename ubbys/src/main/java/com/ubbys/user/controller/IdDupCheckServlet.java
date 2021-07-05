@@ -19,7 +19,6 @@ public class IdDupCheckServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String userEmail = request.getParameter("inputEmail");
-		System.out.println(userEmail);
 		
 		try {
 	         int result = new UserService().idDupCheck(userEmail);
@@ -31,15 +30,6 @@ public class IdDupCheckServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userEmail = request.getParameter("inputEmail");
-		System.out.println(userEmail);
-		
-		try {
-	         int result = new UserService().idDupCheck(userEmail);
-	         PrintWriter out = response.getWriter();
-	         out.print(result);
-	      } catch (Exception e) {
-	         e.printStackTrace();
-	      }
+		doGet(request, response);
 	}
 }

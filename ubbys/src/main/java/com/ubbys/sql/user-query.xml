@@ -42,4 +42,9 @@
 		SELECT user_pic FROM user_info
 		WHERE user_id = ?
 	</entry>
+	<entry key="selectUserInfo">
+		SELECT * FROM user_info
+		JOIN "USER" USING(user_id)
+		WHERE user_id = ?
+	</entry>
 </properties>
