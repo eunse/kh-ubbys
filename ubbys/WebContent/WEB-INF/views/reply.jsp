@@ -5,9 +5,9 @@
 
 
 <div id="reply-area ">
-회원번호 : ${loginUser.userNo} <br>
+<%-- 회원번호 : ${loginUser.userNo} <br>
 목록 : ${rList } <br>
-게시글번호 : ${qna.qnaPostId} <br>
+게시글번호 : ${qna.qnaPostId} <br> --%>
 
 <hr>
   <!-- 댓글 작성 부분 -->
@@ -57,7 +57,7 @@
   <div class="replyList mt-5 pt-2">
   <ul class="qna-reply-content list-group col-md-9" id="replyListArea">
         <c:forEach items="${rList}" var="reply">
-          <li class="rlist-group-item">
+          <li class="list-group-item">
             <div class="d-flex justify-content-between align-items-center">
               <div class="ms-2 me-auto">
                 <div class="fw-bold">
@@ -71,12 +71,12 @@
                   <li class="list-inline-item">
                     <button class="btn btn-primary btn-sm ml-1" id="updateReply" onclick="showUpdateReply(${reply.replyId}, this)">수정</button>
                   </li>
-                  <li class="rlist-inline-item">
+                  <li class="list-inline-item">
                     <button class="btn btn-primary btn-sm ml-1" id="deleteReply" onclick="deleteReply(${reply.replyId})">삭제</button>
                   </li>
                 </ul>
               </c:if>
-              <button type="button" class="btn btn-outline-secondary btn-sm">
+              <button class="btn btn-outline-secondary btn-sm">
                 <i class="bi bi-heart"></i> 
               </button>
             </div>
@@ -92,7 +92,7 @@
           </div>
           <div class="input-group ms-2 my-2">
             <textarea class="form-control" id="edit-reply" rows="5">수정할 원래 댓글 내용</textarea>
-            <button class="btn btn-outline-primary">수정</button>
+            <button class="btn btn-outline-primary" onclick="updateReply(${reply.replyId})">수정</button>
           </div>
           </li>
           <%-- 수정부분 --%>
@@ -102,7 +102,7 @@
       <%-- 수정참고 시작 --%>
       <style>
         #li{
-            display:none; /* 화면에서 보이지 않음 */
+            display:; /* 화면에서 보이지 않음 */
         }
       </style>
       <ul>
@@ -124,11 +124,11 @@
       <script>
       $(function(){
         $('#button').click(function(){
-          if($(this).parent("#li").css("display") == "none"){
+          if($(this).next("#li").css("display") == "none"){
             $(this).siblings("#li.list-group-item").slideUp();
-            $(this).parent("#li").slideDown();
+            $(this).next("#li").slideDown();
           }else{
-            $(this).parent("#li").slideUp();
+            $(this).next("#li").slideUp();
           }
         });
       });
@@ -212,10 +212,10 @@ function addReply() {
 const replyContent = $("#replyContent").val();
 // 로그인이 되어있지 않은 경우
 if(loginUserId == ""){
- swal("로그인 후 이용해 주세요.");
+	console.log("로그인 필요");
 }else{
  if(replyContent.trim() == ""){ // 작성된 댓글이 없을 경우
-   swal("댓글 작성 후 클릭해 주세요.")
+   console.log("댓글 작성 후 클릭해 주세요.");
  }else{
    // 욕설 필터 위치
    // 로그인 O, 댓글 작성 O
@@ -227,7 +227,7 @@ if(loginUserId == ""){
          "replyContent" : replyContent },
      success : function(result){
        if(result > 0){ // 댓글 삽입 성공
-         swal({"icon" : "success" , "title" : "댓글 등록 성공"});
+    	 console.log("댓글 등록 성공");
          $("#replyContent").val(""); // 댓글 작성 내용 삭제
          
          selectReplyList(); // 비동기로 댓글 목록 갱신
@@ -256,50 +256,58 @@ $.ajax({
    console.log(rList);
    
         $("#replyListArea").html(""); // 기존 정보 초기화 
-        // 왜? 새로 읽어온 댓글 목록으로 다시 만들어서 출력하려고 기존 내용(댓글)을 전부 초기화한다
+        //여기까지 성공
         
-        $.each(rlist, function(index, item){
+        $.each(rList, function(index, item){
      // $.each() : jQuery의 반복문
      // rlist : ajax 결과로 받은 댓글이 담겨있는 객체 배열
      // index : 순차 접근시 현재 인덱스
      // item : 순차 접근시 현재 접근한 배열 요소(댓글 객체 하나)
+       
+        var li = $("<li>").addClass("list-group-item");
+    
+        var div1 = $("<div>").addClass("d-flex justify-content-between align-items-center");
+     	var div2 = $("<div>").addClass("ms-2 me-auto");
+     	// div2와 rDate는 형제
+     	
+     	var div3 = $("<div>").addClass("fw-bold");
+     	div2.append(div3);
+     	
+     	var rWriter = $("<img>").addClass("user-image rounded-circle me-2").text(item.userNickname); //미완 src
+     	div3.append(rWriter);
+     	
+     	var rDate = $("<span>").addClass("date me-2").text("작성일 : " + item.replyDate);
+     	/* div1.append(div2).append(rDate); */
+     	// div2와 rDate, ul은 형제
+     	
+     	if(item.userId == loginUserNo){ //
+     		
+       		var ul = $("<ul>").addClass("reply-action list-inline me-2");
+       		/* div1.append(div2).append(rDate).append(ul); */
+         	
+         	var childLi1 = $("<li>").addClass("list-inline-item");
+         	var showUpdate = $("<button>").addClass("btn btn-primary btn-sm ml-1").text("수정").attr("onclick", "showUpdateReply("+item.replyId+", this)");
+         	childLi1.append(showUpdate);
+         	
+         	var childLi2 = $("<li>").addClass("list-inline-item");
+            var deleteReply = $("<button>").addClass("btn btn-primary btn-sm ml-1").text("삭제").attr("onclick", "deleteReply("+item.replyId+")");
+            childLi2.append(deleteReply);
+          
+         	ul.append(childLi1).append(childLi2);
+     	}
+        
+     	var button = $("<button>").addClass("btn btn-outline-secondary btn-sm");
+     	var i = $("<i>").addClass("bi bi-heart");
+		button.append(i);     	
+     	div1.append(div2).append(rDate).append(ul).append(button);
+     	
+     	var lastDiv = $("div").addClass("ms-2").text(item.replyContent);
+     	
+     	li.append(div1).append(lastDiv);
+     	
+     	$("#replyListArea").append(li);
      
           
-           var li = $("<li>").addClass("reply-row");
-        
-           // 작성자, 작성일, 수정일 영역 
-           var div = $("<div>");
-           var rWriter = $("<p>").addClass("rWriter").text(item.userNickname);
-           var rDate = $("<p>").addClass("rDate").text("작성일 : " + item.replyDate);
-           div.append(rWriter).append(rDate)
-           //append는 자식으로 추가한다는 의미
-           
-           
-           // 댓글 내용
-           var rContent = $("<p>").addClass("rContent").html(item.replyContent);
-           
-           
-           // 대댓글, 수정, 삭제 버튼 영역
-           var replyBtnArea = $("<div>").addClass("replyBtnArea");
-           
-           // 현재 댓글의 작성자와 로그인한 멤버의 아이디가 같을 때 버튼 추가
-           if(item.userId == loginUserId){
-              
-              // ** 추가되는 댓글에 onclick 이벤트를 부여하여 버튼 클릭 시 수정, 삭제를 수행할 수 있는 함수를 이벤트 핸들러로 추가함. 
-              var showUpdate = $("<button>").addClass("btn btn-primary btn-sm ml-1").text("수정").attr("onclick", "showUpdateReply("+item.replyId+", this)");
-              var deleteReply = $("<button>").addClass("btn btn-primary btn-sm ml-1").text("삭제").attr("onclick", "deleteReply("+item.replyId+")");
-              
-              replyBtnArea.append(showUpdate).append(deleteReply);
-           }
-           
-           
-           // 댓글 요소 하나로 합치기
-           li.append(div).append(rContent).append(replyBtnArea);
-           //li 태그 안에 들어가는 자식태그 만드는 것
-           
-           // 합쳐진 댓글을 화면에 배치
-           $("#replyListArea").append(li);
-           // 후아..
         });
    
  },
@@ -390,7 +398,7 @@ $.ajax({
      "replyContent" : replyContent },
  success : function(result){
    if(result > 0 ){
-     swal({"icon" : "success" , "title" : "댓글 수정 성공"});
+	 console.log("댓글 수정 성공");  
      selectReplyList();
    }
  },

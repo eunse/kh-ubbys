@@ -260,22 +260,67 @@ public class AppsDAO extends BoardDAO {
 	}
 	
 	/**
-	 * apps 태그 삽입 DAO
+	 * apps_tags 테이블의 태그 삭제 DAO
+	 * @param conn
+	 * @param postId
+	 * @return
+	 * @throws Exception
+	 */
+	public int deleteAppsTags(Connection conn, int postId) throws Exception {
+		int result = 0;
+		String sql = prop.getProperty("deleteAppsTags");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, postId);
+			result = pstmt.executeUpdate();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	/**
+	 * 게시글 삭제 DAO
+	 * @param postId
+	 * @param userNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int deleteApps(Connection conn, int postId, int userNo) throws Exception {
+		int result = 0;
+		String sql = prop.getProperty("deleteApps");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, postId);
+			pstmt.setInt(2, userNo);
+			result = pstmt.executeUpdate();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	/**
+	 * apps 게시물 작성자 조회 DAO
 	 * @param conn
 	 * @param postId
 	 * @return result
 	 * @throws Exception
 	 */
-	public int insertTags(Connection conn, Apps apps, int postId) throws Exception {
+	public int selectAuthor(Connection conn, int postId) throws Exception {
 		int result = 0;
-		String sql = prop.getProperty("insertTags");
+		String sql = prop.getProperty("selectAuthor");
 		try {
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, postId);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
 		} finally {
-			
+			close(rs);
+			close(pstmt);
 		}
 		return result;
 	}
-
-
 }

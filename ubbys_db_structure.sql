@@ -451,7 +451,7 @@ CREATE SEQUENCE seq_tag_no;
 -- 글번호, 카테고리이름, 작성일, 글제목, 작성자, 좋아요수, 댓글수, 글상태
 --------------------------------------------------------------------------------
 CREATE OR REPLACE VIEW QNA_LIST AS
-    SELECT QNA_POST_ID, QNA_CATEGORY_NAME, TO_CHAR(QNA_DATE, 'YYYY-MM-DD HH24:MI:SS') QNA_DATE, 
+    SELECT QNA_POST_ID, QNA_CATEGORY_ID, QNA_CATEGORY_NAME, TO_CHAR(QNA_DATE, 'YYYY-MM-DD HH24:MI:SS') QNA_DATE, 
                QNA_TITLE, USER_NICKNAME, QNA_LIKE, REPLY_COUNT, QNA_STATUS
     FROM QNA
     JOIN QNA_CATEGORIES USING(QNA_CATEGORY_ID)
@@ -476,6 +476,29 @@ CREATE OR REPLACE VIEW QNA_DETAIL AS
                     FROM QNA_REPLY 
                     GROUP BY QNA_POST_ID) USING(QNA_POST_ID)
 ;
+--------------------------------------------------------------------------------
+-- 내 Qna 게시판 글 상세 조회 VIEW
+-- 글번호, 글내용, 좋아요 수 , 댓글 수, 게시글 상태, 작성자 번호
+--------------------------------------------------------------------------------
+CREATE OR REPLACE VIEW MYPAGE_QNA_LIST AS
+    SELECT QNA_POST_ID, QNA_TITLE, QNA_LIKE, REPLY_COUNT, QNA_STATUS, USER_ID
+    FROM QNA
+    JOIN QNA_CATEGORIES USING(QNA_CATEGORY_ID)
+    JOIN "USER" USING(USER_ID)
+    LEFT JOIN (SELECT QNA_POST_ID, COUNT(*) REPLY_COUNT
+                    FROM QNA_REPLY 
+                    GROUP BY QNA_POST_ID) USING(QNA_POST_ID);  
+
+--------------------------------------------------------------------------------
+-- Reply 게시판 글 상세 조회 VIEW
+-- 댓글번호, 댓글내용, 댓글 좋아요수, 댓글 작성일, Qna게시판 번호, 작성자 번호, 작성자 닉네임, 댓글 상태 
+--------------------------------------------------------------------------------
+CREATE OR REPLACE VIEW QNA_REPLY_LIST AS
+SELECT REPLY_ID, REPLY_CONTENT, REPLY_LIKE, TO_CHAR(REPLY_DATE, 'YYYY-MM-DD') REPLY_DATE,
+QR.QNA_POST_ID, QR.USER_ID, USER_NICKNAME, REPLY_STATUS
+FROM QNA_REPLY QR
+JOIN QNA Q ON(Q.QNA_POST_ID = QR.QNA_POST_ID)
+JOIN "USER" U ON(U.USER_ID = QR.USER_ID);
 
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
@@ -558,3 +581,14 @@ COMMIT;
 -- apps 게시물 별 태그 조회
 --------------------------------------------------------------------------------
 SELECT apps_tag_id, apps_tag_name FROM apps_tags JOIN tags USING(apps_tag_id) WHERE apps_post_id = 2;
+
+--------------------------------------------------------------------------------
+-- apps 게시글 삭제
+--------------------------------------------------------------------------------
+DELETE FROM apps WHERE apps_post_id = 55 AND user_id = 1;
+
+--------------------------------------------------------------------------------
+-- apps 게시글과 연결된 태그 삭제
+--------------------------------------------------------------------------------
+SELECT * FROM apps_tags WHERE apps_post_id = 55;
+DELETE FROM apps_tags WHERE apps_post_id = 55;

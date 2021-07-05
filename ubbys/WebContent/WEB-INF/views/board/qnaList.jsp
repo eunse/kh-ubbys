@@ -16,22 +16,23 @@
           </select>
         </div>
         <div class="col-xs-12 col-sm-4">
-          <select class="form-select">
-            <option selected>카테고리 전체</option>
+          <select class="form-select" name="sc" id="searchCategory">
+            <option value="" selected>카테고리 전체</option>
               <c:forEach items="${ qnaCategory }" var="qc">
                 <option value="${ qc.qnaCategoryId }">${ qc.qnaCategoryName }</option>
               </c:forEach>
           </select>
         </div>
+
         <div class="col-xs-12 col-sm-4">
-          <form action="${ contextPath }/qnaSearch" method="POST" name="searchForm" id="searchForm">
+          <form action="${ contextPath }/qnaList" method="GET" name="searchForm" id="searchForm">
             <div class="input-group mb-3" class="qna-search-area">
-                <select class="form-select" id="searchCondition" name="searchCondition">
+                <select class="form-select" id="searchCondition" name="sc">
                   <option value="" selected>검색 조건</option>
-                  <option value="T">제목</option>
-                  <option value="N">작성자</option>
+                  <option value="qnaTitle">제목</option>
+                  <option value="userNickname">작성자</option>
                 </select>
-                <input type="text" class="form-control" placeholder="검색어 입력" id="searchValue" name="searchValue">
+                <input type="text" class="form-control" placeholder="검색어 입력" id="searchValue" name="sv">
                 <button class="btn btn-outline-secondary" id="searchQnaBtn"><i class="bi bi-search"></i></button>
             </div>
           </form>
@@ -46,7 +47,7 @@
           
           <c:otherwise>
             <c:forEach items="${ qnaList }" var="qna">
-              <a href="qnaView?no=${ qna.qnaPostId }&cp=${ pagination.currentPage }" class="list-group-item list-group-item-action">
+              <a href="qnaView?no=${ qna.qnaPostId }&sc=${param.sc }&sv=${param.sv }&cp=${ pagination.currentPage }" class="list-group-item list-group-item-action">
                 <div class="d-flex flex-wrap justify-content-between">
                   <div class="category align-self-center">
                     <span class="badge bg-primary">${ qna.qnaCategoryName }</span>
@@ -73,10 +74,17 @@
       	</c:choose>
       </div>
       
-      <c:set var="pageURL" value="qnaList?"/>
-      <c:set var="prev" value="${ pageURL }cp=${ pagination.prevPage }"/>
-      <c:set var="next" value="${ pageURL }cp=${ pagination.nextPage }"/>
+      <c:choose>
+        <c:when test="${ !empty param.sc && !empty param.sv }">
+          <c:set var="pageURL" value="qnaList?sc=${param.sc }&sv=${param.sv }"/>
+        </c:when>
+        <c:otherwise>
+          <c:set var="pageURL" value="qnaList?"/>
+        </c:otherwise>
+      </c:choose>
 
+        <c:set var="prev" value="${ pageURL }&cp=${ pagination.prevPage }"/>
+        <c:set var="next" value="${ pageURL }&cp=${ pagination.nextPage }"/>
       <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
           <c:if test="${ pagination.currentPage <= pagination.pageSize }">
@@ -98,7 +106,7 @@
                 <li class="page-item active"><a class="page-link">${ p }</a></li>
               </c:when>
               <c:otherwise>
-                <li class="page-item"><a class="page-link" href="${ pageURL }cp=${ p }">${ p }</a></li>
+                <li class="page-item"><a class="page-link" href="${ pageURL }&cp=${ p }">${ p }</a></li>
               </c:otherwise>
             </c:choose>
           </c:forEach>
@@ -114,19 +122,42 @@
 
 <jsp:include page="../common/footer.jsp" />
 
-<script src="${ contextPath }/resources/js/qnaSearch_check.js"></script>
+<form action="#" method="GET" name="categoryReqForm">
+  <input type="hidden" name="sc" value="" id="searchCateCond">
+  <input type="hidden" name="sv" value="" id="searchCateVal">
+</form>
+          
+<script src="${ contextPath }/resources/js/qnaSearch_check_fn.js"></script>
 
 <script>
-/* const loginUserId = ${loginUser.userNo};
-const qnaList = ${ qnaList };
+
+keepSearch();
+
+function keepSearch(){
+	
+	var searchCondition = "${ param.sc }"
+	var searchValue = "${ param.sv }"
+	$("#searchCondition > option").each(function(index, item){
+		if($(item).val()==searchCondition) $(item).prop("selected", true);
+	});
+	$("#searchValue").val(searchValue);
+}
+
+
+/*
+const loginUserId = "${loginUser.userNo}";
+const qnaList = "${ qnaList }";
+
+var qnaPostIdArr = [];
+
 
 qnaListLikeCheck();
 
 function qnaListLikeCheck(){
-	
+
 	$.ajax({
 		url : "qnaListLikeCheck",
-		data : {"qnaList" : qnaList},
+		data : {"qnaList", qnaList},
 		type : "POST",
 		dataType : "JSON",
 		

@@ -38,4 +38,18 @@ public class BoardService {
 		close(conn);
 		return category;
 	}
+	
+	/**MyApps 목록 조회 Service
+	 * @param userNo
+	 * @return myAppsList
+	 * @throws Exception
+	 */
+	public List<Board> selectMyAppsList(int userNo) throws Exception{
+		Connection conn = getConnection();
+		List<Board> myAppsList = dao.selectMyQnaList(conn, userNo);
+		
+		close(conn);
+		
+		return myAppsList;
+	}
 }

@@ -2,6 +2,7 @@ package com.ubbys.board.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,7 +20,7 @@ import com.ubbys.board.vo.QnaPagination;
 import com.ubbys.board.vo.Reply;
 import com.ubbys.user.vo.User;
 
-@WebServlet({"/qnaList", "/qnaView", "/qnaSearch"})
+@WebServlet({"/qnaList", "/qnaView", "/qnaSearch", "/qnaSearchCategory"})
 public class SelectQnaController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -37,18 +38,36 @@ public class SelectQnaController extends HttpServlet {
 			// qna 목록 조회 Controller
 			if(command.equals("List")){
 				
-				QnaPagination pagination = service.getPagination(cp);
+				QnaPagination pagination = null;
+				List<Qna> qnaList = null;
 				
-				List<Qna> qnaList = service.selectQnaList(pagination);
+				if(request.getParameter("sc")==null) {
+					
+					pagination = service.getPagination(cp);
+					qnaList = service.selectQnaList(pagination);
+				}
+				
+				else {
+					
+					String searchCondition = request.getParameter("sc");
+					String searchValue = request.getParameter("sv");
+					
+					pagination = service.getPagination(cp, searchCondition, searchValue);
+					qnaList = service.selectQnaList(pagination, searchCondition, searchValue);
+				}
+				
 				
 				List<QnaCategory> qnaCategory = new QnaService().selectQnaCategory();
+				
+				// 목록에서 좋아요를 누른 게시글을 표시하기 위한 userList 받아오기...
+				//Map<Integer, List<Integer>> qnaLikeList = service.qnaLikeList(qnaList);
+				// 못하겠다...
 				
 				request.setAttribute("pagination", pagination);
 				request.setAttribute("qnaList", qnaList);
 				request.setAttribute("qnaCategory", qnaCategory);
 				
-				view = request.getRequestDispatcher("/WEB-INF/views/board/qnaList.jsp");
-				view.forward(request, response);
+				request.getRequestDispatcher("/WEB-INF/views/board/qnaList.jsp").forward(request, response);
 			}
 			
 			// qna 상세 조회 Controller
@@ -67,45 +86,12 @@ public class SelectQnaController extends HttpServlet {
 				view.forward(request, response);
 			}
 			
-			// qna 검색 Controller
-			else if(command.equals("Search")) {
-
-				String searchCondition = request.getParameter("searchCondition");
-				QnaPagination pagination = null;
-				List<Qna> qnaList = null;
-
-				// qna 제목 조건 검색
-				if(searchCondition.equals("T")) {
-					
-					String qnaTitle = request.getParameter("searchValue");
-					pagination = service.getSearchTPage(cp, qnaTitle);
-					qnaList = service.searchQnaTitle(pagination, qnaTitle);
-				}
-
-				// qna 작성자 조건 검색
-				else if(searchCondition.equals("N")) {
-					
-					String userNickname = request.getParameter("searchValue");
-					pagination = service.getSearchNPage(cp, userNickname);
-					qnaList = service.searchQnaAuthor(pagination, userNickname);
-				}
-				
-				List<QnaCategory> qnaCategory = new QnaService().selectQnaCategory();
-
-				request.setAttribute("pagination", pagination);
-				request.setAttribute("qnaList", qnaList);
-				request.setAttribute("qnaCategory", qnaCategory);
-
-				request.getRequestDispatcher("/WEB-INF/views/board/qnaList.jsp").forward(request, response);
-			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		doGet(request, response);
 	}
 
