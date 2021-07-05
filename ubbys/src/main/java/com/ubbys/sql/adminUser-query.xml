@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+	<!-- 유저 수 조회 SQL -->
+	<entry key="getUserCount">
+		SELECT COUNT(*) FROM user_list 
+		WHERE user_is_admin='N'
+	</entry>
+	
+</properties>
