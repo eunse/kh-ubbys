@@ -18,32 +18,28 @@ public class IdDupCheckServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("/signup/idDupCheck");
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/user/idDupCheck.jsp");
-//		중복검사 팝업창
-
-		view.forward(request, response);
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		String userEmail = request.getParameter("inputEmail");
+		System.out.println(userEmail);
 		
-//		ajax를 이용해 비동기로 중복 검사
 		try {
-	         
-	         // DB에서 아이디 중복 검사 수행 후 결과를 반환 받아 저장
 	         int result = new UserService().idDupCheck(userEmail);
-	         
-	         // 응답을 받을 클라이언트와의 연결 스트림
 	         PrintWriter out = response.getWriter();
 	         out.print(result);
-	         
 	      } catch (Exception e) {
 	         e.printStackTrace();
 	      }
-		
-	
-}
+	}
 
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String userEmail = request.getParameter("inputEmail");
+		System.out.println(userEmail);
+		
+		try {
+	         int result = new UserService().idDupCheck(userEmail);
+	         PrintWriter out = response.getWriter();
+	         out.print(result);
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      }
+	}
 }
