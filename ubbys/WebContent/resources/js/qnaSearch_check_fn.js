@@ -24,6 +24,12 @@ $(document).ready(function(){
         categoryRequest(sc, sv);
     });
 
+    $("#sortCondition").on("change", function(){
+        var sc = $(this).val();
+        var sv = "DESC";
+        sortRequest(sc, sv);
+    });
+
 });
 
 function categoryRequest(sc, sv){
@@ -32,3 +38,10 @@ function categoryRequest(sc, sv){
     document.categoryReqForm.action="qnaList";
     document.categoryReqForm.submit();
 };
+
+function sortRequest(sc, sv){
+    document.sortReqForm.sortCond.value=sc;
+    document.sortReqForm.sortVal.value=sv;
+    document.sortReqForm.action="qnaList";
+    document.sortReqForm.submit();
+}
