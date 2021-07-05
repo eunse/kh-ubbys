@@ -37,10 +37,37 @@ public class SelectQnaController extends HttpServlet {
 			
 			if(command.equals("List")) { //qna 목록 조회
 				
-
+				Pagination pagination = null;
+				List<Qna> qnaList = null;
 				
-				Pagination pagination = service.getPagination(cp);
-				List<Qna> qnaList = service.selectQnaList(pagination);
+				if(request.getParameter("sc") == null) { 
+					
+					pagination = service.getPagination(cp);
+					qnaList = service.selectQnaList(pagination);
+					
+				}
+				
+				// 정렬
+				else if(request.getParameter("sv").equals("DESC")) {
+					
+					String searchCondition = request.getParameter("sc");
+					String searchValue = request.getParameter("sv");
+					
+					pagination = service.getPagination(cp);
+					qnaList = service.selectQnaSortList(pagination, searchCondition, searchValue);
+					
+				}
+				
+				// 카테고리, 제목, 작성자 검색
+				else {
+					
+					String searchCondition = request.getParameter("sc");
+					String searchValue = request.getParameter("sv");
+					
+					pagination = service.getPagination(cp, searchCondition, searchValue);
+					qnaList = service.selectQnaList(pagination, searchCondition, searchValue);
+				}
+				
 				
 				List<QnaCategory> qnaCategory = new QnaService().selectQnaCategory();
 				

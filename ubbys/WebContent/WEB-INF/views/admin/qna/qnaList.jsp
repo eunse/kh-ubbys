@@ -6,20 +6,19 @@
     <div class="container py-5">
       <h2>QNA</h2>
       
-      <form action="${contextPath }/admin/qna/qnaList" name="formQna" method="POST" >
+      <form action="${contextPath }/admin/qnaList" name="formQna" method="POST" >
       	<div class="input-group mb-3 w-50" style="width: 150px !important; float: left; margin-right: 15px;">
 
         
-          <select class="form-select" id="searchOrder" name="searchOrder">
-            <option>정렬 조건</option>
-            <option value="qnaLike">좋아요 내림차순</option>
-            <option value="qnaDate">날짜 내림차순</option>
+          <select class="form-select" id="sortCondition">
+            <option value="sortNewest">최근 작성순</option>
+            <option value="sortLike">좋아요 많은 순</option>
           </select>
         </div>
         
       	<div class="input-group mb-3" style="width: 250px !important; float: left; margin-right: 15px;">
-          <select name="searchQnaCategory" class="form-select">
-            <option selected>카테고리 전체</option>
+          <select name="searchCategory" id="searchCategory" class="form-select">
+            <option value="" selected>카테고리 전체</option>
               <c:forEach items="${ qnaCategory }" var="qc">
                 <option value="${ qc.qnaCategoryId }">${ qc.qnaCategoryName }</option>
               </c:forEach>
@@ -27,12 +26,12 @@
         </div>
         
         <div class="input-group mb-3 w-50" style="float: right;">
-          <select class="form-select" id="searchQnaCond" name="searchQnaCond">
-            <option>검색 조건</option>
-            <option value="qnaTitle">제목</option>
+          <select class="form-select" id="searchCondition" name="sc">
+            <option value="" selected>검색 조건</option>
+            <option value= "qnaTitle">제목</option>
             <option value="userNickname">닉네임</option>
           </select>
-          <input type="text" name="searchQnaCondText" value="${qna.searchQnaCondText }" class="form-control" placeholder="제목,닉네임으로 검색하세요">
+          <input type="text" id="searchValue" name="sv" class="form-control" placeholder="제목,닉네임으로 검색하세요">
           <button class="btn btn-outline-secondary" type="submit" id="searchQna" name="searchQna">검색</button>
         </div>
         
@@ -72,8 +71,8 @@
           					<td>${qna.userNickname }</td>
           					<td>${qna.qnaDate }</td>
           					<td>
-          						<a href="${contextPath }/admin/qnaUpdateForm?qnaPostId=${qna.qnaPostId}&cp=${param.cp}" class="btn btn-primary btn-sm">수정</a>
-                				<a href="${contextPath }/admin/qnaDelete?qnaPostId=${qna.qnaPostId}&cp=${param.cp}" class="btn btn-danger btn-sm">삭제</a>
+          						<a href="${contextPath }/admin/qnaUpdateForm?qnaPostId=${qna.qnaPostId}&cp=${empty param.cp? 1 : param.cp}" class="btn btn-primary btn-sm">수정</a>
+                				<a href="${contextPath }/admin/qnaDelete?qnaPostId=${qna.qnaPostId}&cp=${empty param.cp? 1 : param.cp}" class="btn btn-danger btn-sm">삭제</a>
           					</td>
           				</tr>
           			</c:forEach>
@@ -82,11 +81,20 @@
           </tbody>
         </table>
         </div>
+          <c:choose>
+        <c:when test="${ !empty param.sc && !empty param.sv }">
+          <c:set var="pageURL" value="admin/qnaList?sk=${param.sc }&sv=${param.sv }"/>
+        </c:when>
+        <c:otherwise>
+          <c:set var="pageURL" value="admin/qnaList?"/>
+        </c:otherwise>
+      </c:choose>
+        
       </form>
       
-        <c:if test="${!empty loginUser }">
-         <a href="${contextPath }/admin/qnaWrite?cp=${pagination.currentPage}" class="btn btn-primary float-end">작성하기</a>
-        </c:if>
+      
+      <a href="${contextPath }/admin/qnaWrite?cp=${pagination.currentPage}" class="btn btn-primary float-end">작성하기</a>
+        
       
       
     <%---------------------- Pagination start----------------------%>
@@ -132,3 +140,45 @@
       
     </div>
 <jsp:include page="../footer.jsp" />
+
+<!-- 카테고리 검색 시 -->
+<form action="#" method="GET" name="categoryReqForm">
+  <input type="hidden" name="sc" value="" id="searchCateCond">
+  <input type="hidden" name="sv" value="" id="searchCateVal">
+</form>
+
+<!-- 정렬 시 -->
+<form action="#" method="GET" name="sortReqForm">
+  <input type="hidden" name="sc" value="" id="sortCond">
+  <input type="hidden" name="sv" value="" id="sortVal">
+</form>
+ 
+<script src="${ contextPath }/resources/js/qnaSearch_check_fn.js"></script>
+
+<script>
+keepSearch();
+
+function keepSearch(){
+	
+	var searchCondition = "${ param.sc }"
+	var searchValue = "${ param.sv }"
+
+	if(searchValue=="DESC"){
+  		$("#sortCondition > option").each(function(index, item){
+  			if($(item).val()==searchCondition) $(item).prop("selected", true);
+  		});
+	} 
+	else if(searchCondition=="qnaCategoryId"){
+  		$("#searchCategory > option").each(function(index, item){
+  			if($(item).val()==searchValue) $(item).prop("selected", true);
+  		});
+	}
+	else{
+  		$("#searchCondition > option").each(function(index, item){
+  			if($(item).val()==searchCondition) $(item).prop("selected", true);
+  		});
+  		$("#searchValue").val(searchValue);
+	}
+}
+
+</script>
