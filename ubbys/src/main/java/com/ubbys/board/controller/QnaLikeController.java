@@ -18,7 +18,7 @@ import com.ubbys.board.service.QnaService;
 import com.ubbys.board.vo.Qna;
 import com.ubbys.user.vo.User;
 
-@WebServlet({ "/qnaLikeCheck", "/qnaLike", "/qnaLikeCount", "/qnaListLikeCheck" })
+@WebServlet({ "/qnaLikeCheck", "/qnaLike", "/qnaLikeCount" })
 public class QnaLikeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -58,15 +58,6 @@ public class QnaLikeController extends HttpServlet {
 
 				response.getWriter().print(result);
 			}
-
-			/*
-			else if(command.equals("ListLikeCheck")) {
-				
-				
-				System.out.println();
-				
-			}
-			*/
 
 		} catch (Exception e) {
 			e.printStackTrace();

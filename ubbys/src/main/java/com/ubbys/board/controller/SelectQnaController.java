@@ -20,7 +20,7 @@ import com.ubbys.board.vo.QnaPagination;
 import com.ubbys.board.vo.Reply;
 import com.ubbys.user.vo.User;
 
-@WebServlet({"/qnaList", "/qnaView", "/qnaSearch", "/qnaSearchCategory"})
+@WebServlet({"/qnaList", "/qnaView"})
 public class SelectQnaController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -47,6 +47,18 @@ public class SelectQnaController extends HttpServlet {
 					qnaList = service.selectQnaList(pagination);
 				}
 				
+				// 정렬
+				else if(request.getParameter("sv").equals("DESC")) {
+					
+					String searchCondition = request.getParameter("sc");
+					String searchValue = request.getParameter("sv");
+					
+					pagination = service.getPagination(cp);
+					qnaList = service.selectQnaSortList(pagination, searchCondition, searchValue);
+					
+				}
+				
+				// 카테고리, 제목, 작성자 검색
 				else {
 					
 					String searchCondition = request.getParameter("sc");
@@ -56,12 +68,7 @@ public class SelectQnaController extends HttpServlet {
 					qnaList = service.selectQnaList(pagination, searchCondition, searchValue);
 				}
 				
-				
 				List<QnaCategory> qnaCategory = new QnaService().selectQnaCategory();
-				
-				// 목록에서 좋아요를 누른 게시글을 표시하기 위한 userList 받아오기...
-				//Map<Integer, List<Integer>> qnaLikeList = service.qnaLikeList(qnaList);
-				// 못하겠다...
 				
 				request.setAttribute("pagination", pagination);
 				request.setAttribute("qnaList", qnaList);
