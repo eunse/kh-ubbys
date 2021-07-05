@@ -56,7 +56,7 @@
 
 <script>
 
-const loginUserId = ${loginUser.userNo};
+const loginUserId = "${loginUser.userNo}";
 const qnaPostId = ${ qna.qnaPostId };
 let qnaLike = ${qna.qnaLike};
 

@@ -145,15 +145,21 @@ function keepSearch(){
 	var searchCondition = "${ param.sc }"
 	var searchValue = "${ param.sv }"
 
-	if(searchValue!="DESC"){
-  		$("#searchValue").val(searchValue);
-  		$("#searchCondition > option").each(function(index, item){
-  			if($(item).val()==searchCondition) $(item).prop("selected", true);
-  		});
-	} else{
+	if(searchValue=="DESC"){
   		$("#sortCondition > option").each(function(index, item){
   			if($(item).val()==searchCondition) $(item).prop("selected", true);
   		});
+	} 
+	else if(searchCondition=="qnaCategoryId"){
+  		$("#searchCategory > option").each(function(index, item){
+  			if($(item).val()==searchValue) $(item).prop("selected", true);
+  		});
+	}
+	else{
+  		$("#searchCondition > option").each(function(index, item){
+  			if($(item).val()==searchCondition) $(item).prop("selected", true);
+  		});
+  		$("#searchValue").val(searchValue);
 	}
 }
 

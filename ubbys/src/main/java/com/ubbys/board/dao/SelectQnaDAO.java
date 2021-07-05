@@ -179,7 +179,6 @@ public class SelectQnaDAO {
 		return myQnaList;
 	}
 	
-	
 
 	/** qna 정렬 목록 조회 DAO
 	 * @param conn
@@ -251,7 +250,6 @@ public class SelectQnaDAO {
 		}
 		return listCount;
 	}
-
 	/** qna 검색 목록 조회 DAO
 	 * @param conn
 	 * @param pagination
