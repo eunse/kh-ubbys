@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<jsp:include page="common/header.jsp" />
+<jsp:include page="../common/header.jsp" />
 
     <div class="container">
       <h1 class="h3 mt-5">QNA 글작성</h1>
@@ -33,6 +33,6 @@
       </form>
     </div>
 
-<jsp:include page="common/footer.jsp" />
+<jsp:include page="../common/footer.jsp" />
 
 <script src="${contextPath}/resources/js/qnaWrite_check.js"></script>
