@@ -35,7 +35,7 @@ public class UserUpdateServlet extends HttpServlet {
 		
 		int maxSize = 1024 * 1024 * 20;
 		String root = session.getServletContext().getRealPath("/");
-		String filePath = "resources/img/userPic/";
+		String filePath = "/upload/profile/";
 		
 //		String userPicPath = filePath+userPic;
 //		System.out.println(userPicPath);

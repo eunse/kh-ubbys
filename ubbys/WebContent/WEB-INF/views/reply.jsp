@@ -3,17 +3,16 @@
 
 
 <div id="reply-area ">
- <%-- 회원번호 : ${loginUser.userNo} <br>
+회원번호 : ${loginUser.userNo} <br>
 목록 : ${rList } <br>
-게시글번호 : ${qna.qnaPostId} <br> --%>
-
+게시글번호 : ${qna.qnaPostId} <br> 
 
 <%-- 테스트 --%>
   <div class="replyList mt-5 pt-2">
   <ul class="qna-reply-content list-group col-md-9" id="replyListArea">
         <c:forEach items="${rList}" var="reply">
           <li class="list-group-item">
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-between align-items-center" id="div1">
               <div class="ms-2 me-auto">
                 <div class="fw-bold">
                   <img src="https://github.com/mdo.png"
@@ -22,7 +21,7 @@
               </div>
               <span class="date me-2">작성일 : ${reply.replyDate }</span>
               <c:if test="${reply.userId == sessionScope.loginUser.userNo}">
-                <ul class="reply-action list-inline me-2">
+                <ul class="reply-action list-inline me-2" id="replyBtnArea">
                   <li class="list-inline-item">
                     <button class="btn btn-primary btn-sm ml-1" id="updateReply" onclick="showUpdateReply(${reply.replyId}, this)">수정</button>
                   </li>
@@ -37,6 +36,7 @@
             </div>
             <div class="ms-2">${reply.replyContent }</div>
           </li>
+          
           <%-- 수정부분 --%>
           <li id="li" class="list-group-item">
           <div class="d-flex justify-content-between align-items-center">
@@ -239,8 +239,32 @@ $.ajax({
  
 });
 }
+// ---------------------------
+// 댓글 수정 폼
 
 
+
+// ---------------------------
+// 댓글 삭제
+function deleteReply(replyId){
+	if(confirm("댓글을 삭제하시겠습니까?")){
+		
+		$.ajax({
+			url : "${contextPath}/replyDeleteReply",
+			type : "POST",
+			data : {"replyId": replyId},
+			success : function(result){
+				if(result > 0 ){
+					/* selectReplyList(qnaPostId); */
+					
+					console.log("댓글 삭제 성공");
+				}
+			}, error : function(){
+				console.log("댓글 삭제 실패");
+			}
+		});
+	}
+}
 
 
 </script>
