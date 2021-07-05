@@ -31,8 +31,14 @@
       <jsp:include page="../reply.jsp"></jsp:include>
     
     
-    
-      <a href="qnaList?cp=${ param.cp }" class="btn btn-outline-primary">이전 목록</a>
+      <c:choose>
+        <c:when test="${ !empty param.sc && !empty param.sv }">
+          <a href="qnaList?sc=${param.sc }&sv=${param.sv }&cp=${ param.cp }" class="btn btn-outline-primary">이전 목록</a>
+        </c:when>
+        <c:otherwise>
+          <a href="qnaList?cp=${ param.cp }" class="btn btn-outline-primary">이전 목록</a>
+        </c:otherwise>
+      </c:choose>
       
       <c:if test="${ qna.userId == sessionScope.loginUser.userNo }">
         <button class="btn btn-primary float-end" id="qnqUpdateBtn" onclick="fnRequest('UpdateForm');">수정</button>
@@ -50,8 +56,8 @@
 
 <script>
 
-const loginUserId = ${loginUser.userNo};
-const qnaPostId = ${ qna.qnaPostId };
+//const loginUserId = ${loginUser.userNo};
+//const qnaPostId = ${ qna.qnaPostId };
 let qnaLike = ${qna.qnaLike};
 
 qnaLikeCheck();

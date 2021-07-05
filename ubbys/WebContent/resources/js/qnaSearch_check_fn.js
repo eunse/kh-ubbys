@@ -17,4 +17,18 @@ $(document).ready(function(){
         return true;
     });
 
+
+    $("#searchCategory").on("change", function(){
+        var sc = "qnaCategoryId";
+        var sv = $(this).val();
+        categoryRequest(sc, sv);
+    });
+
 });
+
+function categoryRequest(sc, sv){
+    document.categoryReqForm.searchCateCond.value=sc;
+    document.categoryReqForm.searchCateVal.value=sv;
+    document.categoryReqForm.action="qnaList";
+    document.categoryReqForm.submit();
+};
