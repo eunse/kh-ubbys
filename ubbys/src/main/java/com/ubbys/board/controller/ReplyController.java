@@ -32,16 +32,16 @@ public class ReplyController extends HttpServlet {
 			if(command.equals("List")) { // 댓글 목록 조회
 				
 				int qnaPostId = Integer.parseInt(request.getParameter("qnaPostId"));
-				System.out.println("목록클릭 게시판번호:"+qnaPostId); //확인
+//				System.out.println("목록클릭 게시판번호:"+qnaPostId); //확인
 				
 				List<Reply> rlist = service.selectList(qnaPostId);
 				Gson gson = new Gson();
 				gson.toJson(rlist, response.getWriter());
-				System.out.println("목록 : "+rlist);//확인
+//				System.out.println("목록 : "+rlist);//확인
 			}
 			
 			else if(command.equals("InsertReply")) { // 댓글 삽입
-				int userId = ((User)request.getSession().getAttribute("loginUser")).getUserNo();
+				int userId = Integer.parseInt(request.getParameter("userId"));
 				int qnaPostId = Integer.parseInt(request.getParameter("qnaPostId"));
 				String replyContent = request.getParameter("replyContent");
 				System.out.println("댓글내용 : " + replyContent);//확인
@@ -75,10 +75,9 @@ public class ReplyController extends HttpServlet {
 			}
 			else if(command.equals("DeleteReply")); // 댓글 삭제
 //				int replyId = Integer.parseInt(request.getParameter("replyId"));
-//				System.out.println("댓글번호:"+replyId);
+//				System.out.println("댓글번호No:"+replyId);
 //				
 //				int result = service.deleteReply(replyId);
-//				
 //				response.getWriter().print(result);
 //				System.out.println("삭제result : " +result);
 			
