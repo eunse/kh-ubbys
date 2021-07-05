@@ -32,7 +32,7 @@ public class UserDAO {
 
 	/**
 	 * 회원가입 DAO
-	 * 
+	 * @author 백승훈
 	 * @param conn
 	 * @param user
 	 * @return result
@@ -55,7 +55,7 @@ public class UserDAO {
 
 	/**
 	 * 회원가입 후 추가정보 기입 DAO
-	 * 
+	 * @author 백승훈
 	 * @param conn
 	 * @param user
 	 * @return result
@@ -80,7 +80,7 @@ public class UserDAO {
 
 	/**
 	 * 로그인 DAO
-	 * 
+	 * @author 백승훈
 	 * @param conn
 	 * @param userEmail
 	 * @param userPw
@@ -283,5 +283,33 @@ public class UserDAO {
 		}
 		
 		return user;
+	}
+
+	/**
+	 * 사용자 정보 새로고침 DAO
+	 * @author 백승훈
+	 * @param conn
+	 * @param userNo
+	 * @return loginUser;
+	 * @throws Exception
+	 */
+	public User refreshUserInfo(Connection conn, int userNo) throws Exception {
+		User loginUser = null;
+		String sql = prop.getProperty("selectUserInfo");
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userNo);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				loginUser = new User(rs.getInt("user_id"), rs.getString("user_email"), rs.getString("user_nickname"),
+						rs.getDate("user_regdate"), rs.getString("user_is_admin"), rs.getString("user_pic"),
+						rs.getString("user_link"), rs.getString("user_interest"), rs.getString("user_introduce"));
+			}
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return loginUser;
 	}
 }

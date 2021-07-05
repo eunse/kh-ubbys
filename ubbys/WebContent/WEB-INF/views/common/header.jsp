@@ -41,6 +41,7 @@
                   data-bs-toggle="dropdown" aria-expanded="false">
                   <img src="${sessionScope.loginUser.userPic}" width="32" height="32" class="rounded-circle me-2">
                   ${sessionScope.loginUser.userNickname}
+                  
                 </a>
                 <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
                   <li><a class="dropdown-item" href="${contextPath}/user">myPage</a></li>
