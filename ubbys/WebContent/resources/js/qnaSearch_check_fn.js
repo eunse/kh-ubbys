@@ -1,22 +1,26 @@
 $(document).ready(function(){
 
     $("#searchForm").on("submit", function(){
+        var tc = "";
 
         if(!$("#searchForm").find("option:selected").val()){
-            alert("검색조건을 선택해주세요.");
+            tc = "검색 조건을 선택해주세요.";
+            searchAlert(tc);
             return false;
         }
+
         if($("#searchValue").val().trim().length==0){
-            alert("검색어를 입력해주세요.");
+            tc = "검색어를 입력해주세요.";
+            searchAlert(tc);
             return false;
         }
         if($("#searchValue").val().trim().length<2){
-            alert("두 글자 이상 입력해주세요.");
+            tc = "검색어는 두 글자 이상 입력해주세요.";
+            searchAlert(tc);
             return false;
         }
         return true;
     });
-
 
     $("#searchCategory").on("change", function(){
         var sc = "qnaCategoryId";
@@ -29,7 +33,6 @@ $(document).ready(function(){
         var sv = "DESC";
         sortRequest(sc, sv);
     });
-
 });
 
 function categoryRequest(sc, sv){
@@ -44,4 +47,10 @@ function sortRequest(sc, sv){
     document.sortReqForm.sortVal.value=sv;
     document.sortReqForm.action="qnaList";
     document.sortReqForm.submit();
+}
+
+function searchAlert(tc) {
+    document.querySelector('.modal-title').textContent = "검색";
+    document.querySelector('.modal-body').children[0].textContent = tc;
+    modal.show();
 }

@@ -70,6 +70,5 @@
 			)
 		WHERE RN BETWEEN ? AND ?
 	</entry>
-	
 
 </properties>

@@ -97,6 +97,7 @@ public class SelectQnaService {
 		return qnaList;
 	}
 	
+	
 	/** qna 검색 조건이 일치하는 글 수 카운트 + 페이지네이션 생성 Service
 	 * @param cp
 	 * @param searchCondition
@@ -155,7 +156,5 @@ public class SelectQnaService {
 		}
 		return condition;
 	}
-
-
 
 }
