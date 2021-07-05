@@ -2,6 +2,12 @@
   pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <jsp:include page="../common/header.jsp" />
+<style>
+
+  #inputFile{
+    display : none;
+  }
+</style>
 <div class="container">
   <form enctype="multipart/form-data" method="POST" action="${contextPath}/user/update"
     class="form-signup col-4 mx-auto needs-validation" novalidate>
@@ -32,8 +38,10 @@
         <img class="user-image mb-3 mx-auto d-block" src="${contextPath}/${sessionScope.loginUser.userPic}" height="150">
       </c:otherwise>
       </c:choose>
+      <div id="inputFile">
         <input accept="image/*" class="form-control" type="file" id="userImageInput" 
-        name="userImageInput" onchange="loadFile(event)">
+        name="userImageInput" onchange="loadFile(this,0)">
+      </div>
     </div>
     <div class="form-floating mb-3">
       <input type="url" class="form-control" id="inputWebsite"
@@ -59,3 +67,24 @@
   </div>
 </div>
 <jsp:include page="../common/footer.jsp" />
+<script>
+
+  $(function() {
+    $(".user-image").on("click", function() {
+      $("#userImageInput").click();
+    });
+
+  });
+
+  function loadFile(value, num) {
+    if (value.files && value.files[0]) {
+      var reader = new FileReader();
+      reader.readAsDataURL(value.files[0]);
+      reader.onload = function(e) {
+        $(".user-image").eq(num).attr("src",
+            e.target.result);
+      }
+
+    }
+  }
+</script>
