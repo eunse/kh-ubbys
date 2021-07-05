@@ -4,7 +4,6 @@ const checkObj = {
     "inputEmail": false,
     "inputPw": false,
     "inputPwConfirm": false
-
 };
 
 $("#inputEmail").on("input", function () {
@@ -76,11 +75,8 @@ $("#inputPw").on("input", function () {
 
 // 비밀번호, 비밀번호 확인 일치 여부 판단
 $("#inputPw, #inputPwConfirm").on("input", function () {
-
     const pwd1 = $("#inputPw").val();
-
     const pwd2 = $("#inputPwConfirm").val();
-
     if (pwd1.trim() == "" && pwd2.trim() == "") { // 둘다 비어있을 때
         $("#checkPwd1").html("&nbsp;");
         $("#checkPwd2").html("&nbsp;");
@@ -123,6 +119,7 @@ function validate() {
                     break;
                 case "inputPwConfirm":
                     msg = "비밀번호가 일치하지 않습니다. ";
+                    console.log(checkObj.inputPwConfirm)
                     break;
                 // case "name":
                 //     msg = "이름이 유효하지 않습니다.";

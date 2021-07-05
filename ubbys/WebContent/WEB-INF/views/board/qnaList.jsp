@@ -10,13 +10,13 @@
       <h1 class="h3 my-5">QNA</h1>
       <div class="row">
         <div class="col-xs-12 col-sm-4">
-          <select class="form-select">
+          <select class="form-select" id="sortCondition">
             <option selected value="sortNewest">최근 작성순</option>
             <option value="sortLike">좋아요 많은 순</option>
           </select>
         </div>
         <div class="col-xs-12 col-sm-4">
-          <select class="form-select" name="sc" id="searchCategory">
+          <select class="form-select" id="searchCategory">
             <option value="" selected>카테고리 전체</option>
               <c:forEach items="${ qnaCategory }" var="qc">
                 <option value="${ qc.qnaCategoryId }">${ qc.qnaCategoryName }</option>
@@ -122,9 +122,16 @@
 
 <jsp:include page="../common/footer.jsp" />
 
+<!-- 카테고리 검색 시 -->
 <form action="#" method="GET" name="categoryReqForm">
   <input type="hidden" name="sc" value="" id="searchCateCond">
   <input type="hidden" name="sv" value="" id="searchCateVal">
+</form>
+
+<!-- 정렬 시 -->
+<form action="#" method="GET" name="sortReqForm">
+  <input type="hidden" name="sc" value="" id="sortCond">
+  <input type="hidden" name="sv" value="" id="sortVal">
 </form>
           
 <script src="${ contextPath }/resources/js/qnaSearch_check_fn.js"></script>
@@ -137,46 +144,23 @@ function keepSearch(){
 	
 	var searchCondition = "${ param.sc }"
 	var searchValue = "${ param.sv }"
-	$("#searchCondition > option").each(function(index, item){
-		if($(item).val()==searchCondition) $(item).prop("selected", true);
-	});
-	$("#searchValue").val(searchValue);
+
+	if(searchValue=="DESC"){
+  		$("#sortCondition > option").each(function(index, item){
+  			if($(item).val()==searchCondition) $(item).prop("selected", true);
+  		});
+	} 
+	else if(searchCondition=="qnaCategoryId"){
+  		$("#searchCategory > option").each(function(index, item){
+  			if($(item).val()==searchValue) $(item).prop("selected", true);
+  		});
+	}
+	else{
+  		$("#searchCondition > option").each(function(index, item){
+  			if($(item).val()==searchCondition) $(item).prop("selected", true);
+  		});
+  		$("#searchValue").val(searchValue);
+	}
 }
 
-
-/*
-const loginUserId = "${loginUser.userNo}";
-const qnaList = "${ qnaList }";
-
-var qnaPostIdArr = [];
-
-
-qnaListLikeCheck();
-
-function qnaListLikeCheck(){
-
-	$.ajax({
-		url : "qnaListLikeCheck",
-		data : {"qnaList", qnaList},
-		type : "POST",
-		dataType : "JSON",
-		
-		success : function(uList){
-			
-			$.each(uList, function(index, item){
-				
-				if(item.userNo == loginUserId){
-					$("#qnaList-like-area").html("");
-					var i = $("<i>").addClass("bi bi-heart-fill");
-					var p = $("<p>").addClass("mb-0").text(qnaLike);
-					
-					$("#qnaList-like-area").append(i).append(p);
-				}
-			});
-		},
-		error : function(e){
-			console.log(e);
-		}
-	});
-} */
 </script>

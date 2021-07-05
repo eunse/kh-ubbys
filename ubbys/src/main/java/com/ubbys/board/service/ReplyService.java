@@ -78,6 +78,11 @@ public class ReplyService {
 		return result;
 	}
 
+	/** 댓글 삭제 Service
+	 * @param replyId
+	 * @return result
+	 * @throws Exception
+	 */
 	public int deleteReply(int replyId) throws Exception {
 		Connection conn = getConnection();
 		int result = dao.deleteReply(conn, replyId);

@@ -487,6 +487,7 @@ CREATE OR REPLACE VIEW MYPAGE_QNA_LIST AS
     JOIN "USER" USING(USER_ID)
     LEFT JOIN (SELECT QNA_POST_ID, COUNT(*) REPLY_COUNT
                     FROM QNA_REPLY 
+	       	    WHERE REPLY_STATUS = 'Y'
                     GROUP BY QNA_POST_ID) USING(QNA_POST_ID);  
 
 --------------------------------------------------------------------------------

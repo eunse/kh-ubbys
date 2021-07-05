@@ -75,8 +75,10 @@ public class ReplyController extends HttpServlet {
 			}
 			else if(command.equals("DeleteReply")); // 댓글 삭제
 //				int replyId = Integer.parseInt(request.getParameter("replyId"));
-				
+//				System.out.println("댓글번호:"+replyId);
+//				
 //				int result = service.deleteReply(replyId);
+//				
 //				response.getWriter().print(result);
 //				System.out.println("삭제result : " +result);
 			

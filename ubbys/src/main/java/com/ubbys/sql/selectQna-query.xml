@@ -54,9 +54,21 @@
 		WHERE RN BETWEEN ? AND ?
 	</entry>
 
-	
-	<!-- qna 목록의 글에서 좋아요를 누른 userList -->
-	<entry key="qnaLikeList">
-		
+
+	<!-- qna 정렬용 게시글 목록 조회 SQL(1) -->
+	<entry key="sortQnaList1">
+		SELECT * FROM
+		    (SELECT ROWNUM RN, R.* FROM
+		        (SELECT * FROM qna_list
+			        WHERE qna_status='Y'
+
 	</entry>
+	<!-- qna 정렬용 게시글 목록 조회 SQL(2) -->
+	<entry key="sortQnaList2">
+
+			    ) R
+			)
+		WHERE RN BETWEEN ? AND ?
+	</entry>
+
 </properties>

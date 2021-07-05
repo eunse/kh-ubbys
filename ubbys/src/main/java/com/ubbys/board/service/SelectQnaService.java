@@ -77,6 +77,27 @@ public class SelectQnaService {
 	}
 	
 	
+	/** qna 정렬 목록 조회 Service
+	 * @param pagination
+	 * @param searchCondition
+	 * @param searchValue
+	 * @return qnaList
+	 * @throws Exception
+	 */
+	public List<Qna> selectQnaSortList(QnaPagination pagination, String searchCondition, String searchValue) throws Exception {
+
+		Connection conn = getConnection();
+		
+		String condition = createCondition(searchCondition, searchValue);
+		
+		List<Qna> qnaList = dao.sortQnaList(conn, pagination, condition);
+		
+		close(conn);
+		
+		return qnaList;
+	}
+	
+	
 	/** qna 검색 조건이 일치하는 글 수 카운트 + 페이지네이션 생성 Service
 	 * @param cp
 	 * @param searchCondition
@@ -113,6 +134,8 @@ public class SelectQnaService {
 		
 		return qnaList;
 	}
+	
+	
 	// SQL 조건식 반환 메소드
 	public String createCondition(String searchCondition, String searchValue) {
 		
@@ -126,25 +149,12 @@ public class SelectQnaService {
 		
 		case "qnaCategoryId" : condition = " AND qna_category_id like '%"+searchValue+"%' "; break;
 		
+		case "sortNewest" : condition = " ORDER BY qna_post_id "+searchValue+" "; break;
+		
+		case "sortLike" : condition = " ORDER BY qna_like "+searchValue+" "; break;
+		
 		}
 		return condition;
 	}
-
-	
-	/** qna 목록의 글에서 좋아요를 누른 userList Service
-	 * @param qnaList
-	 * @return qnaLikeList
-	 * @throws Exception
-	 */
-	/*
-	public Map<Integer, List<Integer>> qnaLikeList(List<Qna> qnaList) throws Exception {
-		
-		Connection conn = getConnection();
-		
-		Map<Integer, List<Integer>> qnaLikeList = dao.qnaLikeList(conn, qnaList);
-		
-		return null;
-	}
-	*/
 
 }
