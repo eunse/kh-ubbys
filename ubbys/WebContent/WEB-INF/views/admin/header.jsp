@@ -87,7 +87,7 @@
           </button>
           <div class="collapse" id="account-collapse">
             <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-              <li><a href="#" class="link-dark rounded">Sign out</a></li>
+              <li><a href="/ubbys/adminLogin" class="link-dark rounded">Sign out</a></li>
             </ul>
           </div>
         </li>
