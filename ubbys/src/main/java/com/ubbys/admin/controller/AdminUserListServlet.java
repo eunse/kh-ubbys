@@ -33,11 +33,15 @@ public class AdminUserListServlet extends HttpServlet {
 
 				Pagination pagination = null;
 				List<User> userList = null;
+				
+				
 
 				if (request.getParameter("sv") == null) {
 					pagination = service.getPagination(cp);
 
 					userList = service.selectUserList(pagination);
+					
+					System.out.println(userList);
 				} else {
 					String searchKey = request.getParameter("sk");
 					String searchValue = request.getParameter("sv");
@@ -49,11 +53,7 @@ public class AdminUserListServlet extends HttpServlet {
 
 				request.setAttribute("pagination", pagination);
 				request.setAttribute("userList", userList);
-				request.getRequestDispatcher("/WEB-INF/views/admin/adminUserList.jsp").forward(request, response); // 경로
-																													// 또는
-																													// jsp
-																													// 파일명
-																													// 바꾸기
+				request.getRequestDispatcher("/WEB-INF/views/admin/adminUserList.jsp").forward(request, response); 
 
 			}
 
