@@ -42,6 +42,19 @@
 	)
 	WHERE RNUM BETWEEN ? AND ?
 	</entry>
-
+	
+	
+	<!-- 정렬 -->
+	<entry key="sortUserList1">
+		SELECT * FROM
+			(SELECT ROWNUM RNUM, A.* FROM
+				(SELECT * FROM USER_LIST
+				WHERE user_is_admin='N'
+	</entry>
+	<entry key="sortUserList2">
+				) A
+			)
+		WHERE RNUM BETWEEN ? AND?
+	</entry>
 
 </properties>
