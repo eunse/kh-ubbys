@@ -34,10 +34,20 @@
 		user_pw = ?
 		WHERE user_id = ? AND user_pw = ?
 	</entry>
-	<entry key="deleteAccount">
-		DELETE FROM "USER" 
-		WHERE user_id = ? AND user_pw = ?
+	<!-- 탈퇴처리 시작 -->
+	<entry key="getUnregUser">
+		SELECT * FROM "USER" WHERE user_pw = ? AND user_id = ? AND user_email != 'unreg'
 	</entry>
+	<entry key="insertUnregUser">
+		INSERT INTO UNREG_USER VALUES (?, ?, ?, ?, ?, ?, DEFAULT)
+	</entry>
+	<entry key="updateUnregUser">
+		UPDATE "USER" SET user_email='unreg', user_pw='unreg', user_nickname='unreg' WHERE user_id=?
+	</entry>
+	<entry key="deleteUnregUser">
+		DELETE FROM USER_INFO WHERE user_id=?
+	</entry>
+	<!-- 탈퇴처리 끝 -->
 	<entry key="userInfo">
 		SELECT user_pic FROM user_info
 		WHERE user_id = ?
