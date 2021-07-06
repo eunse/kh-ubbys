@@ -22,8 +22,10 @@
       </div>
       <div class="app-content col-md-9">${apps.postContent}</div>
       <hr>
-      <a href="#" class="btn btn-outline-primary">수정</a>
+      <c:if test="${loginUser.userNo == apps.userNo }">
+      <a href="write?no=${apps.postId}" class="btn btn-outline-primary">수정</a>
       <button type="button" id="deleteBtn" class="btn btn-outline-danger">삭제</button>
+      </c:if>
       <fmt:formatDate var="postDate" value="${apps.postDate}" pattern="YYYY년 M월 d일 HH:mm:ss"/>  
       <small class="float-end">작성일시: ${postDate}</small>
     </div>
