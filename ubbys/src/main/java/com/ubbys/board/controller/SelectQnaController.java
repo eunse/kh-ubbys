@@ -44,7 +44,12 @@ public class SelectQnaController extends HttpServlet {
 				if(request.getParameter("sc")==null) {
 					
 					pagination = service.getPagination(cp);
-					qnaList = service.selectQnaList(pagination);
+					if(request.getSession().getAttribute("loginUser")!=null) {
+						int loginUserId = ((User)request.getSession().getAttribute("loginUser")).getUserNo();
+						qnaList = service.selectQnaList(pagination, loginUserId);
+					}else {
+						qnaList = service.selectQnaList(pagination);
+					}
 				}
 				
 				// 정렬
@@ -54,8 +59,12 @@ public class SelectQnaController extends HttpServlet {
 					String searchValue = request.getParameter("sv");
 					
 					pagination = service.getPagination(cp);
-					qnaList = service.selectQnaSortList(pagination, searchCondition, searchValue);
-					
+					if(request.getSession().getAttribute("loginUser")!=null) {
+						int loginUserId = ((User)request.getSession().getAttribute("loginUser")).getUserNo();
+						qnaList = service.selectQnaSortList(pagination, searchCondition, searchValue, loginUserId);
+					}else {
+						qnaList = service.selectQnaSortList(pagination, searchCondition, searchValue);
+					}
 				}
 				
 				// 카테고리, 제목, 작성자 검색
@@ -65,7 +74,12 @@ public class SelectQnaController extends HttpServlet {
 					String searchValue = request.getParameter("sv");
 					
 					pagination = service.getPagination(cp, searchCondition, searchValue);
-					qnaList = service.selectQnaList(pagination, searchCondition, searchValue);
+					if(request.getSession().getAttribute("loginUser")!=null) {
+						int loginUserId = ((User)request.getSession().getAttribute("loginUser")).getUserNo();
+						qnaList = service.selectQnaList(pagination, searchCondition, searchValue, loginUserId);
+					}else {
+						qnaList = service.selectQnaList(pagination, searchCondition, searchValue);
+					}
 				}
 				
 				List<QnaCategory> qnaCategory = new QnaService().selectQnaCategory();

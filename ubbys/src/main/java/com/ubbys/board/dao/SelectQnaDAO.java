@@ -294,4 +294,33 @@ public class SelectQnaDAO {
 		return qnaList;
 	}
 
+	
+	/** 목록에 좋아요 여부 표시를 위한 DAO
+	 * @param conn
+	 * @param qnaList
+	 * @param loginUserId
+	 * @return qnaList
+	 * @throws Exception
+	 */
+	public List<Qna> getLikeFlag(Connection conn, List<Qna> qnaList, int loginUserId) throws Exception {
+		
+		String sql = prop.getProperty("getLikeFlag");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(2, loginUserId);
+			
+			for(Qna q : qnaList) {
+				
+				pstmt.setInt(1, q.getQnaPostId());
+				
+				rs = pstmt.executeQuery();
+				if(rs.next()) q.setLikeFlag(rs.getBoolean(1));
+			}
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return qnaList;
+	}
+
 }

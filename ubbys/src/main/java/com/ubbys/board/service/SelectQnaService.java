@@ -28,7 +28,8 @@ public class SelectQnaService {
 		
 		return new QnaPagination(cp, listCount);
 	}
-
+	
+	
 	/** Qna 목록 조회 Service
 	 * @param pagination
 	 * @return qnaList
@@ -39,6 +40,23 @@ public class SelectQnaService {
 		Connection conn = getConnection();
 		
 		List<Qna> qnaList = dao.selectQnaList(conn, pagination);
+		
+		close(conn);
+		
+		return qnaList;
+	}
+	/** Qna 목록 조회 Service (로그인유저)
+	 * @param pagination
+	 * @return qnaList
+	 * @throws Exception
+	 */
+	public List<Qna> selectQnaList(QnaPagination pagination, int loginUserId) throws Exception {
+		
+		Connection conn = getConnection();
+		
+		List<Qna> qnaList = dao.selectQnaList(conn, pagination);
+		
+		qnaList = dao.getLikeFlag(conn, qnaList, loginUserId);
 		
 		close(conn);
 		
@@ -96,6 +114,27 @@ public class SelectQnaService {
 		
 		return qnaList;
 	}
+	/** qna 정렬 목록 조회 Service (로그인유저)
+	 * @param pagination
+	 * @param searchCondition
+	 * @param searchValue
+	 * @return qnaList
+	 * @throws Exception
+	 */
+	public List<Qna> selectQnaSortList(QnaPagination pagination, String searchCondition, String searchValue, int loginUserId) throws Exception {
+
+		Connection conn = getConnection();
+		
+		String condition = createCondition(searchCondition, searchValue);
+		
+		List<Qna> qnaList = dao.sortQnaList(conn, pagination, condition);
+		
+		qnaList = dao.getLikeFlag(conn, qnaList, loginUserId);
+		
+		close(conn);
+		
+		return qnaList;
+	}
 	
 	
 	/** qna 검색 조건이 일치하는 글 수 카운트 + 페이지네이션 생성 Service
@@ -134,7 +173,25 @@ public class SelectQnaService {
 		
 		return qnaList;
 	}
-	
+	/** qna 검색 목록 조회 Service (로그인유저)
+	 * @param pagination
+	 * @return qnaList
+	 * @throws Exception
+	 */
+	public List<Qna> selectQnaList(QnaPagination pagination, String searchCondition, String searchValue, int loginUserId) throws Exception {
+		
+		Connection conn = getConnection();
+		
+		String condition = createCondition(searchCondition, searchValue);
+		
+		List<Qna> qnaList = dao.selectQnaList(conn, pagination, condition);
+		
+		qnaList = dao.getLikeFlag(conn, qnaList, loginUserId);
+		
+		close(conn);
+		
+		return qnaList;
+	}
 	
 	// SQL 조건식 반환 메소드
 	public String createCondition(String searchCondition, String searchValue) {

@@ -19,6 +19,8 @@ public class Qna {
 	// 삽입 시
 	private int qnaCategoryId;
 	
+	private boolean likeFlag;
+	
 	public Qna() {}
 
 	public int getQnaPostId() {
@@ -100,13 +102,21 @@ public class Qna {
 	public void setQnaCategoryId(int qnaCategoryId) {
 		this.qnaCategoryId = qnaCategoryId;
 	}
+	
+	public boolean isLikeFlag() {
+		return likeFlag;
+	}
+
+	public void setLikeFlag(boolean likeFlag) {
+		this.likeFlag = likeFlag;
+	}
 
 	@Override
 	public String toString() {
 		return "Qna [qnaPostId=" + qnaPostId + ", qnaCategoryName=" + qnaCategoryName + ", qnaDate=" + qnaDate
 				+ ", qnaTitle=" + qnaTitle + ", userNickname=" + userNickname + ", qnaLike=" + qnaLike
 				+ ", qnaReplyCount=" + qnaReplyCount + ", qnaContent=" + qnaContent + ", userId=" + userId
-				+ ", qnaCategoryId=" + qnaCategoryId + "]";
+				+ ", qnaCategoryId=" + qnaCategoryId + ", likeFlag=" + likeFlag + "]";
 	}
 
 }
