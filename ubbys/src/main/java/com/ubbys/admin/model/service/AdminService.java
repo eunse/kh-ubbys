@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.ubbys.admin.model.dao.AdminDAO;
 import com.ubbys.board.vo.Pagination;
+import com.ubbys.user.vo.UnRegUser;
 import com.ubbys.user.vo.User;
 
 public class AdminService {
@@ -87,10 +88,6 @@ public class AdminService {
 
 	}
 
-	public Pagination getPagination(int cp, int userNo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	/** 페이징처리 객체용 Service
 	 * @param cp
@@ -163,5 +160,44 @@ public class AdminService {
 
 		return userList;
 	}
+
+	/** 탈퇴 회원 목록 조회 Service
+	 * @param pagination
+	 * @return unRegUserList
+	 * @throws Exception
+	 */
+	public List<UnRegUser> selectUnregUserList(Pagination pagination) throws Exception {
+		
+		Connection conn = getConnection();
+		
+		List <UnRegUser> unRegUserList = dao.selectUnregUserList(conn);
+		
+		close(conn);
+		
+		return unRegUserList;
+	}
+
+	/** 탈퇴 회원관리 목록 조회 Service(검색용)
+	 * @param pagination
+	 * @param searchKey
+	 * @param searchValue
+	 * @return unRegUserList
+	 * @throws Exception
+	 */
+	public List<UnRegUser> selectunRegUserList(Pagination pagination, String searchKey, String searchValue) throws Exception {
+		
+		Connection conn = getConnection();
+		
+		String condition = createCondition(searchKey, searchValue);
+		
+		List<UnRegUser> unRegUserList = dao.selectunRegUserList(conn, pagination, condition);
+		
+		close(conn);
+		
+		
+		return unRegUserList;
+	}
+
+	
 
 }
