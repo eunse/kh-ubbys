@@ -8,16 +8,18 @@
 <jsp:include page="header.jsp" />
 <div class="container py-5">
 	<h2>회원관리</h2>
-	<form>
 		<div class="input-group mb-3 w-50">
-			<select class="form-select" id="searchUserCond" name="searchUserCond">
-				<option selected>검색 조건</option>
-				<option value="userEmail">이메일</option>
-				<option value="userNickname">닉네임</option>
-			</select> <input type="text" class="form-control"
-				placeholder="닉네임 혹은 이메일로 검색하세요">
-			<button class="btn btn-outline-secondary" type="button"
-				id="searchUser" name="searchUser">검색</button>
+          <form action="${contextPath }/adminUser/list" method="GET">
+            <div class="input-group mb-3" class="qna-search-area">
+    			<select class="form-select" id="searchUserCond" name="sk">
+    				<option selected>검색 조건</option>
+    				<option value="userEmail">이메일</option>
+    				<option value="userNickname">닉네임</option>
+    			</select> 
+              <input type="text" class="form-control" placeholder="닉네임 혹은 이메일로 검색하세요" name="sv">
+  			<button class="btn btn-outline-secondary" type="submit" id="searchUser">검색</button>
+            </div>
+          </form>
 		</div>
 		<table class="table table-striped table-hover w-100">
 			<thead>
@@ -58,7 +60,6 @@
 				</c:forEach>
 			</tbody>
 		</table>
-	</form>
 
 
 
@@ -67,10 +68,10 @@
 		<%-- 검색시 사용될 부분 : 파라미터명 꼭 확인할 것 --%>
 		<c:when test="${ !empty param.sk && !empty param.sv }">
 			<c:set var="pageURL"
-				value="admin/adminUserList?sc=${param.sk }&sv=${param.sv }" />
+				value="admin/adminUser/list?sc=${param.sk }&sv=${param.sv }" />
 		</c:when>
 		<c:otherwise>
-			<c:set var="pageURL" value="admin/adminUserList?" />
+			<c:set var="pageURL" value="admin/adminUser/list?" />
 		</c:otherwise>
 	</c:choose>
 
