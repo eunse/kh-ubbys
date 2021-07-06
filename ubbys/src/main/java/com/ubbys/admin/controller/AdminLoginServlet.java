@@ -58,7 +58,7 @@ public class AdminLoginServlet extends HttpServlet {
 							
 			} else {
 				session.setAttribute("modalTitle", "로그인 실패");
-				session.setAttribute("modalText", "아이디 또는 비밀번호가 일치하지 않습니다.");
+				session.setAttribute("modalText", "로그인 권한이 없습니다.");
 				System.out.println("로그인 실패");
 				response.sendRedirect("adminLogin");
 				System.out.println(loginUser);

@@ -56,10 +56,40 @@
 				(SELECT * FROM USER_LIST
 				WHERE user_is_admin='N'
 	</entry>
+	
 	<entry key="sortUserList2">
 				) A
 			)
 		WHERE RNUM BETWEEN ? AND?
 	</entry>
-
+	
+	<!-- 탈퇴회원 목록 조회  -->
+	<entry key="selectUnRegUser">
+	SELECT user_id, user_email, user_nickname, user_regdate, user_unregdate
+	FROM "UNREG_USER"
+	</entry>
+	
+	<!-- 탈퇴회원  -->
+	<entry key="selectUnRegUserList">
+		SELECT user_id, user_email, user_nickname, user_regdate, user_unregdate
+		FROM "UNREG_USER"
+	</entry>
+	
+	<!-- 탈퇴회원 검색 -->
+	<entry key="searchUnRegUserList1">
+	SELECT * FROM
+		(SELECT ROWNUM RNUM, A.* FROM
+		(SELECT *
+		FROM UNREG_USER_LIST
+		
+	</entry>
+	
+	<entry key="searchUnRegUserList2">
+			ORDER BY
+		USER_ID DESC
+		) A
+		)
+		WHERE RNUM BETWEEN ? AND ?
+	</entry>
+	
 </properties>

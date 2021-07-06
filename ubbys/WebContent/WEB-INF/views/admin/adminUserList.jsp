@@ -52,7 +52,7 @@
 							var="today" value="<%=new java.util.Date()%>"
 							pattern="yyyy-MM-dd" /> <c:choose>
 							<%-- 글 작성일이 오늘이 아닐 경우 --%>
-							<c:when test="${createDate != today}"> ${createDate}
+							<c:when test="${u.userRegdate != today}"> ${u.userRegdate}
 		                    </c:when>
 
 

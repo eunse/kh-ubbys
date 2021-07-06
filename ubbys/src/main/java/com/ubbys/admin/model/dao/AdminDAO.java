@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Properties;
 
 import com.ubbys.board.vo.Pagination;
+import com.ubbys.user.vo.UnRegUser;
 import com.ubbys.user.vo.User;
 
 public class AdminDAO {
@@ -373,5 +374,90 @@ public class AdminDAO {
 		}
 		return userList;
 	}
+
+	/** 탈퇴 회원 목록 DAO
+	 * @param conn
+	 * @return unRegUserList
+	 * @throws Exception
+	 */
+	public List<UnRegUser> selectUnregUserList(Connection conn) throws Exception {
+		
+		List<UnRegUser> unRegUserList = null;
+		
+		String sql = prop.getProperty("selectUnRegUserList");
+		
+		try { 
+			stmt = conn.createStatement();
+			
+			rs = stmt.executeQuery(sql);
+			
+			unRegUserList = new ArrayList<UnRegUser>();
+			
+			while(rs.next()) {
+				
+				UnRegUser un = new UnRegUser( rs.getInt("USER_ID"),
+									rs.getString("USER_EMAIL"),
+									rs.getString("USER_NICKNAME"),
+									rs.getDate("USER_REGDATE"),
+									rs.getDate("USER_UNREGDATE"));
+								
+				
+				unRegUserList.add(un);
+			}
+			
+		} finally {
+			
+			close(rs);
+			close(stmt);
+			
+		}
+		return unRegUserList;
+	}
+
+	/** 탈퇴 회원 정보 조회 DAO(정렬용)
+	 * @param conn
+	 * @param pagination
+	 * @param condition
+	 * @return unRegUserList
+	 * @throws Exception
+	 */
+	public List<UnRegUser> selectunRegUserList(Connection conn, Pagination pagination, String condition) throws Exception {
+		
+		List<UnRegUser> unRegUserList = new ArrayList<UnRegUser>();
+		String sql = prop.getProperty("searchUnRegUserList1") + condition + prop.getProperty("searchUnRegUserList2");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+
+			int startRow = (pagination.getCurrentPage() - 1) * pagination.getLimit() + 1;
+			int endRow = startRow + pagination.getLimit() - 1;
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+
+				UnRegUser un = new UnRegUser();
+
+				un.setUserNo(rs.getInt("USER_ID"));
+				un.setUserEmail(rs.getString("USER_EMAIL"));
+				un.setUserPw(rs.getString("USER_PW"));
+				un.setUserNickname(rs.getString("USER_NICKNAME"));
+				un.setUserRegdate(rs.getDate("USER_REGDATE"));
+				un.setUserUnRegdate(rs.getDate("USER_UNREGDATE"));
+
+				unRegUserList.add(un);
+			}
+			
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return unRegUserList;
+	}
+
+	
 
 }
