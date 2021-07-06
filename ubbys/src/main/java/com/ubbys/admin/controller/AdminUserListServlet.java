@@ -41,7 +41,7 @@ public class AdminUserListServlet extends HttpServlet {
 
 					userList = service.selectUserList(pagination);
 					
-					System.out.println(userList);
+					//System.out.println(userList);
 				} else {
 					String searchKey = request.getParameter("sk");
 					String searchValue = request.getParameter("sv");

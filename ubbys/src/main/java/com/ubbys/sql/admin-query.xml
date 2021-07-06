@@ -31,13 +31,13 @@
 	(SELECT ROWNUM RNUM, A.* FROM
 	(SELECT * 
 	FROM USER_LIST
-	WHERE USER_NO = ?
+	WHERE user_is_admin='N'
 	</entry>
 	
 	<!-- 검색 -->
 	<entry key="searchUserList2">
 	ORDER BY
-	USER_NO DESC
+	USER_ID DESC
 	) A
 	)
 	WHERE RNUM BETWEEN ? AND ?
