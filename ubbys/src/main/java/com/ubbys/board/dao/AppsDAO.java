@@ -164,6 +164,31 @@ public class AppsDAO extends BoardDAO {
 		return result;
 	}
 	
+	/**
+	 * apps 게시물 수정 DAO
+	 * @param conn
+	 * @param apps
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updateApps(Connection conn, Apps apps) throws Exception {
+		int result = 0;
+		String sql = prop.getProperty("updateApps");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, apps.getPostTitle());
+			pstmt.setString(2, apps.getPostContent());
+			pstmt.setString(3, apps.getAppsIconUrl());
+			pstmt.setString(4, apps.getAppsLink());
+			pstmt.setInt(5, apps.getCategoryId());
+			pstmt.setInt(6, apps.getPostId());
+			result = pstmt.executeUpdate();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
 
 	/**
 	 * apps 태그 삽입 DAO

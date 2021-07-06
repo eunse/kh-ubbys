@@ -31,6 +31,11 @@
 	<entry key="insertApps">
 		INSERT INTO apps VALUES(?, ?, ?, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, ?)
 	</entry>
+	<entry key="updateApps">
+		UPDATE apps SET apps_post_title = ?, apps_post_content = ?, apps_icon = ?, apps_url = ?, 
+		apps_category_id = ? 
+		WHERE apps_post_id = ?
+	</entry>
 	<entry key="insertTags">
 		INSERT INTO tags VALUES(seq_tag_no.NEXTVAL, ?)
 	</entry>

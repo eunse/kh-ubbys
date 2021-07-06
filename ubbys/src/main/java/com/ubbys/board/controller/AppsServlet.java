@@ -145,7 +145,7 @@ public class AppsServlet extends HttpServlet {
 		try {
 			int cp = request.getParameter("cp") == null ? 1 : Integer.parseInt(request.getParameter("cp"));
 			
-			// 새로 작성 
+			// 작성, 수정 
 			if(command.equals("write")) {
 				HttpSession session = request.getSession();
 				int maxSize = 2097152;
@@ -176,7 +176,14 @@ public class AppsServlet extends HttpServlet {
 						apps.setAppsIconUrl(request.getContextPath() + filePath + mpRequest.getFilesystemName(name));
 					}
 				}
-				int postId = service.insertApps(apps, tagList);
+				int postId = 0;
+				boolean flag = false;
+				if(request.getParameter("no") != null) {
+					apps.setPostId(Integer.parseInt(request.getParameter("no")));
+					flag = true; // 수정하는 경우
+				} 
+				postId = service.insertApps(apps, tagList, flag);
+				
 				if(postId > 0) {
 					path = request.getContextPath() + "/apps/view?no=" + postId + "&cp=1";
 
