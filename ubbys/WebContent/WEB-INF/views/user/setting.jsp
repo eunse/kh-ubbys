@@ -40,7 +40,7 @@
       </c:choose>
       <div id="inputFile">
         <input accept="image/*" class="form-control" type="file" id="userImageInput" 
-        name="userImageInput" onchange="loadFile(this,0)" value="${userInfo.userPic}">
+        name="userImageInput" onchange="loadFile(this,0)">
       </div>
     </div>
     <div class="form-floating mb-3">
@@ -60,6 +60,8 @@
     </div>
     <button class="w-100 btn btn-lg btn-primary" type="submit">정보
       수정</button>
+      <%-- 회원정보 입력없이 수정했을 경우 프로필 사진 유지 --%>
+      <input type="hidden" name="userImageInput" value="${userInfo.userPic}">
   </form>
   <div class="col-4 mx-auto mt-10">
     <a href="${contextPath}/user/deleteAccount" class="text-danger">회원
