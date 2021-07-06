@@ -176,7 +176,6 @@ public class QnaController extends HttpServlet {
 					session.setAttribute("modalButtonLink", request.getContextPath()+"/main");
 					response.sendRedirect(request.getContextPath()+"/main");
 				}
-				response.sendRedirect(path);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
