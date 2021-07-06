@@ -40,7 +40,7 @@ public class AdminUserListServlet extends HttpServlet {
 					pagination = service.getPagination(cp);
 
 					userList = service.selectUserList(pagination);
-					
+
 				} else {
 					String searchKey = request.getParameter("sk");
 					String searchValue = request.getParameter("sv");

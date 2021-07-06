@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath" scope="application" value="${pageContext.servletContext.contextPath}"/>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -43,6 +41,7 @@
                   data-bs-toggle="dropdown" aria-expanded="false">
                   <img src="${sessionScope.loginUser.userPic}" width="32" height="32" class="rounded-circle me-2">
                   ${sessionScope.loginUser.userNickname}
+                  
                 </a>
                 <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
                   <li><a class="dropdown-item" href="${contextPath}/user">myPage</a></li>

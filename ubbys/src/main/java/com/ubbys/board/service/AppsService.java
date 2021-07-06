@@ -55,10 +55,15 @@ public class AppsService extends BoardService {
 	 * @return
 	 * @throws Exception
 	 */
-	public int insertApps(Apps apps, List<Tag> tagList) throws Exception {
+	public int insertApps(Apps apps, List<Tag> tagList, boolean flag) throws Exception {
 		Connection conn = getConnection();
 		int result = 0;
-		int postId = dao.nextPostId(conn);
+		int postId = 0;
+		if(apps.getPostId() == 0) {
+			postId = dao.nextPostId(conn);
+		} else {
+			postId = apps.getPostId();
+		}
 		if(postId > 0) {
 			apps.setPostId(postId);
 			String postContent = apps.getPostContent();
@@ -66,11 +71,14 @@ public class AppsService extends BoardService {
 			postContent = postContent.replaceAll("(\r\n|\r|\n|\n\r)", "<br>");
 			apps.setPostContent(postContent);
 			apps.setPostTitle(replaceParameter(apps.getPostTitle()));
-			result = dao.insertApps(conn, apps);
+			if(flag) {
+				result = dao.updateApps(conn, apps);
+			} else {
+				result = dao.insertApps(conn, apps);
+			}			
 			if(result > 0) {
 				commit(conn);
 				for(Tag tag : tagList) {
-					System.out.println("postId:" + postId);
 					result = dao.insertAppsTags(conn, postId, tag.getTagId());
 					if(result == 0) {
 						rollback(conn);

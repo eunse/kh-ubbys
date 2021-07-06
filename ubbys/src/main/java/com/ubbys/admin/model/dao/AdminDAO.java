@@ -96,7 +96,7 @@ public class AdminDAO {
 				
 				User user = new User();
 				
-				user.setUserNo(rs.getInt("USER_NO"));
+				user.setUserNo(rs.getInt("USER_ID"));
 				user.setUserEmail(rs.getString("USER_EMAIL"));
 				user.setUserPw(rs.getString("USER_PW"));
 				user.setUserNickname(rs.getString("USER_NICKNAME"));
@@ -169,6 +169,13 @@ public class AdminDAO {
 	}
 	
 
+	/** 회원 목록 검색용 DAO
+	 * @param conn
+	 * @param pagination
+	 * @param condition
+	 * @return userList
+	 * @throws Exception
+	 */
 	public List<User> selectUserList(Connection conn, Pagination pagination, String condition)  throws Exception{
 		
 		List<User> userList = new ArrayList<User>();
@@ -179,36 +186,34 @@ public class AdminDAO {
 			
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setInt(1, pagination.getUserNo());
-			
 			int startRow = (pagination.getCurrentPage() - 1) * pagination.getLimit() + 1;
 			int endRow = startRow + pagination.getLimit() - 1;
 
-			pstmt.setInt(2, startRow);
-			pstmt.setInt(3, endRow);
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
 
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
 				User user = new User();
 				
-				user.setUserNo(rs.getInt("USER_NO"));
+				user.setUserNo(rs.getInt("USER_ID"));
 				user.setUserEmail(rs.getString("USER_EMAIL"));
 				user.setUserPw(rs.getString("USER_PW"));
 				user.setUserNickname(rs.getString("USER_NICKNAME"));
 				user.setUserRegdate(rs.getDate("USER_REGDATE"));
 				user.setUserIsAdmin(rs.getString("USER_IS_ADMIN"));
 				
-				List<String> filePath = new ArrayList<String>();
-				List<String> fileName = new ArrayList<String>();
+				//List<String> filePath = new ArrayList<String>();
+				//List<String> fileName = new ArrayList<String>();
 				
 //				2) 생성된 리스트에 DB 조회 결과를 추가 
-				filePath.add(rs.getString("FILE_PATH"));
-				fileName.add(rs.getString("FILE_NM"));
+				//filePath.add(rs.getString("FILE_PATH"));
+				//fileName.add(rs.getString("FILE_NM"));
 				
 //				3) 리스트에 board에 set
-				user.setFilePath(filePath);
-				user.setFileName(fileName);
+				//user.setFilePath(filePath);
+				//user.setFileName(fileName);
 				
 				userList.add(user);
 

@@ -32,7 +32,7 @@
 		SELECT * FROM qna_categories
 	</entry>
 	
-	<!-- na 다음 게시글 번호 얻어오기 SQL -->
+	<!-- qna 다음 게시글 번호 얻어오기 SQL -->
 	<entry key="nextQnaPostId">
 		SELECT seq_qna_no.NEXTVAL FROM DUAL
 	</entry>
@@ -44,14 +44,46 @@
 		(?, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, ?)
 	</entry>
 	
-	<!-- 회원 정보 조회(페이징처리 적용) -->
-	<entry key="selectUserList">
-	SELECT * FROM
-	(SELECT ROWNUM RNUM, A.* FROM
-	(SELECT * FROM USER_LIST
-	ORDER BY USER_ID DESC
-	) A
-	)
-	WHERE RNUM BETWEEN ? AND ?
+	<!-- @@@@@@@검색 시작@@@@ -->
+	
+	<!-- qna 검색 조건 일치하는 전체 게시글 수  SQL (검색용) -->
+	<entry key="getSearchCount">
+		SELECT COUNT(*) FROM qna_list WHERE qna_status='Y'
 	</entry>
+	
+	
+	<!-- qna 게시글 목록 검색1 SQL -->
+	<entry key="searchQnaList1">
+		SELECT * FROM
+		    (SELECT ROWNUM RNUM, A.* FROM
+		        (SELECT * FROM qna_list
+			        WHERE qna_status='Y'
+
+	</entry>
+	
+	<!-- qna 게시글 목록 검색2 SQL -->
+	<entry key="searchQnaList2">
+
+			        ORDER BY qna_post_id DESC
+			    ) A
+			)
+		WHERE RNUM BETWEEN ? AND ?
+	</entry>
+
+	<!-- qna 정렬용 게시글 목록 조회 SQL(1) -->
+	<entry key="sortQnaList1">
+		SELECT * FROM
+		    (SELECT ROWNUM RN, R.* FROM
+		        (SELECT * FROM qna_list
+			        WHERE qna_status='Y'
+
+	</entry>
+	<!-- qna 정렬용 게시글 목록 조회 SQL(2) -->
+	<entry key="sortQnaList2">
+
+			    ) R
+			)
+		WHERE RN BETWEEN ? AND ?
+	</entry>
+	<!-- @@@@@@@@검색 끝@@@@@@@@@ -->
 </properties>

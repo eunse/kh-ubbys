@@ -10,6 +10,7 @@ public class UserService {
 	
 	/** 
 	 * 회원가입 Service
+	 * @author 백승훈
 	 * @param user
 	 * @return result
 	 */
@@ -27,6 +28,7 @@ public class UserService {
 	
 	/**
 	 * 회원가입 후 추가정보 기입 Service
+	 * @author 백승훈
 	 * @param user
 	 * @return result
 	 * @throws Exception
@@ -45,6 +47,7 @@ public class UserService {
 	
 	/**
 	 * 로그인 Service
+	 * @author 백승훈
 	 * @param userEmail
 	 * @param userPw
 	 * @return loginUser
@@ -56,6 +59,21 @@ public class UserService {
 		close(conn);
 		return loginUser;
 	}
+	
+	/**
+	 * 사용자 정보 갱신 Service
+	 * @author 백승훈
+	 * @param userNo
+	 * @return loginUser
+	 * @throws Exception
+	 */
+	public User refreshUserInfo(int userNo) throws Exception {
+		Connection conn = getConnection();
+		User loginUser = dao.refreshUserInfo(conn, userNo);
+		close(conn);
+		return loginUser;
+	}
+	
 	/**
 	 * 회원정보 수정 Service
 	 * @param user

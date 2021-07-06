@@ -34,7 +34,7 @@
 				<c:forEach var="u" items="${userList}">
 				<tr>
 					<td><input type="checkbox"></td>
-					<td>1</td>
+					<td>${u.userNo }</td>
 					<td><a href="#">${u.userEmail}</a></td>
 					<td>${u.userNickname}</td>
 					<td><fmt:formatDate var="userRegdate"
@@ -57,7 +57,6 @@
 				</c:forEach>
 			</tbody>
 		</table>
-	</form>
 
 
 
@@ -66,10 +65,10 @@
 		<%-- 검색시 사용될 부분 : 파라미터명 꼭 확인할 것 --%>
 		<c:when test="${ !empty param.sk && !empty param.sv }">
 			<c:set var="pageURL"
-				value="admin/adminUserList?sc=${param.sk }&sv=${param.sv }" />
+				value="admin/adminUser/list?sc=${param.sk }&sv=${param.sv }" />
 		</c:when>
 		<c:otherwise>
-			<c:set var="pageURL" value="admin/adminUserList?" />
+			<c:set var="pageURL" value="admin/adminUser/list?" />
 		</c:otherwise>
 	</c:choose>
 
@@ -111,3 +110,35 @@
 
 </div>
 <jsp:include page="footer.jsp" />
+
+<!-- 정렬 -->
+<form action="#" method="GET" name="sortReqForm">
+  <input type="hidden" name="sk" value="" id="sortKey">
+  <input type="hidden" name="sv" value="" id="sortVal">
+</form>
+
+<script src="${ contextPath }/resources/js/adminUser_check_fn.js"></script>
+
+<script>
+
+keepSearch();
+
+function keepSearch(){
+	
+	var searchKey = "${ param.sk }"
+	var searchValue = "${ param.sv }"
+
+	if(searchValue=="DESC" || searchValue=="ASC"){
+  		$("#sortKey > option").each(function(index, item){
+  			if($(item).val()==searchKey) $(item).prop("selected", true);
+  		});
+	} 
+	else{
+  		$("#searchKey > option").each(function(index, item){
+  			if($(item).val()==searchKey) $(item).prop("selected", true);
+  		});
+  		$("#searchValue").val(searchValue);
+	}
+}
+
+</script>

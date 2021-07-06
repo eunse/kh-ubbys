@@ -68,13 +68,19 @@ public class AdminService {
 //		condition 양 끝에는 띄어쓰기를 반드시 추가하여
 //		SQL 구문이 연속되서 작성되는 것을 방지함
 		switch (searchKey) {
-		case "email":
-			condition = "AND USER_EMAIL LIKE '%" + searchValue + "%'  ";
+		case "userEmail":
+			condition = " AND USER_EMAIL LIKE '%" + searchValue + "%'  ";
 			break;
 			
-		case "nickname":
-			condition = "AND USER_NICKNAME LIKE '%" + searchValue + "%'  ";
+		case "userNickname":
+			condition = " AND USER_NICKNAME LIKE '%" + searchValue + "%'  ";
 			break;
+			
+		case "sortYoung":
+			condition = " ORDER BY user_id " + searchValue ; break;
+			
+		case "sortOld":
+			condition = " ORDER BY user_id " + searchValue ; break;	
 		}
 		
 		return condition;

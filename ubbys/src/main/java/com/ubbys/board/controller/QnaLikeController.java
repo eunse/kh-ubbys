@@ -30,8 +30,6 @@ public class QnaLikeController extends HttpServlet {
 		int qnaPostId = Integer.parseInt(request.getParameter("qnaPostId"));
 		int userId = ((User) request.getSession().getAttribute("loginUser")).getUserNo();
 
-		int cp = request.getParameter("cp") == null ? 1 : Integer.parseInt(request.getParameter("cp"));
-
 		QnaService service = new QnaService();
 		// HttpSession session = request.getSession();
 
@@ -61,6 +59,8 @@ public class QnaLikeController extends HttpServlet {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMsg", "알 수 없는 오류 발생");
+			request.getRequestDispatcher("/WEB-INF/views/common/error.jsp").forward(request, response);
 		}
 	}
 

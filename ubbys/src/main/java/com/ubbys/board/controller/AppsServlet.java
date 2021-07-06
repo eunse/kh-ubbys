@@ -70,13 +70,35 @@ public class AppsServlet extends HttpServlet {
 				view = request.getRequestDispatcher("/WEB-INF/views/board/apps_view.jsp");
 				view.forward(request, response);
 			}
-			// 작성
+			// 작성&수정
 			else if(command.equals("write")) {
 				List<Category> category = service.selectCategoryList(boardTableName);
 				request.setAttribute("category", category);
 				path = "/WEB-INF/views/board/apps_write.jsp";
 				view = request.getRequestDispatcher(path);
-				view.forward(request, response);
+				
+				if(request.getParameter("no") != null) {
+					int postId = Integer.parseInt(request.getParameter("no"));
+					Apps apps = new AppsService().selectApps(postId);
+					HttpSession session = request.getSession();
+					int loginUserNo = ((User)session.getAttribute("loginUser")).getUserNo();
+					int author = apps.getUserNo();
+					
+					if(loginUserNo != author) {
+						modalText = "잘못된 접근입니다.";
+						modalTitle = "잘못된 접근";
+						session.setAttribute("modalTitle", modalTitle);
+						session.setAttribute("modalText", modalText);
+						response.sendRedirect(request.getContextPath());
+					} else {
+						apps.setPostContent(apps.getPostContent().replaceAll("<br>", "\r\n"));
+						request.setAttribute("apps", apps);
+						view.forward(request, response);
+					}
+				} else {
+					view.forward(request, response);
+				}
+
 			}
 			// 임시 태그 목록 조회 (ajax)
 			else if(command.equals("tag")) {
@@ -93,8 +115,6 @@ public class AppsServlet extends HttpServlet {
 				if(loginUserNo != null) {
 					int userNo = ((User)session.getAttribute("loginUser")).getUserNo();
 					int author = service.selectAuthor(postId);
-					System.out.println("userNo:" + userNo);
-					System.out.println("author:" + author);
 					if(userNo != author) {
 						path = request.getContextPath();
 					} else {
@@ -125,7 +145,7 @@ public class AppsServlet extends HttpServlet {
 		try {
 			int cp = request.getParameter("cp") == null ? 1 : Integer.parseInt(request.getParameter("cp"));
 			
-			// 새로 작성 
+			// 작성, 수정 
 			if(command.equals("write")) {
 				HttpSession session = request.getSession();
 				int maxSize = 2097152;
@@ -156,7 +176,14 @@ public class AppsServlet extends HttpServlet {
 						apps.setAppsIconUrl(request.getContextPath() + filePath + mpRequest.getFilesystemName(name));
 					}
 				}
-				int postId = service.insertApps(apps, tagList);
+				int postId = 0;
+				boolean flag = false;
+				if(request.getParameter("no") != null) {
+					apps.setPostId(Integer.parseInt(request.getParameter("no")));
+					flag = true; // 수정하는 경우
+				} 
+				postId = service.insertApps(apps, tagList, flag);
+				
 				if(postId > 0) {
 					path = request.getContextPath() + "/apps/view?no=" + postId + "&cp=1";
 
