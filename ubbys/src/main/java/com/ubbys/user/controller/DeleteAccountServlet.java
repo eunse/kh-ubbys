@@ -29,7 +29,7 @@ public class DeleteAccountServlet extends HttpServlet {
 		int userNo = ((User) session.getAttribute("loginUser")).getUserNo();
 		//System.out.println(userNo);
 		try {
-			int result = new UserService().delectAccount(currentPw, userNo);
+			int result = new UserService().deleteAccount(currentPw, userNo);
 			
 			String path = null;
 
