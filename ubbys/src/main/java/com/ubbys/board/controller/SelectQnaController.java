@@ -96,7 +96,7 @@ public class SelectQnaController extends HttpServlet {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			request.setAttribute("errorMsg", "조회 중 오류가 발생했습니다.");
+			request.setAttribute("errorMsg", "목록 조회 중 오류가 발생했습니다.");
 			request.getRequestDispatcher("/WEB-INF/views/common/error.jsp").forward(request, response);
 		}
 	}

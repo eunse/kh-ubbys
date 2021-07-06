@@ -36,6 +36,8 @@ public class QnaController extends HttpServlet {
 			// qna 글 작성 입력페이지 이동 Controller
 			if(command.equals("Write")){
 				
+				if(request.getSession().getAttribute("loginUser")==null) throw new Exception();
+				
 				List<QnaCategory> qnaCategory = service.selectQnaCategory();
 				request.setAttribute("qnaCategory", qnaCategory);
 				
@@ -179,6 +181,8 @@ public class QnaController extends HttpServlet {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMsg", "이용할 수 없는 페이지입니다.");
+			request.getRequestDispatcher("/WEB-INF/views/common/error.jsp").forward(request, response);
 		}
 	}
 
