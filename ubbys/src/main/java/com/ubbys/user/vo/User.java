@@ -1,6 +1,10 @@
 package com.ubbys.user.vo;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.List;
+
+import com.sun.xml.internal.ws.api.message.Attachment;
 
 public class User {
 	private int userNo; // 회원 번호
@@ -13,6 +17,15 @@ public class User {
 	private String userLink; // (선택항목) 회원 웹사이트
 	private String userInterest; // (선택항목) 회원 관심분야
 	private String userIntroduce; // (선택항목) 회원 자기소개
+	
+//	목록 조회 시 하나만 조회되지만,
+//	상세 조회시 여러개가 조회 될 수 있기 때문에 List로 선언
+	private List<String> filePath;
+	private List<String> fileName;
+	
+	
+//	삽입 시 필요한 필드 추가
+	private int categoryCode;
 	
 	public User() {}
 	
@@ -47,6 +60,18 @@ public class User {
 		this.userLink = userLink;
 		this.userInterest = userInterest;
 		this.userIntroduce = userIntroduce;
+	}
+	
+	
+
+	public User(int userNo, String userEmail, String userNickname, Date userRegdate,
+			String userIsAdmin) {
+		super();
+		this.userNo = userNo;
+		this.userEmail = userEmail;
+		this.userNickname = userNickname;
+		this.userRegdate = userRegdate;
+		this.userIsAdmin = userIsAdmin;
 	}
 
 	public int getUserNo() {
@@ -110,12 +135,43 @@ public class User {
 		this.userIntroduce = userIntroduce;
 	}
 
+	public List<String> getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(List<String> filePath) {
+		this.filePath = filePath;
+	}
+
+	public List<String> getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(List<String> fileName) {
+		this.fileName = fileName;
+	}
+
+	public int getCategoryCode() {
+		return categoryCode;
+	}
+
+	public void setCategoryCode(int categoryCode) {
+		this.categoryCode = categoryCode;
+	}
+
 	@Override
 	public String toString() {
 		return "User [userNo=" + userNo + ", userEmail=" + userEmail + ", userPw=" + userPw + ", userNickname="
 				+ userNickname + ", userRegdate=" + userRegdate + ", userIsAdmin=" + userIsAdmin + ", userPic="
 				+ userPic + ", userLink=" + userLink + ", userInterest=" + userInterest + ", userIntroduce="
-				+ userIntroduce + "]";
+				+ userIntroduce + ", filePath=" + filePath + ", fileName=" + fileName + ", categoryCode=" + categoryCode
+				+ "]";
 	}
+
+	
+
+	
+
+	
 	
 }

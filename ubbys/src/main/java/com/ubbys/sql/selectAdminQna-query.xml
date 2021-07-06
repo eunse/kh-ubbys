@@ -44,4 +44,14 @@
 		(?, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, ?)
 	</entry>
 	
+	<!-- 회원 정보 조회(페이징처리 적용) -->
+	<entry key="selectUserList">
+	SELECT * FROM
+	(SELECT ROWNUM RNUM, A.* FROM
+	(SELECT * FROM USER_LIST
+	ORDER BY USER_ID DESC
+	) A
+	)
+	WHERE RNUM BETWEEN ? AND ?
+	</entry>
 </properties>

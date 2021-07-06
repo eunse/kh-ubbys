@@ -49,8 +49,8 @@
           </button>
           <div class="collapse" id="user-collapse">
             <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-              <li><a href="#" class="link-dark rounded">회원 목록</a></li>
-              <li><a href="#" class="link-dark rounded">탈퇴 회원 목록</a></li>
+              <li><a href="/ubbys/adminUser/list" class="link-dark rounded">회원 목록</a></li>
+              <li><a href="/ubbys/adminUser/UnregList" class="link-dark rounded">탈퇴 회원 목록</a></li>
             </ul>
           </div>
         </li>

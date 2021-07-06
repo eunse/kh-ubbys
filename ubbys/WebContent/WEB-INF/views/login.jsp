@@ -19,7 +19,7 @@
 
         <div class="checkbox mb-3">
           <label>
-            <input type="checkbox" name="saveId" id="saveId"> ID 기억하기
+            <input type="checkbox" name="saveId" id="saveId"> Email 기억하기
           </label>
         </div>
         <button class="w-100 btn btn-lg btn-primary" type="submit">로그인</button>
