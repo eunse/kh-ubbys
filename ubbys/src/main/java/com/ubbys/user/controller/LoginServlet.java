@@ -38,9 +38,8 @@ public class LoginServlet extends HttpServlet {
 			HttpSession session = request.getSession();
 			if(loginUser != null) {
 				session.setAttribute("loginUser", loginUser);
-				session.setMaxInactiveInterval(3600);
+//				session.setMaxInactiveInterval(3600);
 
-				
 				Cookie cookie = new Cookie("saveId", userEmail);
 				if(saveId != null) {
 					cookie.setMaxAge(60*60*24*7); // 일주일
