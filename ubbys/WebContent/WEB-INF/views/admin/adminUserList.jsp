@@ -8,7 +8,7 @@
 <jsp:include page="header.jsp" />
 <div class="container py-5">
 	<h2>회원관리</h2>
-	<form>
+	<form action="/ubbys/adminUser/list" method="GET" name="searchForm" id="searchForm">
 		<div class="input-group mb-3 w-50">
 			<select class="form-select" id="searchUserCond" name="searchUserCond">
 				<option selected>검색 조건</option>
@@ -37,14 +37,13 @@
 					<td>1</td>
 					<td><a href="#">${u.userEmail}</a></td>
 					<td>${u.userNickname}</td>
-					<td><fmt:formatDate var="createDate"
+					<td><fmt:formatDate var="userRegdate"
 							value="${u.userRegdate}" pattern="yyyy-MM-dd" /> <fmt:formatDate
 							var="today" value="<%=new java.util.Date()%>"
 							pattern="yyyy-MM-dd" /> <c:choose>
 							<%-- 글 작성일이 오늘이 아닐 경우 --%>
-							<c:when test="${createDate != today}">
-		                                       ${createDate}
-		                                    </c:when>
+							<c:when test="${createDate != today}"> ${createDate}
+		                    </c:when>
 
 
 							<%-- 글 작성일이 오늘일 경우 --%>
