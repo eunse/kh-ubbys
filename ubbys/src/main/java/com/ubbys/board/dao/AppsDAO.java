@@ -103,6 +103,7 @@ public class AppsDAO extends BoardDAO {
 				apps.setPostLike(rs.getInt("apps_like"));
 				apps.setUserName(rs.getString("user_nickname"));
 				apps.setAppsLink(rs.getString("apps_url"));
+				apps.setUserNo(rs.getInt("user_id"));
 			}
 		} finally {
 			close(rs);
