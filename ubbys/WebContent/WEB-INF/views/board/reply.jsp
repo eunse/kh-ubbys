@@ -134,7 +134,7 @@ function selectReplyList(){
               var li = $("<li>").addClass("list-group-item");
     
               var div1 = $("<div>").addClass("d-flex justify-content-between align-items-center").attr("id", "div1");
-              var lastDiv = $("<div>").addClass("ms-2").text(item.replyContent).attr("id", "lastDiv");
+              var lastDiv = $("<div>").addClass("ms-2").html(item.replyContent).attr("id", "lastDiv");
               var div2 = $("<div>").addClass("ms-2 me-auto");
     
               var div3 = $("<div>").addClass("fw-bold");
