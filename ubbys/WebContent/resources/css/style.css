@@ -131,7 +131,7 @@ footer {
 .apps-link {
   text-decoration: none;
 }
-.apps-image__preview {
+.apps-image__preview, .user-image__preview {
   display: block;
   width: 125px;
   height: 125px;
@@ -161,4 +161,12 @@ footer {
   .board-meta-like p, .board-meta-readcount p {
     display: inline;
   }
+}
+
+.err-div{
+	margin-top: 5rem;
+}
+.err-msg>h3, h2{
+	font-weight: 500;
+	color: rgb(80,80,80);
 }

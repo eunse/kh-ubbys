@@ -44,7 +44,6 @@
 		(?, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, ?)
 	</entry>
 	
-	
 	<!-- @@@@@@@검색 시작@@@@ -->
 	
 	<!-- qna 검색 조건 일치하는 전체 게시글 수  SQL (검색용) -->
@@ -87,5 +86,4 @@
 		WHERE RN BETWEEN ? AND ?
 	</entry>
 	<!-- @@@@@@@@검색 끝@@@@@@@@@ -->
-	
 </properties>

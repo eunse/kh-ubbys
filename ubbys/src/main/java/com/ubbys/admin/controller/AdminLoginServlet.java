@@ -54,16 +54,16 @@ public class AdminLoginServlet extends HttpServlet {
 				
 				System.out.println("로그인 성공");
 				
+				response.sendRedirect("adminMain");
 							
 			} else {
 				session.setAttribute("modalTitle", "로그인 실패");
 				session.setAttribute("modalText", "아이디 또는 비밀번호가 일치하지 않습니다.");
 				System.out.println("로그인 실패");
-				response.sendRedirect("adminLogin");
+				response.sendRedirect("adminMain");
 				System.out.println(loginUser);
 			}	
 			
-			response.sendRedirect("adminMain");
 			
 		} catch(Exception err) {
 			

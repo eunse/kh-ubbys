@@ -50,7 +50,6 @@ public class LoginServlet extends HttpServlet {
 				}
 				cookie.setPath(request.getContextPath());
 				response.addCookie(cookie);
-				System.out.println("로그인 성공");
 				// 회원가입 페이지를 통해 도달했다면 추가 입력 화면으로 이동
 				if(request.getAttribute("isFirstIn") == null) {
 					response.sendRedirect(request.getContextPath());
@@ -63,7 +62,6 @@ public class LoginServlet extends HttpServlet {
 			} else {
 				session.setAttribute("modalTitle", "로그인 실패");
 				session.setAttribute("modalText", "아이디 또는 비밀번호가 일치하지 않습니다.");
-				System.out.println("로그인 실패");
 				response.sendRedirect("login");
 			}			
 		} catch(Exception err) {
