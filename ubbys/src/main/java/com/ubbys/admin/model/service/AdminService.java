@@ -4,7 +4,6 @@ import static com.ubbys.common.JDBCTemplate.*;
 
 import java.sql.Connection;
 import java.util.List;
-import java.util.Map;
 
 import com.ubbys.admin.model.dao.AdminDAO;
 import com.ubbys.board.vo.Pagination;
@@ -126,6 +125,16 @@ public class AdminService {
 		
 		
 		return userList;
+	}
+
+	public User selectUser(String userEmail) throws Exception {
+		Connection conn = getConnection();
+
+		User user = dao.selectUser(conn, userEmail);
+
+		close(conn);
+
+		return user;
 	}
 
 }

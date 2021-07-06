@@ -7,11 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import com.ubbys.board.vo.Pagination;
@@ -290,6 +287,44 @@ public class AdminDAO {
 		}
 
 		return result;
+	}
+
+	/**
+	 * 회원 정보 조회
+	 * @param conn
+	 * @param userEmail
+	 * @return
+	 */
+	public User selectUser(Connection conn, String userEmail) throws Exception {
+		User user = null;
+
+		String sql = prop.getProperty("selectUser");
+		
+		try {
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, userEmail);
+			
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				user = new User();
+				
+				user.setUserNo(rs.getInt("USER_ID"));
+				user.setUserEmail(rs.getString("USER_EMAIL"));
+				user.setUserPw(rs.getString("USER_PW"));
+				user.setUserNickname(rs.getString("USER_NICKNAME"));
+				user.setUserRegdate(rs.getDate("USER_REGDATE"));
+				user.setUserIsAdmin(rs.getString("USER_IS_ADMIN"));
+			}
+			
+		} finally {
+			close(rs);
+			close(stmt);
+		}
+
+		return user;
 	}
 
 }
