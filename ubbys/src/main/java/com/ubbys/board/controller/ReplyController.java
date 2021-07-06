@@ -61,8 +61,9 @@ public class ReplyController extends HttpServlet {
 			
 			else if(command.equals("UpdateReply")) { // 댓글 수정
 				int replyId = Integer.parseInt(request.getParameter("replyId"));
+				System.out.println("댓글 번호 : " + replyId);
 				String replyContent = request.getParameter("replyContent");
-				
+				System.out.println("수정된 댓글 내용: " + replyContent);
 				Reply reply = new Reply();
 				
 				reply.setReplyId(replyId);
