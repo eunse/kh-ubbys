@@ -1,6 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<style>
+    .qna-reply-content .updateArea {
+      display: none;
+    }
+</style>
+
+
 <div id="reply-area ">
 <%-- 회원번호 : ${loginUser.userNo} <br>
 목록 : ${rList } <br>
@@ -21,7 +28,7 @@
               <c:if test="${reply.userId == sessionScope.loginUser.userNo}">
               <ul class="reply-action list-inline me-2" id="replyBtnArea">
                 <li class="list-inline-item">
-                  <button class="btn btn-primary btn-sm ml-1" id="updateReply" onclick="showUpdateReply(${reply.replyId}, this)">수정</button>
+                  <button class="btn btn-primary btn-sm ml-1 showUpdateReply" id="showUpdateReply" onclick="showUpdateReply()">수정</button>
                 </li>
                 <li class="list-inline-item">
                   <button class="btn btn-primary btn-sm ml-1" id="deleteReply" onclick="deleteReply(${reply.replyId})">삭제</button>
@@ -35,7 +42,7 @@
             <div class="ms-2" id="lastDiv">${reply.replyContent }</div>
           </li>
           <%-- 수정창 시작 --%>
-          <li class="list-group-item">
+          <li class="list-group-item updateArea">
             <div class="d-flex justify-content-between align-items-center">
               <div class="ms-2 me-auto">
                 <div class="fw-bold">
@@ -150,7 +157,7 @@ function selectReplyList(){
                  var ul = $("<ul>").addClass("reply-action list-inline me-2").attr("id", "replyBtnArea");
       
                  var childLi1 = $("<li>").addClass("list-inline-item");
-                 var showUpdate = $("<button>").addClass("btn btn-primary btn-sm ml-1").text("수정").attr("id", "updateReply").attr("onclick", "showUpdateReply()");
+                 var showUpdate = $("<button>").addClass("btn btn-primary btn-sm ml-1 showUpdateReply").text("수정").attr("id", "showUpdateReply").attr("onclick", "showUpdateReply()");
                  childLi1.append(showUpdate);
       
                  var childLi2 = $("<li>").addClass("list-inline-item");
@@ -167,12 +174,12 @@ function selectReplyList(){
     
               
               
-              var listButton = $("<button>").addClass("btn btn-outline-primary").text("목록갱신(테스트용)").attr("onclick", "selectReplyList()");
+              /* var listButton = $("<button>").addClass("btn btn-outline-primary").text("목록갱신(테스트용)").attr("onclick", "selectReplyList()"); */
               
               li.append(div1).append(lastDiv);
               
             //수정창 시작-----------------------------------------------------------------------------------------
-              var updateLi = $("<li>").addClass("list-group-item").attr("id", "updateLi");
+              var updateLi = $("<li>").addClass("list-group-item updateArea").attr("id", "updateLi");
               var uDivTop = $("<div>").addClass("d-flex justify-content-between align-items-center");
 
               var uDivch = $("<div>").addClass("ms-2 me-auto");
@@ -213,6 +220,12 @@ function selectReplyList(){
      
     });
 }
+// ---------------------------
+// 댓글 수정창 여닫
+$('.showUpdateReply').click(function(){
+    $(this).parent().parent().parent().parent().next(".updateArea").slideToggle(200)
+  })
+
 // ---------------------------
 // 댓글 수정 기능
 function updateReply(replyId, el){
