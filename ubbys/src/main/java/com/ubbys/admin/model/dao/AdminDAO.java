@@ -7,11 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import com.ubbys.board.vo.Pagination;
@@ -297,46 +294,42 @@ public class AdminDAO {
 		return result;
 	}
 
-	
-	/** 
+	/**
+	 * 회원 정보 조회
 	 * @param conn
-	 * @param pagination
-	 * @param condition
+	 * @param userEmail
 	 * @return
-	 * @throws Exception
 	 */
-	public List<User> selectSortUserList(Connection conn, Pagination pagination, String condition) throws Exception {
+	public User selectUser(Connection conn, String userEmail) throws Exception {
+		User user = null;
+
+		String sql = prop.getProperty("selectUser");
 		
-		List<User> userList = new ArrayList<User>();
-		String sql = prop.getProperty("sortUserList1")+condition+prop.getProperty("sortUserList2");
 		try {
+			
 			pstmt = conn.prepareStatement(sql);
 			
-			int startRow = (pagination.getCurrentPage() - 1) * pagination.getLimit() + 1;
-			int endRow = startRow + pagination.getLimit() - 1;
-			pstmt.setInt(1, startRow);
-			pstmt.setInt(2, endRow);
-
+			pstmt.setString(1, userEmail);
+			
 			rs = pstmt.executeQuery();
 
-			while (rs.next()) {
+			if (rs.next()) {
+				user = new User();
 				
-				User u = new User();
-				
-				u.setUserNo(rs.getInt("USER_ID"));
-				u.setUserEmail(rs.getString("USER_EMAIL"));
-				u.setUserPw(rs.getString("USER_PW"));
-				u.setUserNickname(rs.getString("USER_NICKNAME"));
-				u.setUserRegdate(rs.getDate("USER_REGDATE"));
-				u.setUserIsAdmin(rs.getString("USER_IS_ADMIN"));
-
-				userList.add(u);
+				user.setUserNo(rs.getInt("USER_ID"));
+				user.setUserEmail(rs.getString("USER_EMAIL"));
+				user.setUserPw(rs.getString("USER_PW"));
+				user.setUserNickname(rs.getString("USER_NICKNAME"));
+				user.setUserRegdate(rs.getDate("USER_REGDATE"));
+				user.setUserIsAdmin(rs.getString("USER_IS_ADMIN"));
 			}
+			
 		} finally {
 			close(rs);
-			close(pstmt);
+			close(stmt);
 		}
-		return userList;
+
+		return user;
 	}
 
 }

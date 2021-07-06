@@ -4,7 +4,6 @@ import static com.ubbys.common.JDBCTemplate.*;
 
 import java.sql.Connection;
 import java.util.List;
-import java.util.Map;
 
 import com.ubbys.admin.model.dao.AdminDAO;
 import com.ubbys.board.vo.Pagination;
@@ -134,25 +133,14 @@ public class AdminService {
 		return userList;
 	}
 
-	
-	/** 회원관리 목록 조회 Service (정렬용)
-	 * @param pagination
-	 * @param searchKey
-	 * @param searchValue
-	 * @return userList
-	 * @throws Exception
-	 */
-	public List<User> getUserSoltList(Pagination pagination, String searchKey, String searchValue) throws Exception {
-		
+	public User selectUser(String userEmail) throws Exception {
 		Connection conn = getConnection();
-		
-		String condition = createCondition(searchKey, searchValue);
-		
-		List<User> userList = dao.selectSortUserList(conn, pagination, condition);
-		
+
+		User user = dao.selectUser(conn, userEmail);
+
 		close(conn);
-		
-		return userList;
+
+		return user;
 	}
 
 }

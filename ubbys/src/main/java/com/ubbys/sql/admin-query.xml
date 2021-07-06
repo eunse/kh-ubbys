@@ -4,57 +4,49 @@
 
 	<!-- 관리자 로그인 -->
 	<entry key="adminLogin">
-	SELECT user_id, user_email, user_nickname, user_regdate, user_is_admin, 
-		       user_pic, user_link, user_interest, user_introduce 
-	FROM "USER"
-	LEFT JOIN user_info USING(user_id) 
-	WHERE user_email =? AND user_pw = ? AND user_is_admin = 'Y'
+		SELECT user_id, user_email, user_nickname, user_regdate, user_is_admin,
+		user_pic, user_link, user_interest, user_introduce
+		FROM "USER"
+		LEFT JOIN user_info USING(user_id)
+		WHERE user_email =? AND user_pw = ? AND user_is_admin = 'Y'
 	</entry>
-	
-	<!-- 회원 조회  -->
+
+	<!-- 회원 조회 -->
 	<entry key="selectUserList">
-	SELECT user_id, user_email, user_nickname, user_regdate, user_is_admin, 
-		       user_pic, user_link, user_interest, user_introduce
-	FROM "USER"
-	LEFT JOIN user_info USING(user_id) 
+		SELECT user_id, user_email, user_nickname, user_regdate, user_is_admin,
+		user_pic, user_link, user_interest, user_introduce
+		FROM "USER"
+		LEFT JOIN user_info USING(user_id)
 	</entry>
 
 	<!-- 유저 수 조회 SQL -->
 	<entry key="getUserCount">
-		SELECT COUNT(*) FROM user_list 
+		SELECT COUNT(*) FROM user_list
 		WHERE user_is_admin='N'
 	</entry>
-	
+
 	<!-- 검색 -->
 	<entry key="searchUserList1">
-	SELECT * FROM 
-	(SELECT ROWNUM RNUM, A.* FROM
-	(SELECT * 
-	FROM USER_LIST
-	WHERE user_is_admin='N'
+		SELECT * FROM
+		(SELECT ROWNUM RNUM, A.* FROM
+		(SELECT *
+		FROM USER_LIST
+		WHERE USER_NO = ?
 	</entry>
-	
+
 	<!-- 검색 -->
 	<entry key="searchUserList2">
-	ORDER BY
-	USER_ID DESC
-	) A
-	)
-	WHERE RNUM BETWEEN ? AND ?
+		ORDER BY
+		USER_NO DESC
+		) A
+		)
+		WHERE RNUM BETWEEN ? AND ?
 	</entry>
-	
-	
-	<!-- 정렬 -->
-	<entry key="sortUserList1">
-		SELECT * FROM
-			(SELECT ROWNUM RNUM, A.* FROM
-				(SELECT * FROM USER_LIST
-				WHERE user_is_admin='N'
-	</entry>
-	<entry key="sortUserList2">
-				) A
-			)
-		WHERE RNUM BETWEEN ? AND?
+
+	<!-- 관리자용 회원정보 조회 -->
+	<entry key="selectUser">
+		SELECT * FROM "USER"
+		WHERE USER_EMAIL = ?
 	</entry>
 
 </properties>

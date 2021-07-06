@@ -8,26 +8,16 @@
 <jsp:include page="header.jsp" />
 <div class="container py-5">
 	<h2>회원관리</h2>
-		<div class="row">
-          <div class="col-xs-12 col-sm-4">
-            <select class="form-select" id="sortKey">
-              <option selected value="sortYoung">최근 가입순</option>
-              <option value="sortOld">오래된 가입순</option>
-            </select>
-          </div>
-          <div class="col-xs-12 col-sm-4 w-50">
-            <form action="${contextPath }/adminUser/list" method="GET" id="userSearchForm">
-              <div class="input-group mb-3" class="qna-search-area">
-      			<select class="form-select" id="searchKey" name="sk">
-      				<option selected>검색 조건</option>
-      				<option value="userEmail">이메일</option>
-      				<option value="userNickname">닉네임</option>
-      			</select> 
-                <input type="text" class="form-control" placeholder="닉네임 혹은 이메일로 검색하세요" name="sv" id="searchValue">
-    			<button class="btn btn-outline-secondary" type="submit" id="searchUser">검색</button>
-              </div>
-            </form>
-          </div>
+	<form action="/ubbys/adminUser/list" method="GET" name="searchForm" id="searchForm">
+		<div class="input-group mb-3 w-50">
+			<select class="form-select" id="searchUserCond" name="searchUserCond">
+				<option selected>검색 조건</option>
+				<option value="userEmail">이메일</option>
+				<option value="userNickname">닉네임</option>
+			</select> <input type="text" class="form-control"
+				placeholder="닉네임 혹은 이메일로 검색하세요">
+			<button class="btn btn-outline-secondary" type="button"
+				id="searchUser" name="searchUser">검색</button>
 		</div>
 		<table class="table table-striped table-hover w-100">
 			<thead>
@@ -47,14 +37,13 @@
 					<td>${u.userNo }</td>
 					<td><a href="#">${u.userEmail}</a></td>
 					<td>${u.userNickname}</td>
-					<td><fmt:formatDate var="createDate"
+					<td><fmt:formatDate var="userRegdate"
 							value="${u.userRegdate}" pattern="yyyy-MM-dd" /> <fmt:formatDate
 							var="today" value="<%=new java.util.Date()%>"
 							pattern="yyyy-MM-dd" /> <c:choose>
 							<%-- 글 작성일이 오늘이 아닐 경우 --%>
-							<c:when test="${createDate != today}">
-		                                       ${createDate}
-		                                    </c:when>
+							<c:when test="${createDate != today}"> ${createDate}
+		                    </c:when>
 
 
 							<%-- 글 작성일이 오늘일 경우 --%>
@@ -62,7 +51,7 @@
 								<fmt:formatDate value="${u.userRegdate}" pattern="yyyy-MM" />
 							</c:otherwise>
 						</c:choose></td>
-					<td><a href="/ubbys/user/update" class="btn btn-primary btn-sm">수정</a> <a
+					<td><a href="/ubbys/adminUpdatePage?userEmail=${u.userEmail}" class="btn btn-primary btn-sm">수정</a> <a
 						href="#" class="btn btn-danger btn-sm">삭제</a></td>
 				</tr>
 				</c:forEach>
