@@ -21,6 +21,10 @@ public class Pagination {
 		makePagination();
 	}
 
+	public Pagination(int cp, int listCount2, int userNo, String userNickname) {
+		// TODO Auto-generated constructor stub
+	}
+
 	public int getCurrentPage() {
 		return currentPage;
 	}
@@ -121,5 +125,10 @@ public class Pagination {
 		if(nextPage > maxPage) {
 			nextPage = maxPage;
 		}
+	}
+
+	public int getUserNo() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
