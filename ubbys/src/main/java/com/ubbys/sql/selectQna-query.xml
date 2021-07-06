@@ -70,5 +70,11 @@
 			)
 		WHERE RN BETWEEN ? AND ?
 	</entry>
+	
+	
+	<!-- qna 목록에 좋아요 여부 표시 -->
+	<entry key="getLikeFlag">
+		SELECT DECODE(COUNT(*), 1, 1, 0, 0) FLAG FROM qna_likes WHERE qna_post_id=? AND user_id=?
+	</entry>
 
 </properties>

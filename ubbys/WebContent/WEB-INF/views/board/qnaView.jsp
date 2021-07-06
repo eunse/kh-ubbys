@@ -12,7 +12,7 @@
           <p>${ qna.userNickname }</p>
         </div>
         <div class="col-md-2 gap-3 mb-sm-3">
-          <button type="button" class="btn btn-outline-danger btn-lg w-100 float-end" id="qna-like-btn">
+          <button type="button" class="btn btn-outline-secondary btn-lg w-100 float-end" id="qna-like-btn">
           	<i class="bi bi-heart me-2" id="qna-like"></i><span id="qna-like-count">${ qna.qnaLike }</span>
           </button>
         </div>

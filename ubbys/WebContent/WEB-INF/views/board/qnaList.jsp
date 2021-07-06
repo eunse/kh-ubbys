@@ -59,7 +59,14 @@
                   </div>
                   <div class="board-meta d-flex align-self-center">
                     <div class="board-meta-like" id="qnaList-like-area">
-                      <i class="bi bi-heart"></i>
+                    <c:choose>
+                      <c:when test="${ qna.likeFlag }">
+                        <i class="bi bi-heart-fill"></i>
+                      </c:when>
+                      <c:otherwise>
+                        <i class="bi bi-heart"></i>
+                      </c:otherwise>
+                    </c:choose>
                       <p class="mb-0">${ qna.qnaLike }</p>
                     </div>
                     <div class="board-meta-readcount">
