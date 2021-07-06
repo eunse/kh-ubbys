@@ -35,22 +35,22 @@ public class ChangePwServlet extends HttpServlet {
 		try {
 			int result = new UserService().changePw(currentPw, newPw, userNo);
 
-			String alertTitle = null;
-			String alertMsg = null;
+			String modalTitle = null;
+			String modalText = null;
 
 			if (result > 0) {
-				alertTitle = "비밀번호 변경 성공";
-				alertMsg = "비밀번호 변경이 완료되었습니다.";
+				modalTitle = "비밀번호 변경 성공";
+				modalText = "비밀번호 변경이 완료되었습니다.";
 //				System.out.println("비번변경 성공");
 			} else {
-				alertTitle = "비밀번호 변경 실패";
-				alertMsg = "비밀번호 변경 중 문제가 발생했습니다. \n문제가 지속될 경우 고객센터 문의 바랍니다.";
+				modalTitle = "비밀번호 변경 실패";
+				modalText = "비밀번호 변경 중 문제가 발생했습니다. \n문제가 지속될 경우 고객센터 문의 바랍니다.";
 //				System.out.println("비번변경 실패");
 				
 			}
 			session = request.getSession();
-			session.setAttribute("alertTitle", alertTitle);
-			session.setAttribute("alertMsg", alertMsg);
+			session.setAttribute("modalTitle", modalTitle);
+			session.setAttribute("modalText", modalText);
 
 			response.sendRedirect("update");
 

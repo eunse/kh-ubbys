@@ -33,26 +33,26 @@ public class DeleteAccountServlet extends HttpServlet {
 			
 			String path = null;
 
-			String alertTitle = null;
-			String alertMsg = null;
+			String modalTitle = null;
+			String modalText = null;
 
 			if (result > 0) {
-				alertTitle = "회원 탈퇴 성공";
-				alertMsg = "회원 탈퇴가 완료되었습니다.";
+				modalTitle = "회원 탈퇴 성공";
+				modalText = "회원 탈퇴가 완료되었습니다.";
 //				System.out.println(alertTitle);
 //				path = request.getContextPath()+"/main";
 				path = request.getContextPath();
 				session.invalidate();
 
 			} else {
-				alertTitle = "회원 탈퇴 실패";
-				alertMsg = "회원 탈퇴 중 문제가 발생했습니다. \n문제가 지속될 경우 고객센터 문의 바랍니다.";
+				modalTitle = "회원 탈퇴 실패";
+				modalText = "회원 탈퇴 중 문제가 발생했습니다. \n문제가 지속될 경우 고객센터 문의 바랍니다.";
 //				System.out.println(alertTitle);
 				path = "deleteAccount";
 			}
 			session = request.getSession();
-			session.setAttribute("alertTitle", alertTitle);
-			session.setAttribute("alertMsg", alertMsg);
+			session.setAttribute("modalTitle", modalTitle);
+			session.setAttribute("modalText", modalText);
 
 			response.sendRedirect(path);
 
