@@ -29,18 +29,18 @@
     </div>
     <div class="mb-3">
       <c:choose>
-      <c:when test="${ empty sessionScope.loginUser.userPic }">
+      <c:when test="${ empty userInfo.userPic }">
       <label for="userImage" class="form-label">프로필 사진 (선택사항)</label> 
         <img class="user-image rounded-circle mb-3" id="userImagePreview"
           src="https://via.placeholder.com/150" /> 
       </c:when>
       <c:otherwise>
-        <img class="user-image mb-3 mx-auto d-block" src="${contextPath}/${sessionScope.loginUser.userPic}" height="150">
+        <img class="user-image mb-3 mx-auto d-block" src="${contextPath}/${userInfo.userPic}" height="150">
       </c:otherwise>
       </c:choose>
       <div id="inputFile">
         <input accept="image/*" class="form-control" type="file" id="userImageInput" 
-        name="userImageInput" onchange="loadFile(this,0)">
+        name="userImageInput" onchange="loadFile(this,0)" value="${userInfo.userPic}">
       </div>
     </div>
     <div class="form-floating mb-3">
