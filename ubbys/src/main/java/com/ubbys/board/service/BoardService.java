@@ -8,8 +8,14 @@ import java.util.List;
 import com.ubbys.board.dao.BoardDAO;
 import com.ubbys.board.vo.Board;
 import com.ubbys.board.vo.Category;
+import com.ubbys.board.vo.Like;
 import com.ubbys.board.vo.Pagination;
-
+import com.ubbys.user.vo.User;
+/**
+ * 
+ * @author 백승훈
+ *
+ */
 public class BoardService {
 	private BoardDAO dao = new BoardDAO();
 	/**
@@ -38,4 +44,19 @@ public class BoardService {
 		close(conn);
 		return category;
 	}
+
+	/**
+	 * 게시물 좋아요 상태 조회 Service
+	 * @param boardTableName
+	 * @param postId
+	 * @return like
+	 * @throws Exception
+	 */
+	public Like selectLike(String boardTableName, int postId, int loginUserNo) throws Exception {
+		Connection conn = getConnection();
+		Like like = dao.selectLike(conn, boardTableName, postId, loginUserNo);
+		close(conn);
+		return like;
+	}
+
 }

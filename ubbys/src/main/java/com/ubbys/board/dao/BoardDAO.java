@@ -13,7 +13,13 @@ import java.util.List;
 import java.util.Properties;
 
 import com.ubbys.board.vo.Category;
-
+import com.ubbys.board.vo.Like;
+import com.ubbys.user.vo.User;
+/**
+ * 
+ * @author 백승훈
+ *
+ */
 public class BoardDAO {
 	protected Statement stmt = null;
 	protected PreparedStatement pstmt = null;
@@ -103,5 +109,32 @@ public class BoardDAO {
 			close(stmt);
 		}
 		return postId;
+	}
+	
+	/**
+	 * 게시글 좋아요 여부 확인 DAO
+	 * @param conn
+	 * @param boardTableName
+	 * @param postId
+	 * @return like
+	 * @throws Exception
+	 */
+	public Like selectLike(Connection conn, String boardTableName, int postId, int loginUserNo) throws Exception {
+		Like like = new Like();
+		String sql = "SELECT * FROM " + boardTableName + "_likes WHERE " + boardTableName 
+				+ "_post_id = " + postId + "AND user_id = " + loginUserNo;
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			if(rs.next()) {
+				like.setLikeId(rs.getInt("likes_id"));
+				like.setPostId(rs.getInt(boardTableName + "_post_id"));
+				like.setUserId(rs.getInt("user_id"));
+			}
+		} finally {
+			close(rs);
+			close(stmt);
+		}
+		return like;
 	}
 }

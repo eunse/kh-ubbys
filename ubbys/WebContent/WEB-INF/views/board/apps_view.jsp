@@ -17,7 +17,14 @@
         </div>
         <div class="col-md-2 d-grid gap-3 mb-sm-3">
           <a href="${apps.appsLink}" target="_blank" class="btn btn-primary btn-lg"><i class="bi bi-download"></i> 다운로드</a>
+          <c:choose>
+          <c:when test="${!empty like}">
+          <button type="button" class="btn btn-outline-secondary btn-lg"><i class="bi bi-heart-fill text-danger"></i> ${apps.postLike}</button>
+          </c:when>
+          <c:otherwise>
           <button type="button" class="btn btn-outline-secondary btn-lg"><i class="bi bi-heart"></i> ${apps.postLike}</button>
+          </c:otherwise>
+          </c:choose>
         </div>
       </div>
       <div class="app-content col-md-9">${apps.postContent}</div>

@@ -21,6 +21,7 @@ import com.oreilly.servlet.MultipartRequest;
 import com.ubbys.board.service.AppsService;
 import com.ubbys.board.vo.Apps;
 import com.ubbys.board.vo.Category;
+import com.ubbys.board.vo.Like;
 import com.ubbys.board.vo.Pagination;
 import com.ubbys.board.vo.Tag;
 import com.ubbys.common.UbbysRenamePolicy;
@@ -55,8 +56,8 @@ public class AppsServlet extends HttpServlet {
 			if (command.equals("list")) {
 				Pagination pagination = service.getPagination(boardTableName, cp);
 				List<Apps> appsList = service.selectAppsList(pagination);
-				
-				// pagination, appsList를 request에 속성으로 추가한 뒤 forward 
+				List<Category> category = service.selectCategoryList(boardTableName);
+				request.setAttribute("category", category);
 				request.setAttribute("pagination", pagination);
 				request.setAttribute("appsList", appsList);
 				view = request.getRequestDispatcher("/WEB-INF/views/board/apps_list.jsp");
@@ -64,8 +65,14 @@ public class AppsServlet extends HttpServlet {
 			} 
 			// 상세
 			else if(command.equals("view")) {
+				HttpSession session = request.getSession();
 				int postId = Integer.parseInt(request.getParameter("no"));
 				Apps apps = service.selectApps(postId);
+				if(session.getAttribute("loginUser") != null) {
+					int loginUserNo = ((User) session.getAttribute("loginUser")).getUserNo();
+					Like like = service.selectLike(boardTableName, postId, loginUserNo);
+					request.setAttribute("like", like);
+				}				
 				request.setAttribute("apps", apps);
 				view = request.getRequestDispatcher("/WEB-INF/views/board/apps_view.jsp");
 				view.forward(request, response);
@@ -197,7 +204,9 @@ public class AppsServlet extends HttpServlet {
 				session.setAttribute("modalText", modalText);
 				response.sendRedirect(path);
 			}
-
+			else if(command.equals("like")) {
+				
+			}
 		} catch(Exception err) {
 			err.printStackTrace();
 		}

@@ -1,3 +1,8 @@
+/**
+ * 
+ * @author 백승훈
+ *
+ */
 package com.ubbys.board.service;
 
 import static com.ubbys.common.JDBCTemplate.*;
@@ -10,6 +15,7 @@ import java.util.Locale.Category;
 
 import com.ubbys.board.dao.AppsDAO;
 import com.ubbys.board.vo.Apps;
+import com.ubbys.board.vo.Like;
 import com.ubbys.board.vo.Pagination;
 import com.ubbys.board.vo.Tag;
 
@@ -165,7 +171,6 @@ public class AppsService extends BoardService {
 	public int deleteApps(int postId, int userNo) throws Exception {
 		Connection conn = getConnection();
 		int result = dao.deleteAppsTags(conn, postId);
-		System.out.println("dao실행결과:" + result);
 		if(result > 0) {
 			result = dao.deleteApps(conn, postId, userNo);
 			if(result > 0) {
