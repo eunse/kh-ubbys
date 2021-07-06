@@ -10,6 +10,7 @@ public class Reply {
 	private String userNickname;	// 댓글 작성자 닉네임
 	private int qnaPostId;			// 해당 댓글의 본문 번호
 	private int userId;				// 작성자 번호
+	private String userPic;			// 작성자 프로필 사진
 	
 	public Reply() {}
 
@@ -69,17 +70,21 @@ public class Reply {
 		this.userId = userId;
 	}
 
-	@Override
-	public String toString() {
-		return "QnaReply [replyId=" + replyId + ", replyContent=" + replyContent + ", replyLike=" + replyLike
-				+ ", replyDate=" + replyDate + ", userNickname=" + userNickname + ", qnaPostId=" + qnaPostId
-				+ ", userId=" + userId + "]";
+	public String getUserPic() {
+		return userPic;
 	}
 
+	public void setUserPic(String userPic) {
+		this.userPic = userPic;
+	}
 
+	@Override
+	public String toString() {
+		return "Reply [replyId=" + replyId + ", replyContent=" + replyContent + ", replyLike=" + replyLike
+				+ ", replyDate=" + replyDate + ", userNickname=" + userNickname + ", qnaPostId=" + qnaPostId
+				+ ", userId=" + userId + ", userPic=" + userPic + "]";
+	}
 
-	
-	
 	
 	
 }

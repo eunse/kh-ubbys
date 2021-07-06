@@ -60,6 +60,7 @@ public class ReplyDAO {
 				reply.setQnaPostId(rs.getInt("QNA_POST_ID"));
 				reply.setUserId(rs.getInt("USER_ID"));
 				reply.setUserNickname(rs.getString("USER_NICKNAME"));
+				reply.setUserPic(rs.getNString("USER_PIC"));
 				
 				list.add(reply);
 				
