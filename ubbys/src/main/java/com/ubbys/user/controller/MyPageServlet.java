@@ -68,6 +68,8 @@ public class MyPageServlet extends HttpServlet {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMsg", "알 수 없는 오류가 발생하였습니다.");
+            request.getRequestDispatcher("/WEB-INF/views/common/error.jsp").forward(request, response);
 		}
 	}
 
