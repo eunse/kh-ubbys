@@ -8,16 +8,26 @@
 <jsp:include page="header.jsp" />
 <div class="container py-5">
 	<h2>회원관리</h2>
-	<form action="/ubbys/adminUser/list" method="GET" name="searchForm" id="searchForm">
-		<div class="input-group mb-3 w-50">
-			<select class="form-select" id="searchUserCond" name="searchUserCond">
-				<option selected>검색 조건</option>
-				<option value="userEmail">이메일</option>
-				<option value="userNickname">닉네임</option>
-			</select> <input type="text" class="form-control"
-				placeholder="닉네임 혹은 이메일로 검색하세요">
-			<button class="btn btn-outline-secondary" type="button"
-				id="searchUser" name="searchUser">검색</button>
+		<div class="row">
+          <div class="col-xs-12 col-sm-4">
+            <select class="form-select" id="sortKey">
+              <option selected value="sortYoung">최근 가입순</option>
+              <option value="sortOld">오래된 가입순</option>
+            </select>
+          </div>
+          <div class="col-xs-12 col-sm-4 w-50">
+            <form action="${contextPath }/adminUser/list" method="GET" id="userSearchForm">
+              <div class="input-group mb-3" class="qna-search-area">
+      			<select class="form-select" id="searchKey" name="sk">
+      				<option selected>검색 조건</option>
+      				<option value="userEmail">이메일</option>
+      				<option value="userNickname">닉네임</option>
+      			</select> 
+                <input type="text" class="form-control" placeholder="닉네임 혹은 이메일로 검색하세요" name="sv" id="searchValue">
+    			<button class="btn btn-outline-secondary" type="submit" id="searchUser">검색</button>
+              </div>
+            </form>
+          </div>
 		</div>
 		<table class="table table-striped table-hover w-100">
 			<thead>
@@ -57,6 +67,7 @@
 				</c:forEach>
 			</tbody>
 		</table>
+
 
 
 

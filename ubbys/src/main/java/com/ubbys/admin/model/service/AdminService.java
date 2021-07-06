@@ -78,7 +78,7 @@ public class AdminService {
 			
 		case "sortYoung":
 			condition = " ORDER BY user_id " + searchValue ; break;
-			
+
 		case "sortOld":
 			condition = " ORDER BY user_id " + searchValue ; break;	
 		}
@@ -141,6 +141,27 @@ public class AdminService {
 		close(conn);
 
 		return user;
+	}
+
+	
+	/** 회원관리 목록 조회 Service (정렬용)
+	 * @param pagination
+	 * @param searchKey
+	 * @param searchValue
+	 * @return userList
+	 * @throws Exception
+	 */
+	public List<User> getUserSoltList(Pagination pagination, String searchKey, String searchValue) throws Exception {
+
+		Connection conn = getConnection();
+
+		String condition = createCondition(searchKey, searchValue);
+
+		List<User> userList = dao.selectSortUserList(conn, pagination, condition);
+
+		close(conn);
+
+		return userList;
 	}
 
 }

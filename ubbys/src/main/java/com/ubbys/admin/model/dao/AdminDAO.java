@@ -332,4 +332,46 @@ public class AdminDAO {
 		return user;
 	}
 
+	
+	/** 회원 정보 조회 DAO(정렬용)
+	 * @param conn
+	 * @param pagination
+	 * @param condition
+	 * @return userList
+	 * @throws Exception
+	 */
+	public List<User> selectSortUserList(Connection conn, Pagination pagination, String condition) throws Exception {
+
+		List<User> userList = new ArrayList<User>();
+		String sql = prop.getProperty("sortUserList1")+condition+prop.getProperty("sortUserList2");
+		try {
+			pstmt = conn.prepareStatement(sql);
+
+			int startRow = (pagination.getCurrentPage() - 1) * pagination.getLimit() + 1;
+			int endRow = startRow + pagination.getLimit() - 1;
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+
+				User u = new User();
+
+				u.setUserNo(rs.getInt("USER_ID"));
+				u.setUserEmail(rs.getString("USER_EMAIL"));
+				u.setUserPw(rs.getString("USER_PW"));
+				u.setUserNickname(rs.getString("USER_NICKNAME"));
+				u.setUserRegdate(rs.getDate("USER_REGDATE"));
+				u.setUserIsAdmin(rs.getString("USER_IS_ADMIN"));
+
+				userList.add(u);
+			}
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return userList;
+	}
+
 }
