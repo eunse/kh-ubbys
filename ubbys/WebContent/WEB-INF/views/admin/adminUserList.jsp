@@ -31,14 +31,14 @@
 				</tr>
 			</thead>
 			<tbody>
-			
+				<c:forEach var="u" items="${userList}">
 				<tr>
 					<td><input type="checkbox"></td>
 					<td>1</td>
-					<td><a href="#">${user.userEmail}</a></td>
-					<td>${user.userNickName}</td>
+					<td><a href="#">${u.userEmail}</a></td>
+					<td>${u.userNickname}</td>
 					<td><fmt:formatDate var="createDate"
-							value="${user.userRegdate}" pattern="yyyy-MM-dd" /> <fmt:formatDate
+							value="${u.userRegdate}" pattern="yyyy-MM-dd" /> <fmt:formatDate
 							var="today" value="<%=new java.util.Date()%>"
 							pattern="yyyy-MM-dd" /> <c:choose>
 							<%-- 글 작성일이 오늘이 아닐 경우 --%>
@@ -49,12 +49,13 @@
 
 							<%-- 글 작성일이 오늘일 경우 --%>
 							<c:otherwise>
-								<fmt:formatDate value="${user.userRegdate}" pattern="yyyy-MM" />
+								<fmt:formatDate value="${u.userRegdate}" pattern="yyyy-MM" />
 							</c:otherwise>
 						</c:choose></td>
-					<td><a href="${contextPath}/user/update" class="btn btn-primary btn-sm">수정</a> <a
+					<td><a href="/ubbys/user/update" class="btn btn-primary btn-sm">수정</a> <a
 						href="#" class="btn btn-danger btn-sm">삭제</a></td>
 				</tr>
+				</c:forEach>
 			</tbody>
 		</table>
 	</form>
@@ -64,9 +65,9 @@
 
 	<c:choose>
 		<%-- 검색시 사용될 부분 : 파라미터명 꼭 확인할 것 --%>
-		<c:when test="${ !empty param.sc && !empty param.sv }">
+		<c:when test="${ !empty param.sk && !empty param.sv }">
 			<c:set var="pageURL"
-				value="admin/adminUserList?sc=${param.sc }&sv=${param.sv }" />
+				value="admin/adminUserList?sc=${param.sk }&sv=${param.sv }" />
 		</c:when>
 		<c:otherwise>
 			<c:set var="pageURL" value="admin/adminUserList?" />
