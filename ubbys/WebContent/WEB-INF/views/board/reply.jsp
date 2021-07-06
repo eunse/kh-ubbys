@@ -34,6 +34,22 @@
             </div>
             <div class="ms-2" id="lastDiv">${reply.replyContent }</div>
           </li>
+          <%-- 수정창 시작 --%>
+          <li class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold">
+                  <pre>수정할 내용</pre>
+                  <%--<img src="#" class="user-image rounded-circle me-2">{사용자명} --%>
+                </div>
+              </div>
+            </div>
+            <div class="input-group ms-2 my-2">
+              <textarea class="form-control" id="edit-reply" rows="5"></textarea>
+              <button class="btn btn-outline-primary" onclick="updateReply(${reply.replyId}, this)">수정</button>
+            </div>
+          </li>
+          <%-- 수정창 끝 --%>
         </c:forEach>
       </ul>
   </div>
@@ -89,9 +105,8 @@ function addReply() {
            console.log("댓글 삽입 실패");
          }
        });
-   
- }
-}
+     }
+  }
 } 
 
 
@@ -156,8 +171,35 @@ function selectReplyList(){
               
               li.append(div1).append(lastDiv);
               
-              topUl.append(li);
+            //수정창 시작-----------------------------------------------------------------------------------------
+              var updateLi = $("<li>").addClass("list-group-item").attr("id", "updateLi");
+              var uDivTop = $("<div>").addClass("d-flex justify-content-between align-items-center");
+
+              var uDivch = $("<div>").addClass("ms-2 me-auto");
+              uDivTop.append(uDivch);
+
+              var uDivchch = $("<div>").addClass("fw-bold");
+              uDivch.append(uDivchch); 
+			
+              var updateC = $("<pre>").text("수정할 내용");
+              uDivchch.append(updateC);
+              /* var uImg = $("<img>").attr("src","#").addClass("user-image rounded-circle me-2").text("닉네임 : ");
+              uDivchch.append(uImg); */
+
+              var uDivBottom = $("<div>").addClass("input-group ms-2 my-2");
+
+              var uTextarea = $("<textarea>").addClass("form-control").attr("id", "edit-reply").attr("rows","5");
+              var uButton = $("<button>").addClass("btn btn-outline-primary").text("수정").attr("onclick", "updateReply(" + item.replyId + ", this)");
+              uDivBottom.append(uTextarea).append(uButton);
+              
+              //수정창 마무리
+              updateLi.append(uDivTop).append(uDivBottom);
+            //수정창 끝-------------------------------------------------------------------------------------------
+
+              //댓글 + 수정창
+              topUl.append(li).append(updateLi);
     
+              // 마지막 마무리
               $("#replyListArea").append(topUl);
               //$("#replyListArea").append(topUl).append(listButton); // 목록 버튼
               
@@ -172,12 +214,31 @@ function selectReplyList(){
     });
 }
 // ---------------------------
-// 댓글 수정 폼
-
+// 댓글 수정 기능
+function updateReply(replyId, el){
+	
+	const replyContent = $(el).prev().val();
+	
+	$.ajax({
+		url : "${contextPath}/replyUpdateReply",
+		type : "POST",
+		data : {"replyId" : replyId,
+				"replyContent" : replyContent},
+		success : function(result){
+			if(result > 0 ){
+				console.log("댓글 수정 성공");
+				selectReplyList();
+			}
+		},
+		error : function(){
+			console.log("댓글 수정 실패");
+		}
+	});
+}
 
 
 // ---------------------------
-// 댓글 삭제
+// 댓글 삭제 기능
 function deleteReply(replyId){
 
     $.ajax({
