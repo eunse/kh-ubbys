@@ -43,7 +43,10 @@
         <span class="fs-5 fw-semibold"> ADMIN</span>
       </a>
       <ul class="list-unstyled ps-0">
+        
+        <c:if test="${!empty loginUser && loginUser.userIsAdmin eq 'Y'}">
         <li class="mb-1">
+        
           <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
             data-bs-target="#user-collapse" aria-expanded="false">
             회원 관리
@@ -55,6 +58,7 @@
             </ul>
           </div>
         </li>
+        </c:if>
         <li class="mb-1">
           <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
             data-bs-target="#apps-collapse" aria-expanded="true">
@@ -88,7 +92,14 @@
           </button>
           <div class="collapse" id="account-collapse">
             <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-              <li><a href="/ubbys/adminLogin" class="link-dark rounded">Sign out</a></li>
+            
+            <c:if test="${!empty loginUser}">
+              <li><a href="/ubbys/adminLogout" class="link-dark rounded">Sign out</a></li>
+              </c:if>
+              
+              <c:if test="${empty loginUser}">
+              <li><a href="/ubbys/adminLogin" class="link-dark rounded">Sign In</a></li>
+              </c:if>
             </ul>
           </div>
         </li>
