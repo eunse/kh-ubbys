@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-
 <div id="reply-area ">
 <%-- 회원번호 : ${loginUser.userNo} <br>
 목록 : ${rList } <br>
@@ -18,7 +17,7 @@
                   <img src="${contextPath}/${reply.userPic}" class="user-image rounded-circle me-2">${reply.userNickname}
                 </div>
               </div>
-              <span class="date me-2">작성일 : ${reply.replyDate }</span>
+              <span class="date me-2">작성일 : ${reply.replyDate}</span>
               <c:if test="${reply.userId == sessionScope.loginUser.userNo}">
               <ul class="reply-action list-inline me-2" id="replyBtnArea">
                 <li class="list-inline-item">
@@ -39,13 +38,13 @@
       </ul>
   </div>
   <hr>
-    <div class="replyWrite col-md-9">
-      <h4 class="h5">새로운 댓글 작성</h4>
-      <div class="input-group my-2" id="replyContentArea">
-        <textarea class="form-control" id="replyContent" rows="5"></textarea>
-        <button class="btn btn-outline-primary" id="addReply" onclick="addReply();">작성</button>
-      </div>
+  <div class="replyWrite col-md-9">
+    <h4 class="h5">새로운 댓글 작성</h4>
+    <div class="input-group my-2" id="replyContentArea">
+      <textarea class="form-control" id="replyContent" rows="5"></textarea>
+      <button class="btn btn-outline-primary" id="addReply" onclick="addReply();">작성</button>
     </div>
+  </div>
     
    <button class="btn btn-outline-primary" onclick="selectReplyList()">목록갱신(테스트용)</button>
 <%-- 테스트 --%>
@@ -126,24 +125,24 @@ function selectReplyList(){
               var div3 = $("<div>").addClass("fw-bold");
               div2.append(div3);
     
-              var rWriter = $("<img>").attr("src","https://github.com/mdo.png").addClass("user-image rounded-circle me-2"); 
+              var rWriter = $("<img>").attr("src","${contextPath}"+"/"+item.userPic).addClass("user-image rounded-circle me-2"); 
               div3.append(rWriter).append(item.userNickname);
     
               var rDate = $("<span>").addClass("date me-2").text("작성일 : "+item.replyDate);
     
                if (item.userId == loginUserId) { 
     
-                var ul = $("<ul>").addClass("reply-action list-inline me-2").attr("id", "replyBtnArea");
-    
-                var childLi1 = $("<li>").addClass("list-inline-item");
-                var showUpdate = $("<button>").addClass("btn btn-primary btn-sm ml-1").text("수정").attr("id", "updateReply").attr("onclick", "showUpdateReply()");
-                childLi1.append(showUpdate);
-    
-                var childLi2 = $("<li>").addClass("list-inline-item");
-                var deleteReply = $("<button>").addClass("btn btn-primary btn-sm ml-1").text("삭제").attr("id", "deleteReply").attr("onclick", "deleteReply()");
-                childLi2.append(deleteReply);
-    
-                ul.append(childLi1).append(childLi2);
+                 var ul = $("<ul>").addClass("reply-action list-inline me-2").attr("id", "replyBtnArea");
+      
+                 var childLi1 = $("<li>").addClass("list-inline-item");
+                 var showUpdate = $("<button>").addClass("btn btn-primary btn-sm ml-1").text("수정").attr("id", "updateReply").attr("onclick", "showUpdateReply()");
+                 childLi1.append(showUpdate);
+      
+                 var childLi2 = $("<li>").addClass("list-inline-item");
+                 var deleteReply = $("<button>").addClass("btn btn-primary btn-sm ml-1").text("삭제").attr("id", "deleteReply").attr("onclick", "deleteReply()");
+                 childLi2.append(deleteReply);
+      
+                 ul.append(childLi1).append(childLi2);
                } 
     
               var button = $("<button>").addClass("btn btn-outline-secondary btn-sm");
