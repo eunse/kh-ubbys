@@ -192,6 +192,30 @@ public class UserDAO {
 		return result;
 	}
 
+	
+	/** 탈퇴시 비밀번호 확인 DAO
+	 * @param conn
+	 * @param currentPw
+	 * @param userNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int passwordCheck(Connection conn, String currentPw, int userNo) throws Exception {
+		int result = 0;
+		String sql = prop.getProperty("passwordCheck");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, currentPw);
+			pstmt.setInt(2, userNo);
+			rs = pstmt.executeQuery();
+			if(rs.next()) result = rs.getInt(1);
+			System.out.println(result);
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return result;
+	}
 	/** 탈퇴할 회원 정보 DAO
 	 * @param conn
 	 * @param currentPw
@@ -199,13 +223,12 @@ public class UserDAO {
 	 * @return unregUser
 	 * @throws Exception
 	 */
-	public User getUnregUser(Connection conn, String currentPw, int userNo) throws Exception {
+	public User getUnregUser(Connection conn, int userNo) throws Exception {
 		User unregUser = new User();
 		String sql = prop.getProperty("getUnregUser");
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, currentPw);
-			pstmt.setInt(2, userNo);
+			pstmt.setInt(1, userNo);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				unregUser.setUserNo(rs.getInt("USER_ID"));
@@ -373,6 +396,8 @@ public class UserDAO {
 		}
 		return loginUser;
 	}
+
+
 
 
 
