@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry key="getListCount">
+		SELECT COUNT(*) FROM apps_list WHERE apps_status = 'Y'
+	</entry>
+	<entry key="getAppsList">
+		SELECT * FROM (
+			SELECT ROWNUM RNUM, A.* FROM (
+				SELECT * FROM apps_list
+        		WHERE apps_status = 'Y'
+        		ORDER BY apps_post_id DESC
+        	) A
+   		)
+		WHERE RNUM BETWEEN ? AND ?		
+	</entry>
+
+</properties>

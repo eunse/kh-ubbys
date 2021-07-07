@@ -56,7 +56,7 @@
 						<button
 							class="btn btn-toggle align-items-center rounded collapsed"
 							data-bs-toggle="collapse" data-bs-target="#user-collapse"
-							aria-expanded="false">회원 관리</button>
+							aria-expanded="true">회원 관리</button>
 						<div class="collapse" id="user-collapse">
 							<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
 								<li><a href="${contextPath}/admin/adminUser/list"
@@ -73,8 +73,8 @@
 						aria-expanded="true">apps 게시판 관리</button>
 					<div class="collapse show" id="apps-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-							<li><a href="#" class="link-dark rounded">게시글 목록</a></li>
-							<li><a href="" class="link-dark rounded">게시글 작성</a></li>
+							<li><a href="${contextPath}/admin/appsList" class="link-dark rounded">게시글 목록</a></li>
+							<li><a href="${contextPath}/admin/appsWrite" class="link-dark rounded">게시글 작성</a></li>
 						</ul>
 					</div>
 				</li>
