@@ -104,15 +104,6 @@ public class AdminDAO {
 				user.setUserRegdate(rs.getDate("USER_REGDATE"));
 				user.setUserIsAdmin(rs.getString("USER_IS_ADMIN"));
 				
-//				List<String> filePath = new ArrayList<String>();
-//				List<String> fileName = new ArrayList<String>();
-//				
-//				filePath.add(rs.getString("FILE_PATH"));
-//				fileName.add(rs.getString("FILE_NM"));
-//				
-//				user.setFilePath(filePath);
-//				user.setFileName(fileName);
-				
 				userList.add(user);
 			}
 			
@@ -123,7 +114,7 @@ public class AdminDAO {
 			close(pstmt);
 			
 		}
-		
+	
 		
 		return userList;
 	}
@@ -458,6 +449,95 @@ public class AdminDAO {
 		return unRegUserList;
 	}
 
-	
+	/** 탈퇴 회원 목록 검색용 DAO
+	 * @param conn
+	 * @param pagination
+	 * @param condition
+	 * @return userList
+	 * @throws Exception
+	 */
+	public List<UnRegUser> selectUnRegUserList(Connection conn, Pagination pagination, String condition)  throws Exception{
+		
+		List<UnRegUser> unRegUserList = new ArrayList<UnRegUser>();
+		
+		String sql = prop.getProperty("searchUnRegUserList1") + condition + prop.getProperty("searchUnRegUserList2");
+		
+		try {
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			int startRow = (pagination.getCurrentPage() - 1) * pagination.getLimit() + 1;
+			int endRow = startRow + pagination.getLimit() - 1;
+
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				UnRegUser unRegUser = new UnRegUser();
+				
+				unRegUser.setUserNo(rs.getInt("USER_ID"));
+				unRegUser.setUserEmail(rs.getString("USER_EMAIL"));
+				unRegUser.setUserPw(rs.getString("USER_PW"));
+				unRegUser.setUserNickname(rs.getString("USER_NICKNAME"));
+				unRegUser.setUserRegdate(rs.getDate("USER_REGDATE"));
+				unRegUser.setUserUnRegdate(rs.getDate("User_UNREGDATE"));
+				
+				unRegUserList.add(unRegUser);
+
+			}
+			
+		} finally {
+			
+			close(rs);
+			close(pstmt);
+			
+		}
+		return unRegUserList;
+	}
+
+	/** 탈퇴 회원 정보 조회 DAO(정렬용)
+	 * @param conn
+	 * @param pagination
+	 * @param condition
+	 * @return unRegUserList
+	 * @throws Exception
+	 */
+	public List<UnRegUser> selectSortUnRegUserList(Connection conn, Pagination pagination, String condition) throws Exception{
+		
+		List<UnRegUser> unRegUserList = new ArrayList<UnRegUser>();
+		
+		String sql = prop.getProperty("sortUnregUserList1")+condition+prop.getProperty("sortUnregUserList2");
+		try {
+			pstmt = conn.prepareStatement(sql);
+
+			int startRow = (pagination.getCurrentPage() - 1) * pagination.getLimit() + 1;
+			int endRow = startRow + pagination.getLimit() - 1;
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+
+				UnRegUser un = new UnRegUser();
+
+				un.setUserNo(rs.getInt("USER_ID"));
+				un.setUserEmail(rs.getString("USER_EMAIL"));
+				un.setUserPw(rs.getString("USER_PW"));
+				un.setUserNickname(rs.getString("USER_NICKNAME"));
+				un.setUserRegdate(rs.getDate("USER_REGDATE"));
+				un.setUserUnRegdate(rs.getDate("USER_UNREGDATE"));
+
+				unRegUserList.add(un);
+			}
+		} finally {
+			
+			close(rs);
+			close(pstmt);
+		}
+		return unRegUserList;
+	}
 
 }
