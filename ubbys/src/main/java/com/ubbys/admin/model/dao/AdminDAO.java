@@ -193,17 +193,6 @@ public class AdminDAO {
 				user.setUserRegdate(rs.getDate("USER_REGDATE"));
 				user.setUserIsAdmin(rs.getString("USER_IS_ADMIN"));
 				
-				//List<String> filePath = new ArrayList<String>();
-				//List<String> fileName = new ArrayList<String>();
-				
-//				2) 생성된 리스트에 DB 조회 결과를 추가 
-				//filePath.add(rs.getString("FILE_PATH"));
-				//fileName.add(rs.getString("FILE_NM"));
-				
-//				3) 리스트에 board에 set
-				//user.setFilePath(filePath);
-				//user.setFileName(fileName);
-				
 				userList.add(user);
 
 			}

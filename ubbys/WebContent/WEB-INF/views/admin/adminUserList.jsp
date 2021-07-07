@@ -54,12 +54,12 @@
 								value="${u.userRegdate}" pattern="yyyy-MM-dd" /> <fmt:formatDate
 								var="today" value="<%=new java.util.Date()%>"
 								pattern="yyyy-MM-dd" /> <c:choose>
-								<%-- 가입일이 오늘이 아닐 경우 --%>
+								<%-- 글 작성일이 오늘이 아닐 경우 --%>
 								<c:when test="${u.userRegdate != today}"> ${u.userRegdate}
 		                    </c:when>
 
 
-								<%-- 가입일이 오늘일 경우 --%>
+								<%-- 글 작성일이 오늘일 경우 --%>
 								<c:otherwise>
 									<fmt:formatDate value="${u.userRegdate}" pattern="yyyy-MM-dd" />
 								</c:otherwise>

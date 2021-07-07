@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.ubbys.admin.model.service.AdminService;
 import com.ubbys.user.vo.User;
 
-@WebServlet("/adminUpdatePage")
+@WebServlet("/admin/adminUpdatePage")
 public class AdminUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

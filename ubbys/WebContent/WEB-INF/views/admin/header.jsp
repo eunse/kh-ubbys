@@ -112,4 +112,5 @@
 				</li>
 			</ul>
 		</div>
+		</main>
 		<div class="b-example-divider"></div>
