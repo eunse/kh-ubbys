@@ -85,8 +85,8 @@
 						aria-expanded="true">qna 게시판 관리</button>
 					<div class="collapse show" id="qna-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-							<li><a href="#" class="link-dark rounded">게시글 목록</a></li>
-							<li><a href="#" class="link-dark rounded">게시글 작성</a></li>
+							<li><a href="${contextPath}/admin/qnaList" class="link-dark rounded">게시글 목록</a></li>
+							<li><a href="${contextPath}/admin/qnaWrite" class="link-dark rounded">게시글 작성</a></li>
 							<li><a href="#" class="link-dark rounded">댓글 목록</a></li>
 						</ul>
 					</div>
