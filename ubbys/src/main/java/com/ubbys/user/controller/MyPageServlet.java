@@ -14,7 +14,9 @@ import javax.servlet.http.HttpSession;
 import com.ubbys.board.service.AppsService;
 import com.ubbys.board.service.ReplyService;
 import com.ubbys.board.service.SelectQnaService;
+import com.ubbys.board.vo.Apps;
 import com.ubbys.board.vo.Board;
+import com.ubbys.board.vo.Pagination;
 import com.ubbys.board.vo.Qna;
 import com.ubbys.board.vo.QnaPagination;
 import com.ubbys.board.vo.Reply;
@@ -27,41 +29,50 @@ public class MyPageServlet extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher view = null;
-		
+		HttpSession session = request.getSession();
+		User loginUser = ((User)session.getAttribute("loginUser"));
 		try {
+			// apps 최근 게시물 처리
+			AppsService appService = new AppsService();
+			try {
+				Pagination pagination = appService.getPagination("apps", 1, loginUser.getUserNo());
+				pagination.setLimit(4);
+				List<Apps> appsList = appService.selectAppsList(pagination);
+				
+				request.setAttribute("pagination", pagination);
+				request.setAttribute("appsList", appsList);
+			} catch(Exception err) {
+				err.printStackTrace();
+			}
 			
-			// 내 qna 목록 관련
-			SelectQnaService service = new SelectQnaService();
-			int cp = request.getParameter("cp")==null? 1 : Integer.parseInt(request.getParameter("cp"));
-			QnaPagination pagination = service.getPagination(cp);
-			
-			HttpSession session = request.getSession();
-			int userNo = ((User) session.getAttribute("loginUser")).getUserNo();
-			List<Qna> myQnaList = service.selectMyQnaList(userNo);
-//			List<Qna> myQnaList = service.selectMyQnaList(pagination, userNo);
-			
-			request.setAttribute("pagination", pagination); // Service, DAO 부분 추가필요
-			request.setAttribute("myQnaList", myQnaList);
-			System.out.println("내질문"+myQnaList);
-
-			// 내 apps 목록 관련
-			AppsService appsService = new AppsService();
-			List<Board> myAppsList = appsService.selectMyAppsList(userNo);
-			request.setAttribute("myAppsList", myAppsList);
-			System.out.println("내앱"+myAppsList);
+			// qna 최근 게시물 처리 
+			SelectQnaService selectQnaService = new SelectQnaService();
+			try {
+				QnaPagination pagination = selectQnaService.getPagination(1, loginUser.getUserNo());
+				pagination.setLimit(5);
+				List<Qna> qnaList = selectQnaService.selectQnaList(pagination);
+				
+				request.setAttribute("pagination", pagination);
+				request.setAttribute("qnaList", qnaList);			
+			} catch(Exception err) {
+				err.printStackTrace();
+			}
 			
 			// 내 댓글 목록 관련
 			ReplyService replyService = new ReplyService();
-			List<Reply> myReplyList = replyService.selectMyReplyList(userNo);
-			request.setAttribute("myReplyList", myReplyList);
-			System.out.println("내댓글"+myReplyList);
+			try {
+				List<Reply> myReplyList = replyService.selectMyReplyList(loginUser.getUserNo());
+				request.setAttribute("myReplyList", myReplyList);
+				System.out.println("내댓글"+myReplyList);
+			} catch(Exception err) {
+				err.printStackTrace();
+			}
+
 			
 			// 프로필 관련
 			UserService userService = new UserService();
-			userNo = ((User) session.getAttribute("loginUser")).getUserNo();
-			User user = userService.userInfo(userNo);
+			User user = userService.userInfo(loginUser.getUserNo());
 			request.setAttribute("user", user);
-			
 			
 			view = request.getRequestDispatcher("/WEB-INF/views/user/mypage.jsp");
 			view.forward(request, response);

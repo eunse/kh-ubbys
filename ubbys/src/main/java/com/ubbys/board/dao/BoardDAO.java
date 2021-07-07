@@ -54,10 +54,35 @@ public class BoardDAO {
 		String boardStatusName = boardTableName + "_status";
 		String sql = "SELECT COUNT(*) FROM " + boardViewName + " WHERE " + boardStatusName + "= 'Y'";
 		try {
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
+			if(rs.next()) listCount = rs.getInt(1);
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return listCount;
+	}
+	
+	/**
+	 * (특정 사용자) 전체 게시글 수 DAO
+	 * @param conn
+	 * @param boardTableName
+	 * @param userNo
+	 * @return listCount
+	 * @throws Exception
+	 */
+	public int getListCount(Connection conn, String boardTableName, int userNo) throws Exception {
+		int listCount = 0;
+		// String sql = prop.getProperty("getListCount");
+		String boardViewName = boardTableName + "_list";
+		String boardStatusName = boardTableName + "_status";
+		String sql = 
+				"SELECT COUNT(*) FROM " + boardViewName + " WHERE " + boardStatusName + "= 'Y' AND user_id = ?";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userNo);
+			rs = pstmt.executeQuery();
 			if(rs.next()) listCount = rs.getInt(1);
 		} finally {
 			close(rs);

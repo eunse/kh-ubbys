@@ -61,6 +61,28 @@ public class SelectQnaDAO {
 		}
 		return listCount;
 	}
+	
+	/** (특정 사용자) 전체 게시글 수 조회 DAO
+	 * @author 백승훈
+	 * @param conn
+	 * @param cp
+	 * @return listCount
+	 * @throws Exception
+	 */
+	public int getListCount(Connection conn, int cp, int userNo) throws Exception {
+		int listCount = 0;
+		String sql = prop.getProperty("getListCountForUser");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userNo);
+			rs = pstmt.executeQuery();
+			if(rs.next()) listCount = rs.getInt(1);
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return listCount;
+	}
 
 	/** Qna 목록 조회 DAO
 	 * @param conn

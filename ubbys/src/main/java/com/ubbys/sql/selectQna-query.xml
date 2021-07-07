@@ -7,6 +7,11 @@
 		SELECT COUNT(*) FROM qna_list WHERE qna_status='Y'
 	</entry>
 	
+	<!-- (특정 사용자) 전체 게시글 수 조회 SQL -->
+	<entry key="getListCountForUser">
+		SELECT COUNT(*) FROM qna_list WHERE qna_status='Y' AND user_id = ?
+	</entry>
+	
 	<!-- Qna 목록 조회 SQL -->
 	<entry key="selectQnaList">
 		SELECT * FROM

@@ -34,6 +34,21 @@ public class BoardService {
 	}
 	
 	/**
+	 * (특정 사용자) 페이징 처리 객체 생성용 Service
+	 * @param cp
+	 * @param boardType
+	 * @return pagination
+	 * @throws Exception
+	 */
+	public Pagination getPagination(String boardTableName, int cp, int userNo) throws Exception {
+		Connection conn = getConnection();
+		int listCount = dao.getListCount(conn, boardTableName, userNo);
+		close(conn);
+		
+		return new Pagination(cp, listCount);
+	}
+	
+	/**
 	 * 카테고리 목록 조회 Service
 	 * @return category
 	 * @throws Exception
