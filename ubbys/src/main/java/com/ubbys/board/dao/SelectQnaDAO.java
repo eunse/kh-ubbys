@@ -127,7 +127,52 @@ public class SelectQnaDAO {
 		}
 		return qnaList;
 	}
-
+	/** (특정 사용자) Qna 목록 조회 DAO
+	 * @param conn
+	 * @param pagination
+	 * @param userNo
+	 * @param dummy
+	 * @return qnaList
+	 * @throws Exception
+	 */
+	public List<Qna> selectQnaList(Connection conn, QnaPagination pagination, int userNo, int dummy) throws Exception {
+		
+		List<Qna> qnaList = new ArrayList<Qna>();
+		
+		String sql = prop.getProperty("selectQnaListByUser");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			int start = (pagination.getCurrentPage()-1)*pagination.getLimit()+1;
+			int end = start+pagination.getLimit()-1;
+			
+			pstmt.setInt(1, userNo);
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				Qna qna = new Qna();
+				
+				qna.setQnaPostId(rs.getInt("QNA_POST_ID"));
+				qna.setQnaCategoryName(rs.getString("QNA_CATEGORY_NAME"));
+				qna.setQnaDate(rs.getString("QNA_DATE"));
+				qna.setQnaTitle(rs.getString("QNA_TITLE"));
+				qna.setUserNickname(rs.getString("USER_NICKNAME"));
+				qna.setQnaLike(rs.getInt("QNA_LIKE"));
+				qna.setQnaReplyCount(rs.getInt("REPLY_COUNT"));
+				
+				qnaList.add(qna);
+			}
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return qnaList;
+	}
 	/** Qna 상세 조회 DAO
 	 * @param conn
 	 * @param qnaPostId

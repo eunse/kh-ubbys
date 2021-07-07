@@ -39,6 +39,25 @@ public class AppsService extends BoardService {
 		close(conn);
 		return appsList;
 	}
+	
+	/**
+	 * (특정 사용자) apps 게시판 목록 조회 Service
+	 * @param pagination
+	 * @param userNo
+	 * @return boardList
+	 * @throws Exception
+	 */
+	public List<Apps> selectAppsList(Pagination pagination, int userNo) throws Exception {
+		Connection conn = getConnection();
+		List<Apps> appsList = dao.selectAppsList(conn, pagination, userNo);
+		for(Apps apps : appsList) {
+			String postContent = apps.getAppsSummary();
+			postContent = postContent.replaceAll("<br>", " ");
+			apps.setAppsSummary(postContent);
+		}
+		close(conn);
+		return appsList;
+	}
 
 	/**
 	 * apps 게시글 상세 조회 Service

@@ -16,6 +16,18 @@
    		)
 		WHERE RNUM BETWEEN ? AND ?
 	</entry>
+	<!-- (특정 사용자) apps 게시판 목록 조회 SQL -->
+	<entry key="selectAppsListByUser">
+		SELECT * FROM (
+			SELECT ROWNUM RNUM, A.* FROM (
+				SELECT * FROM apps_list
+        		WHERE apps_status = 'Y'
+        		AND user_id = ?
+        		ORDER BY apps_post_id DESC
+        	) A
+   		)
+		WHERE RNUM BETWEEN ? AND ?
+	</entry>
 	<entry key="selectAppsTags">
 		SELECT apps_tag_id, apps_tag_name FROM tags JOIN apps_tags USING(apps_tag_id) WHERE apps_post_id = ?
 	</entry>

@@ -37,7 +37,7 @@ public class MyPageServlet extends HttpServlet {
 			try {
 				Pagination pagination = appService.getPagination("apps", 1, loginUser.getUserNo());
 				pagination.setLimit(4);
-				List<Apps> appsList = appService.selectAppsList(pagination);
+				List<Apps> appsList = appService.selectAppsList(pagination, loginUser.getUserNo());
 				
 				request.setAttribute("pagination", pagination);
 				request.setAttribute("appsList", appsList);
@@ -50,7 +50,7 @@ public class MyPageServlet extends HttpServlet {
 			try {
 				QnaPagination pagination = selectQnaService.getPagination(1, loginUser.getUserNo());
 				pagination.setLimit(5);
-				List<Qna> qnaList = selectQnaService.selectQnaList(pagination);
+				List<Qna> qnaList = selectQnaService.selectQnaList(pagination, loginUser.getUserNo(), 0);
 				
 				request.setAttribute("pagination", pagination);
 				request.setAttribute("qnaList", qnaList);			
