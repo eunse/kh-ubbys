@@ -19,13 +19,26 @@ public class SelectQnaService {
 	 * @throws Exception
 	 */
 	public QnaPagination getPagination(int cp) throws Exception {
-		
+
 		Connection conn = getConnection();
 		
 		int listCount = dao.getListCount(conn, cp);
 		
 		close(conn);
 		
+		return new QnaPagination(cp, listCount);
+	}
+	
+	/** (특정 사용자) 전체 게시글 수 조회 + 페이징 객체 생성용 Service
+	 * @author 백승훈
+	 * @param cp
+	 * @return QnaPagination
+	 * @throws Exception
+	 */
+	public QnaPagination getPagination(int cp, int userNo) throws Exception {		
+		Connection conn = getConnection();
+		int listCount = dao.getListCount(conn, cp, userNo);
+		close(conn);
 		return new QnaPagination(cp, listCount);
 	}
 	
