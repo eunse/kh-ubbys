@@ -516,7 +516,14 @@ JOIN "USER" U ON(U.USER_ID = QR.USER_ID);
 -- 글번호, 카테고리이름, 카테고리ID, 글 제목, 작성일, 아이콘 경로, 좋아요 수, 상태, 사용자 번호, 해시태그 이름, 해시태그 번호
 --------------------------------------------------------------------------------
 CREATE OR REPLACE VIEW apps_list AS
-    SELECT apps_post_id, apps_category_name, apps_title, apps_date, apps_icon, apps_like, apps_status, user_id, user_nickname, SUBSTR(apps_content,1,30) AS apps_content_substr
+    SELECT apps_post_id, apps_category_name, apps_title, TO_CHAR(apps_date, 'YYYY-MM-DD HH24:MI:SS') apps_date, apps_icon, apps_like, apps_status, user_id, user_nickname, SUBSTR(apps_content,1,30) AS apps_content_substr, apps_category_id
+    FROM apps
+    JOIN apps_categories USING(apps_category_id)
+    JOIN "USER" USING(user_id);
+    
+    
+CREATE OR REPLACE VIEW apps_list AS
+    SELECT apps_post_id, apps_category_name, apps_title, apps_date, apps_icon, apps_like, apps_status, user_id, user_nickname, SUBSTR(apps_content,1,30) AS apps_content_substr, apps_category_id
     FROM apps
     JOIN apps_categories USING(apps_category_id)
     JOIN "USER" USING(user_id);
@@ -543,11 +550,16 @@ SELECT COUNT(*) FROM apps_list WHERE apps_status = 'Y';
 -- 글번호, 카테고리이름, 카테고리ID, 글 제목, 작성일, 아이콘 경로, 좋아요 수, 상태, 사용자 번호, 해시태그 이름, 해시태그 번호
 --------------------------------------------------------------------------------
 CREATE OR REPLACE VIEW apps_view AS
-    SELECT apps_post_id, apps_icon, apps_category_name, apps_title, user_nickname, apps_content, apps_url, apps_like, apps_date, user_id
+    SELECT apps_post_id, apps_icon, apps_category_name, apps_title, user_nickname, apps_content, apps_url, apps_like, TO_CHAR(apps_date, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분"') apps_date, user_id
     FROM apps 
     JOIN apps_categories USING(apps_category_id)
     JOIN "USER" USING(user_id);
 
+CREATE OR REPLACE VIEW apps_view AS
+    SELECT apps_post_id, apps_icon, apps_category_name, apps_title, user_nickname, apps_content, apps_url, apps_like, apps_date, user_id
+    FROM apps 
+    JOIN apps_categories USING(apps_category_id)
+    JOIN "USER" USING(user_id);
 
 --------------------------------------------------------------------------------
 -- tags 샘플
