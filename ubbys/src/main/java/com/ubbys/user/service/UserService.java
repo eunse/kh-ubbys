@@ -125,15 +125,45 @@ public class UserService {
 	 * @return result
 	 * @throws Exception
 	 */
-	public int delectAccount(String currentPw, int userNo) throws Exception{
+	public int deleteAccount(String currentPw, int userNo) throws Exception{
+		
 		Connection conn = getConnection();
+		int result = 0;
 		
-		int result = dao.delectAccount(conn, currentPw, userNo);
-		
-		if(result > 0) {
-			commit(conn);
-		}else {
-			rollback(conn);
+		result = dao.passwordCheck(conn, currentPw, userNo);
+		if(result==1){ // 비밀번호 확인 성공 -> 탈퇴할 회원 정보 얻어오기
+			
+			User unregUser = dao.getUnregUser(conn, userNo);
+			
+			// 탈퇴할 회원 정보를 얻어왔다면 -> 탈퇴회원 테이블에 INSERT
+			result = dao.insertUnregUser(conn, unregUser);
+			
+			if(result>0) { // 탈퇴회원 테이블에 INSERT 성공 -> 회원 테이블의 탈퇴유저 정보를 변경
+				
+				result = dao.updateUnregUser(conn, userNo);
+				
+				if(result>0) { // 회원 테이블의 탈퇴유저 정보 변경 성공 -> user_info 테이블의 해당 유저 정보 삭제
+					
+					result = dao.deleteUnregUser(conn, userNo);
+					
+					if(result>0) commit(conn); // 탈퇴 처리 성공~!
+					else {
+						result=0;
+						rollback(conn);
+					}
+					
+				} else {
+					result=0;
+					rollback(conn);
+				}
+				
+			} else { // 탈퇴회원 테이블 삽입 실패
+				result=0;
+				rollback(conn);
+			}
+
+		} else {
+			result = -1;
 		}
 		close(conn);
 		return result;
