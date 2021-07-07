@@ -47,8 +47,9 @@
 	<entry key="updateUnregUser">
 		UPDATE "USER" SET user_email='unreg', user_pw='unreg', user_nickname='(탈퇴회원)' WHERE user_id=?
 	</entry>
-	<entry key="deleteUnregUser">
-		DELETE FROM USER_INFO WHERE user_id=?
+	<entry key="updateUnregUserInfo">
+		UPDATE USER_INFO SET user_pic='https://via.placeholder.com/50', user_link='unreg', user_interest='unreg', user_introduce='unreg' 
+		WHERE user_id=?
 	</entry>
 	<!-- 탈퇴처리 끝 -->
 	<entry key="userInfo">

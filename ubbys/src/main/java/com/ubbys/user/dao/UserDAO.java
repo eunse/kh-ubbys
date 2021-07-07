@@ -291,9 +291,9 @@ public class UserDAO {
 	 * @return result
 	 * @throws Exception
 	 */
-	public int deleteUnregUser(Connection conn, int userNo) throws Exception {
+	public int updateUnregUserInfo(Connection conn, int userNo) throws Exception {
 		int result = 0;
-		String sql = prop.getProperty("deleteUnregUser");
+		String sql = prop.getProperty("updateUnregUserInfo");
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, userNo);
