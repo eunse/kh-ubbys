@@ -57,7 +57,7 @@
 							class="btn btn-toggle align-items-center rounded collapsed"
 							data-bs-toggle="collapse" data-bs-target="#user-collapse"
 							aria-expanded="true">회원 관리</button>
-						<div class="collapse" id="user-collapse">
+						<div class="collapse show" id="user-collapse">
 							<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
 								<li><a href="${contextPath}/admin/adminUser/list"
 									class="link-dark rounded">회원 목록</a></li>
