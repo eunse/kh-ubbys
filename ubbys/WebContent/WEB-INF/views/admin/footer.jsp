@@ -5,6 +5,7 @@
 
   <jsp:include page="modal.jsp" />
   <script src="${contextPath}/resources/js/common.js"></script>
+  <script src="${contextPath}/resources/admin/js/sidebars.js"></script>
   <c:if test="${!empty sessionScope.modalTitle}">
     <script>
     	modal.show();
