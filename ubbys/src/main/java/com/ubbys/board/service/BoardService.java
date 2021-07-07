@@ -44,11 +44,25 @@ public class BoardService {
 		close(conn);
 		return category;
 	}
-
+	
 	/**
-	 * 게시물 좋아요 상태 조회 Service
+	 * 게시물 좋아요 회수 조회 Service
 	 * @param boardTableName
 	 * @param postId
+	 * @return result
+	 * @throws Exception
+	 */
+	public int selectLike(String boardTableName, int postId) throws Exception {
+		Connection conn = getConnection();
+		int result = dao.selectLike(conn, boardTableName, postId);
+		close(conn);
+		return result;
+	}
+	/**
+	 * 게시물 좋아요 여부 조회 Service
+	 * @param boardTableName
+	 * @param postId
+	 * @param loginUserNo
 	 * @return like
 	 * @throws Exception
 	 */
@@ -58,5 +72,54 @@ public class BoardService {
 		close(conn);
 		return like;
 	}
-
+	
+	/**
+	 * 게시글 좋아요 추가 Service
+	 * @param boardTableName
+	 * @param userNo
+	 * @param postId
+	 * @return result
+	 * @throws Exception
+	 */
+	public int insertLike(String boardTableName, int userNo, int postId) throws Exception {
+		Connection conn = getConnection();
+		int result = dao.insertLike(conn, boardTableName, userNo, postId);
+		if(result > 0) {
+			String addSub = "+";
+			result = dao.updateLike(conn, boardTableName, postId, addSub);
+			if(result > 0) {
+				commit(conn);
+			} else {
+				rollback(conn);
+			}
+		}
+		close(conn);
+		return result;
+	}
+	
+	/**
+	 * 게시글 좋아요 삭제 Service
+	 * @param boardTableName
+	 * @param userNo
+	 * @param postId
+	 * @return result
+	 * @throws Exception
+	 */
+	public int deleteLike(String boardTableName, int userNo, int postId) throws Exception {
+		Connection conn = getConnection();
+		int result = dao.deleteLike(conn, boardTableName, userNo, postId);
+		if(result > 0) {
+			String addSub = "-";
+			result = dao.updateLike(conn, boardTableName, postId, addSub);
+			if(result > 0) {
+				commit(conn);
+			} else {
+				rollback(conn);
+			}
+		} 
+		close(conn);
+		return result;
+	}
+	
+	
 }

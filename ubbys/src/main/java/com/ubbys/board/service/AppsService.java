@@ -197,5 +197,4 @@ public class AppsService extends BoardService {
 		close(conn);
 		return result;
 	}
-
 }

@@ -112,10 +112,35 @@ public class BoardDAO {
 	}
 	
 	/**
+	 * 게시물 좋아요 회수 조회 DAO
+	 * @param conn
+	 * @param boardTableName
+	 * @param postId
+	 * @return result
+	 * @throws Exception
+	 */
+	public int selectLike(Connection conn, String boardTableName, int postId) throws Exception {
+		int result = 0;
+		String sql = "SELECT COUNT(*) FROM " + boardTableName+ "_likes WHERE "+ boardTableName +"_post_id = " + postId;
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	/**
 	 * 게시글 좋아요 여부 확인 DAO
 	 * @param conn
 	 * @param boardTableName
 	 * @param postId
+	 * @param loginUserNo
 	 * @return like
 	 * @throws Exception
 	 */
@@ -136,5 +161,76 @@ public class BoardDAO {
 			close(stmt);
 		}
 		return like;
+	}
+
+	/**
+	 * 게시글 좋아요 추가 DAO
+	 * @param conn
+	 * @param boardTableName
+	 * @param userNo
+	 * @param postId
+	 * @return result
+	 * @throws Exception
+	 */
+	public int insertLike(Connection conn, String boardTableName, int userNo, int postId) throws Exception {
+		int result = 0;
+		String boardLikeTable = boardTableName + "_likes";
+		String boardLikeSeq = "seq_" + boardTableName + "_like_no";
+		String sql = "INSERT INTO " + boardLikeTable + " VALUES(" + boardLikeSeq + ".NEXTVAL, ?, ?)";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, postId);
+			pstmt.setInt(2, userNo);
+			result = pstmt.executeUpdate();	
+		} finally {
+			close(pstmt);
+		}		
+		return result;
+	}
+	
+	/**
+	 * 게시물 좋아요 증감
+	 * @param conn
+	 * @param boardTableName
+	 * @param userNo
+	 * @param postId
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updateLike(Connection conn, String boardTableName, int postId, String addSub) throws Exception {
+		int result = 0;
+		String sql = "UPDATE "+ boardTableName  +" SET " + boardTableName + "_like = " + boardTableName + "_like "+ addSub +" 1 WHERE " + boardTableName + "_post_id = " + postId;
+		try {
+			stmt = conn.createStatement();
+			result = stmt.executeUpdate(sql);			
+		} finally {
+			close(stmt);
+		}	
+		return result;
+	}
+	
+	/**
+	 * 게시글 좋아요 삭제 DAO
+	 * @param conn
+	 * @param boardTableName
+	 * @param userNo
+	 * @param postId
+	 * @return result
+	 * @throws Exception
+	 */
+	public int deleteLike(Connection conn, String boardTableName, int userNo, int postId) throws Exception {
+		int result = 0;
+		String sql = "DELETE FROM " + boardTableName + "_likes "
+				+ "WHERE " + boardTableName + "_post_id = ? AND user_id = ?";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, postId);
+			pstmt.setInt(2, userNo);
+			result = pstmt.executeUpdate();	
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
 	}
 }
