@@ -28,7 +28,7 @@
               <c:if test="${reply.userId == sessionScope.loginUser.userNo}">
               <ul class="reply-action replyBtnArea list-inline me-2">
                 <li class="list-inline-item">
-                  <button class="btn btn-primary btn-sm ml-1 showUpdateReply" id="showUpdateReply" onclick="showUpdate(this)">수정</button><button class="btn btn-primary btn-sm ml-1" id="deleteReply" onclick="deleteReply(${reply.replyId})">삭제</button>
+                  <button class="btn btn-danger btn-sm ml-1" id="deleteReply" onclick="deleteReply(${reply.replyId})">삭제</button><button class="btn btn-primary btn-sm ml-1 showUpdateReply" id="showUpdateReply">수정</button>
                 </li>
               </ul>
               </c:if>
@@ -64,7 +64,7 @@
     </div>
   </div>
     
-   <button class="btn btn-outline-primary" onclick="selectReplyList()">목록갱신(테스트용)</button>
+   <%-- <button class="btn btn-outline-primary" onclick="selectReplyList()">목록갱신(테스트용)</button> --%>
 <%-- 테스트 --%>
 
 
@@ -95,7 +95,7 @@ function addReply() {
         	 console.log("댓글 등록 성공");
              $("#replyContent").val(""); 
              
-             //selectReplyList(); 
+             selectReplyList(); 
            }
          },
          error : function(){
@@ -145,9 +145,9 @@ function selectReplyList(){
                  var ul = $("<ul>").addClass("reply-action replyBtnArea list-inline me-2");
       
                  var childLi1 = $("<li>").addClass("list-inline-item");
-                 var showUpdate = $("<button>").addClass("btn btn-primary btn-sm ml-1 showUpdateReply").text("수정").attr("id", "showUpdateReply").attr("onclick", "showUpdate()");
-                 var deleteReply = $("<button>").addClass("btn btn-primary btn-sm ml-1").text("삭제").attr("id", "deleteReply").attr("onclick", "deleteReply("+item.replyId+")");
-                 childLi1.append(showUpdate).append(deleteReply);
+                 var deleteReply = $("<button>").addClass("btn btn-danger btn-sm ml-1").text("삭제").attr("id", "deleteReply").attr("onclick", "deleteReply("+item.replyId+")");
+                 var showUpdate = $("<button>").addClass("btn btn-primary btn-sm ml-1 showUpdateReply").text("수정").attr("id", "showUpdateReply");
+                 childLi1.append(deleteReply).append(showUpdate);
       
                  //var childLi2 = $("<li>").addClass("list-inline-item");
                  //childLi2.append(deleteReply);
@@ -211,9 +211,9 @@ function selectReplyList(){
 }
 // ---------------------------
 // 댓글 수정창 여닫
-$(document).ready(function(){
+$(document).on("click", ".showUpdateReply", function(){
 	
-$('.showUpdateReply').click(function(){
+/* $('.showUpdateReply').click(function(){ */
   	if($(this).parent().parent().parent().parent().next(".updateArea").css("display") == "none" ){
         $(this).parent().parent().parent().parent().siblings("li.updateArea").slideUp(200);
         $(this).parent().parent().parent().parent().next(".updateArea").slideDown(200);
@@ -221,7 +221,7 @@ $('.showUpdateReply').click(function(){
  	 }else{
 	   $(this).parent().parent().parent().parent().next(".updateArea").slideUp(200); 
   	}
-  });
+ /*  }); */
   
 }); 
 // ---------------------------
@@ -238,7 +238,7 @@ function updateReply(replyId, el){
 		success : function(result){
 			if(result > 0 ){
 				console.log("댓글 수정 성공");
-				//selectReplyList();
+				selectReplyList();
 			}
 		},
 		error : function(){
@@ -258,7 +258,7 @@ function deleteReply(replyId){
           success : function(result){
             if(result > 0){
               console.log("댓글 삭제 성공");
-              //selectReplyList();
+              selectReplyList();
             }
           },
           error : function(){
