@@ -13,7 +13,6 @@
 <%-- 회원번호 : ${loginUser.userNo} <br>
 목록 : ${rList } <br>
 게시글번호 : ${qna.qnaPostId} <br>  --%>
-
 <%-- 테스트 --%>
   <div class="replyList mt-5 pt-2">
       <ul class="qna-reply-content list-group col-md-9" id="replyListArea">
@@ -33,8 +32,8 @@
                 </li>
               </ul>
               </c:if>
-              <button class="btn btn-outline-secondary btn-sm">
-                <i class="bi bi-heart">${reply.replyLike }</i> 
+              <button class="btn btn-outline-secondary btn-sm" id="reply-like-btn">
+                <i class="bi bi-heart" id="reply-like"><span id="reply-like-count">${reply.replyLike }</span></i> 
               </button>
             </div>
             <div class="ms-2">${reply.replyContent }</div>
@@ -121,14 +120,14 @@ function selectReplyList(){
      data : {"qnaPostId" : qnaPostId},
      type : "POST",
      dataType : "JSON",  
-     success : function(rList){
+     success : function(list){
        /* console.log(rList); */
        
             //$("#replyListArea").html(""); 1
             $("#replyListArea").html(""); 
             
             
-            $.each(rList, function(index, item){
+            $.each(list, function(index, item){
             	
               // console.log(item.userNickname); 
               //var topDiv = $("<div>").addClass("replyList mt-5 pt-2");
@@ -164,8 +163,10 @@ function selectReplyList(){
                  ul.append(childLi1);
                } 
     
-              var button = $("<button>").addClass("btn btn-outline-secondary btn-sm");
-              var i = $("<i>").addClass("bi bi-heart").text((item.replyLike));
+              var button = $("<button>").addClass("btn btn-outline-secondary btn-sm").attr("id", "reply-like-btn");
+              var i = $("<i>").addClass("bi bi-heart").text((item.replyLike)).attr("id", "reply-like");
+              var span = $("<span>").attr("id", "reply-like-count").text(replyLike);
+              i.append(span);
               button.append(i);
               div1.append(div2).append(rDate).append(ul).append(button);
     
@@ -287,7 +288,91 @@ function deleteReply(replyId){
 
 // -------------------------------------------
 // 좋아요
+/*
+let replyLike = ${reply.replyLike};
+replyLikeCheck(); 
 
+function replyLikeCheck(){
+	
+	let flag = false;
+	
+	$.ajax({
+		url : "${contextPath}/reply/likeCheck",
+		type : "POST",
+		data : {"replyId" : replyId},
+		dataType : "JSON",
+		
+		success : function(rList){
+			
+			$.each(rList, function(index, item){
+				
+				if(item.userNo == loginUserId){
+					flag = true;
+				}
+			});
+			
+			if(flag){
+				$("#reply-like-btn").html("");
+				var i = $("<i>").addClass("bi bi-heart-fill").text((item.replyLike)).attr("id", "reply-like");
+				var span = $("<span>").attr("id", "reply-like-count").text(replyLike);
+				i.append(span);
+				$("#reply-like-btn").append(i);
+			}
+		},
+		error : function(){
+			console.log("에러");
+		}
+	});
+}
+
+$("#reply-like-btn").on("click", function(){
+	
+	$.ajax({
+		url : "${contextPath}/reply/like",
+		type : "POST",
+		data : {"replyId" : replyId},
+		
+		success : function(result){
+			if(result > 0){
+				$("#reply-like-btn").html("");
+				var i = $("<i>").addClass("bi bi-heart-fill").text((item.replyLike)).attr("id", "reply-like");
+				var span = $("<span>").attr("id", "reply-like-count");
+				i.append(span);
+				$("#reply-like-btn").append(i);
+				
+			}else{
+				$("#reply-like-btn").html("");
+				var i = $("<i>").addClass("bi bi-heart").text((item.replyLike)).attr("id", "reply-like");
+				var span = $("<span>").attr("id", "reply-like-count");
+				i.append(span);
+				$("#reply-like-btn").append(i);
+				
+			}
+			replyLikeCount();
+		},
+		error : function(){
+			console.log("좋아요 클릭 에러");
+		}
+	});
+});
+
+function replyLikeCount(){
+	
+	$.ajax({
+		url : "replyLikeCount",
+		type : "POST",
+		data : {"replyId" : replyId},
+		
+		success : function(result){
+			$("#reply-like-btn").text(result);
+		},
+		error : function(){
+			console.log("에러다");
+		}
+	});
+}
+
+*/
 
 
 </script>

@@ -93,6 +93,7 @@ public class ReplyController extends HttpServlet {
 			}
 			else if(command.equals("like")) {
 				int replyId = Integer.parseInt(request.getParameter("replyId"));
+				System.out.println("댓글 : "+replyId);
 				int result = service.replyLike(replyId, userId);
 
 				response.getWriter().print(result);
