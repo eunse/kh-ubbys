@@ -9,6 +9,7 @@ import java.util.Map;
 import com.ubbys.board.dao.ReplyDAO;
 import com.ubbys.board.vo.Pagination;
 import com.ubbys.board.vo.Reply;
+import com.ubbys.user.vo.User;
 
 public class ReplyService {
 
@@ -126,6 +127,7 @@ public class ReplyService {
 		
 		return myReplyList;
 	}
+
 	
 	
 	/** 관리자용 댓글 전체 목록 가져오기 Service
@@ -182,4 +184,73 @@ public class ReplyService {
 	
 	
 	
+
+	/** 댓글 좋아요 유저목록 Service
+	 * @param replyId
+	 * @return rList
+	 * @throws Exception
+	 */
+	public List<User> selectUserList(int replyId) throws Exception{
+		Connection conn = getConnection();
+		
+		List<User> rList = dao.selectUserList(conn, replyId);
+		
+		close(conn);
+		
+		return rList;
+	}
+
+	/** Reply 좋아요 동작 Service
+	 * @param replyId
+	 * @param userId
+	 * @return result
+	 * @throws Exception
+	 */
+	public int replyLike(int replyId, int userId) throws Exception{
+		Connection conn = getConnection();
+		
+		int result = dao.replyLikeCheck(conn, replyId, userId);
+		
+		if(result==0) { 
+			
+			result = dao.replyLike(conn, replyId, userId);
+			if(result>0) {
+				result = dao.replyLikeIncrease(conn, replyId);
+				if(result>0) commit(conn);
+				else		 rollback(conn);
+				result = 1;
+			} else {
+				rollback(conn);
+			}
+			
+		} else { 
+			
+			result = dao.replyLikeCancel(conn, replyId, userId);
+			if(result>0) {
+				result = dao.replyLikeDecrease(conn, replyId);
+				if(result>0) commit(conn);
+				else		 rollback(conn);
+				result = 0;
+			} else {
+				rollback(conn);
+			}
+		}
+		return result;
+	}
+
+	/** 좋아요 수 반환 Service
+	 * @param replyId
+	 * @return result
+	 * @throws Exception
+	 */
+	public int replyLikeCount(int replyId) throws Exception{
+		Connection conn = getConnection();
+		
+		int result = dao.replyLikeCount(conn, replyId);
+		
+		close(conn);
+		
+		return result;
+	}
+
 }
