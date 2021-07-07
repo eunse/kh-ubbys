@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import com.ubbys.board.vo.Board;
+import com.ubbys.board.vo.Like;
 import com.ubbys.board.vo.Apps;
 import com.ubbys.board.vo.Pagination;
 import com.ubbys.board.vo.Tag;
@@ -349,7 +350,7 @@ public class AppsDAO extends BoardDAO {
 		}
 		return result;
 	}
-	
+
 	/** MyApps 목록 조회 DAO
 	 * @param conn
 	 * @param userNo
@@ -382,5 +383,5 @@ public class AppsDAO extends BoardDAO {
 			close(pstmt);
 		}
 		return myAppsList;
-	}
+
 }
