@@ -16,10 +16,37 @@
    		)
 		WHERE RNUM BETWEEN ? AND ?		
 	</entry>
+	
 	<!-- apps 삭제 -->
 	<entry key="deleteApps">
 		UPDATE apps SET apps_status = 'N' WHERE apps_post_id = ?
 	</entry>
 	
+	<!-- apps 정렬 -->
+	<entry key="sortApps1">
+		SELECT * FROM (
+			SELECT ROWNUM RNUM, A.* FROM (
+				SELECT * FROM apps_list
+        		WHERE apps_status = 'Y'	
+	</entry>
+	<entry key="sortApps2">
+        	) A
+   		)
+		WHERE RNUM BETWEEN ? AND ?		
+	</entry>
+	
+	<!-- apps 검색 -->
+	<entry key="searchApps1">
+		SELECT * FROM (
+			SELECT ROWNUM RNUM, A.* FROM (
+				SELECT * FROM apps_list
+        		WHERE apps_status = 'Y'	
+	</entry>
+	<entry key="searchApps2">
+        		ORDER BY apps_post_id DESC
+        	) A
+   		)
+		WHERE RNUM BETWEEN ? AND ?	
+	</entry>
 
 </properties>
