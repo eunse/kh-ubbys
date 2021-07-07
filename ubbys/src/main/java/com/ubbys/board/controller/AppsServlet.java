@@ -5,6 +5,7 @@ import static com.ubbys.common.JDBCTemplate.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -21,6 +22,7 @@ import com.oreilly.servlet.MultipartRequest;
 import com.ubbys.board.service.AppsService;
 import com.ubbys.board.vo.Apps;
 import com.ubbys.board.vo.Category;
+import com.ubbys.board.vo.Like;
 import com.ubbys.board.vo.Pagination;
 import com.ubbys.board.vo.Tag;
 import com.ubbys.common.UbbysRenamePolicy;
@@ -55,8 +57,8 @@ public class AppsServlet extends HttpServlet {
 			if (command.equals("list")) {
 				Pagination pagination = service.getPagination(boardTableName, cp);
 				List<Apps> appsList = service.selectAppsList(pagination);
-				
-				// pagination, appsList를 request에 속성으로 추가한 뒤 forward 
+				List<Category> category = service.selectCategoryList(boardTableName);
+				request.setAttribute("category", category);
 				request.setAttribute("pagination", pagination);
 				request.setAttribute("appsList", appsList);
 				view = request.getRequestDispatcher("/WEB-INF/views/board/apps_list.jsp");
@@ -64,8 +66,14 @@ public class AppsServlet extends HttpServlet {
 			} 
 			// 상세
 			else if(command.equals("view")) {
+				HttpSession session = request.getSession();
 				int postId = Integer.parseInt(request.getParameter("no"));
 				Apps apps = service.selectApps(postId);
+				if(session.getAttribute("loginUser") != null) {
+					int loginUserNo = ((User) session.getAttribute("loginUser")).getUserNo();
+					Like like = service.selectLike(boardTableName, postId, loginUserNo);
+					request.setAttribute("like", like);
+				}				
 				request.setAttribute("apps", apps);
 				view = request.getRequestDispatcher("/WEB-INF/views/board/apps_view.jsp");
 				view.forward(request, response);
@@ -100,13 +108,6 @@ public class AppsServlet extends HttpServlet {
 				}
 
 			}
-			// 임시 태그 목록 조회 (ajax)
-			else if(command.equals("tag")) {
-				List<Tag> tagList = service.selectTagList();
-				Gson gson = new Gson();
-				gson.toJson(tagList, response.getWriter());
-			}
-			
 			// 삭제
 			else if(command.equals("delete")) {
 				HttpSession session = request.getSession();
@@ -133,6 +134,13 @@ public class AppsServlet extends HttpServlet {
 					path = request.getHeader("referer");
 				}
 				response.sendRedirect(path);
+			}
+			// 좋아요 수 조회(for AJAX)
+			else if(command.equals("like")) {
+				int postId = Integer.parseInt(request.getParameter("no"));
+				int result = service.selectLike(boardTableName, postId);
+				request.setAttribute("likeCount", result);
+				response.getWriter().print(result);
 			}
 		} catch(Exception err) {
 			err.printStackTrace();
@@ -197,7 +205,45 @@ public class AppsServlet extends HttpServlet {
 				session.setAttribute("modalText", modalText);
 				response.sendRedirect(path);
 			}
+			// 좋아요 추가/삭제/증감(for AJAX)
+			else if(command.equals("like")) {
+				HttpSession session = request.getSession();
+				int doLikeResult = 0;
+				int currentLikeCount = 0;
+				HashMap<String, Integer> resultMap = new HashMap<String, Integer>();
+				if(session.getAttribute("loginUser") != null) {
+					int userNo = ((User)session.getAttribute("loginUser")).getUserNo();
+					int postId = Integer.parseInt(request.getParameter("no"));
+					int likePostId = 0;
+					int upDownFlag = 0;
+					// request 속성에 like가 전달되어 있는 경우에만 likePostId 취득
+					if(request.getParameter("likePostId") != null) {
+						likePostId = Integer.parseInt(request.getParameter("likePostId"));
+					}
+					
+					if(likePostId == postId) { // 이미 좋아요 한 경우
+						upDownFlag = -1;
+						doLikeResult = service.deleteLike(boardTableName, userNo, postId);
+					} else if(likePostId != postId) { // 좋아요 하지 않은 경우
+						upDownFlag = 1;
+						doLikeResult = service.insertLike(boardTableName, userNo, postId);
+					}
+					currentLikeCount = service.selectLike(boardTableName, postId);
 
+					resultMap.put("doLikeResult", doLikeResult);
+					resultMap.put("currentLikeCount", currentLikeCount);
+					resultMap.put("upDownFlag", upDownFlag);
+//					Like like = service.selectLike(boardTableName, postId, userNo);
+//					request.setAttribute("like", like);
+					Gson gson = new Gson();
+					gson.toJson(resultMap, response.getWriter());
+				} else {
+					// 회원이 아닌 경우의 응답
+					response.getWriter().print(0);
+				}
+
+//				response.getWriter().print(resultArr);
+			}
 		} catch(Exception err) {
 			err.printStackTrace();
 		}
