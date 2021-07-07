@@ -8,6 +8,7 @@ import java.util.List;
 import com.ubbys.admin.apps.model.dao.AppsDAO;
 import com.ubbys.board.vo.Apps;
 import com.ubbys.board.vo.Pagination;
+import com.ubbys.board.vo.QnaPagination;
 
 public class AppsService {
 	AppsDAO dao = new AppsDAO();
@@ -52,5 +53,69 @@ public class AppsService {
 		close(conn);
 		return result;
 	}
+
+	/** apps 정렬 Service
+	 * @param pagination
+	 * @param sc
+	 * @param sv
+	 * @return appsList
+	 * @throws Exception
+	 */
+	public List<Apps> getAppsSortList(Pagination pagination, String sc, String sv) throws Exception{
+		Connection conn = getConnection();
+		String condition = createCondition(sc, sv);
+		List<Apps> appsList = dao.getAppsSortList(conn, pagination, condition);
+		close(conn);
+		return appsList;
+	}
+	
+	/** apps 검색 조건에 따른 페이지네이션 생성 Service
+	 * @param cp
+	 * @param sc
+	 * @param sv
+	 * @return pagination
+	 * @throws Exception
+	 */
+	public Pagination getPagination(int cp, String sc, String sv) throws Exception {
+		Connection conn = getConnection();
+		String condition = createCondition(sc, sv);
+		int listCount = dao.getListCount(conn, condition);
+		close(conn);
+		return new Pagination(cp, listCount);
+	}
+	/** apps 카테고리/제목/작성자 검색 Service
+	 * @param pagination
+	 * @param sc
+	 * @param sv
+	 * @return appsList
+	 * @throws Exception
+	 */
+	public List<Apps> getAppsSearchList(Pagination pagination, String sc, String sv) throws Exception{
+		Connection conn = getConnection();
+		String condition = createCondition(sc, sv);
+		List<Apps> appsList = dao.getAppsSearchList(conn, pagination, condition);
+		close(conn);
+		return appsList;
+	}
+	
+	// SQL 조건식 반환 메소드
+	public String createCondition(String sc, String sv) {
+		
+		String condition = null;
+		
+		switch(sc) {
+		case "sortNewest" : condition = " ORDER BY apps_post_id "+sv+" "; break;
+		case "sortLike" : condition = " ORDER BY apps_like "+sv+" "; break;
+		case "categoryId" : condition = " AND apps_category_id like '%"+sv+"%' "; break;
+		case "postTitle" : condition = " AND apps_title like '%"+sv+"%' "; break;
+		case "userName" : condition = " AND user_nickname like '%"+sv+"%' "; break;
+		}
+		return condition;
+	}
+
+
+
+
+
 
 }

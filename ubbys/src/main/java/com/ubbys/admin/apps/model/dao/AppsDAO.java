@@ -103,4 +103,94 @@ public class AppsDAO {
 		return result;
 	}
 
+	/** apps 정렬 DAO
+	 * @param conn
+	 * @param pagination
+	 * @param condition
+	 * @return appsList
+	 * @throws Exception
+	 */
+	public List<Apps> getAppsSortList(Connection conn, Pagination pagination, String condition) throws Exception{
+		List<Apps> appsList = new ArrayList<Apps>();
+		String sql = prop.getProperty("sortApps1")+condition+prop.getProperty("sortApps2");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			int start = (pagination.getCurrentPage()-1)*pagination.getLimit()+1;
+			int end = start+pagination.getLimit()-1;
+			pstmt.setInt(1, start);
+			pstmt.setInt(2, end);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Apps a = new Apps();
+				a.setPostId(rs.getInt("APPS_POST_ID"));
+				a.setCategoryName(rs.getString("APPS_CATEGORY_NAME"));
+				a.setPostTitle(rs.getString("APPS_TITLE"));
+				a.setPostLike(rs.getInt("APPS_LIKE"));
+				a.setUserName(rs.getString("USER_NICKNAME"));
+				a.setPostDate(rs.getDate("APPS_DATE"));
+				appsList.add(a);
+			}
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return appsList;
+	}
+	
+	/** apps 검색된 게시글 수 조회
+	 * @param conn
+	 * @param condition
+	 * @return listCount
+	 * @throws Exception
+	 */
+	public int getListCount(Connection conn, String condition) throws Exception {
+		int listCount = 0;
+		String sql = prop.getProperty("getListCount")+condition;
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			if(rs.next()) listCount = rs.getInt(1);
+		} finally {
+			close(rs);
+			close(stmt);
+		}
+		return listCount;
+	}
+	/** apps 검색 DAO
+	 * @param conn
+	 * @param pagination
+	 * @param sc
+	 * @param sv
+	 * @return appsList
+	 * @throws Exception
+	 */
+	public List<Apps> getAppsSearchList(Connection conn, Pagination pagination, String condition) throws Exception{
+		List<Apps> appsList = new ArrayList<Apps>();
+		String sql = prop.getProperty("searchApps1")+condition+prop.getProperty("searchApps2");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			int start = (pagination.getCurrentPage()-1)*pagination.getLimit()+1;
+			int end = start+pagination.getLimit()-1;
+			pstmt.setInt(1, start);
+			pstmt.setInt(2, end);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Apps a = new Apps();
+				a.setPostId(rs.getInt("APPS_POST_ID"));
+				a.setCategoryName(rs.getString("APPS_CATEGORY_NAME"));
+				a.setPostTitle(rs.getString("APPS_TITLE"));
+				a.setPostLike(rs.getInt("APPS_LIKE"));
+				a.setUserName(rs.getString("USER_NICKNAME"));
+				a.setPostDate(rs.getDate("APPS_DATE"));
+				appsList.add(a);
+			}
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return appsList;
+	}
+
+
+
 }

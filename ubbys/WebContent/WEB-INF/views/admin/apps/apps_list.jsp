@@ -12,7 +12,7 @@
         </div>
         
       	<div class="col-xs-12 col-sm-3">
-          <select name="" id="" class="form-select">
+          <select id="searchCategory" class="form-select">
             <option value="" selected>카테고리 전체</option>
               <c:forEach items="${ category }" var="c">
                 <option value="${ c.categoryId }">${ c.categoryName }</option>
@@ -21,7 +21,7 @@
         </div>
         
         <div class="col-xs-12 col-sm-6">
-          <form>
+          <form action="${ contextPath }/admin/appsList" method="GET" name="searchForm" id="searchForm">
             <div class="input-group mb-3">
               <select class="form-select" id="searchCondition" name="sc">
                 <option value="" selected>검색 조건</option>
@@ -81,15 +81,15 @@
         
     <%-- 페이징 --%>
     <c:choose><%-- 검색 시  --%>
-      <c:when test="${ !empty param.sk && !empty param.sv }">
-        <c:set var="pageURL" value="appsList?sk=${ param.sc }&sv=${ param.sv }"/>
+      <c:when test="${ !empty param.sc && !empty param.sv }">
+        <c:set var="pageURL" value="appsList?sc=${ param.sc }&sv=${ param.sv }"/>
       </c:when>
       <c:otherwise>
         <c:set var="pageURL" value="appsList?"/>
       </c:otherwise>
     </c:choose>
-    <c:set var="prev" value="${ pageURL }cp=${ pagination.prevPage }"/>
-    <c:set var="next" value="${ pageURL }cp=${ pagination.nextPage }"/>
+    <c:set var="prev" value="${ pageURL }&cp=${ pagination.prevPage }"/>
+    <c:set var="next" value="${ pageURL }&cp=${ pagination.nextPage }"/>
 
     <nav aria-label="Page navigation">
       <ul class="pagination justify-content-center">
@@ -112,7 +112,7 @@
               <li class="page-item active"><a class="page-link">${ p }</a></li>
             </c:when>
             <c:otherwise>
-              <li class="page-item"><a class="page-link" href="${ pageURL }cp=${ p }">${ p }</a></li>
+              <li class="page-item"><a class="page-link" href="${ pageURL }&cp=${ p }">${ p }</a></li>
             </c:otherwise>
           </c:choose>
         </c:forEach>
@@ -128,4 +128,40 @@
     </div>
 <jsp:include page="../footer.jsp" />
 
-<script src="${contextPath}/resources/js/adminApps_fn.js"></script>
+<%-- 정렬 sc:검색조건(최신순,좋아요순) sv:검색값(ASC, DESC) --%>
+<form action="#" method="GET" name="sortReqForm">
+  <input type="hidden" name="sc" value="" id="sortCond">
+  <input type="hidden" name="sv" value="" id="sortVal">
+</form>
+
+<%-- 카테고리 --%>
+<form action="#" method="GET" name="categoryReqForm">
+  <input type="hidden" name="sc" value="" id="searchCateCond">
+  <input type="hidden" name="sv" value="" id="searchCateVal">
+</form>
+
+<script src="${contextPath}/resources/js/adminApps_check_fn.js"></script>
+
+<script>
+keepSearch();
+function keepSearch(){
+  var sc = "${ param.sc }"
+  var sv = "${ param.sv }"
+  if(sv=="DESC"){
+      $("#sortCondition > option").each(function(index, item){
+        if($(item).val()==sc) $(item).prop("selected", true);
+      });
+  } 
+  else if(searchCondition==""){
+      $("#searchCategory > option").each(function(index, item){
+        if($(item).val()==sv) $(item).prop("selected", true);
+      });
+  }
+  else{
+      $("#searchCondition > option").each(function(index, item){
+        if($(item).val()==sc) $(item).prop("selected", true);
+      });
+      $("#searchValue").val(sv);
+  }
+}
+</script>

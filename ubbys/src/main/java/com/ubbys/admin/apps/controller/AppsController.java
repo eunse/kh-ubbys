@@ -16,7 +16,7 @@ import com.ubbys.board.vo.Apps;
 import com.ubbys.board.vo.Category;
 import com.ubbys.board.vo.Pagination;
 
-@WebServlet({"/admin/appsList", "/admin/appsView", "/admin/appsWrite", "/admin/appsUpdateform", "/admin/appsUpdate", "/admin/appsDeleteAlert", "/admin/appsDelete"})
+@WebServlet({"/admin/appsList", "/admin/appsDeleteAlert", "/admin/appsDelete"})
 public class AppsController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -33,8 +33,32 @@ public class AppsController extends HttpServlet {
 			
 			// apps 목록
 			if(command.equals("List")) {
-				Pagination pagination = service.getPagination(cp);
-				List<Apps> appsList = service.getAppsList(pagination);
+				
+				Pagination pagination = null;
+				List<Apps> appsList = null;
+				
+				// 일반 목록
+				if(request.getParameter("sc")==null) {
+					pagination = service.getPagination(cp);
+					appsList = service.getAppsList(pagination);
+				}
+				
+				// 정렬
+				else if(request.getParameter("sv").equals("DESC")) {
+					String sc = request.getParameter("sc");
+					String sv = request.getParameter("sv");
+					pagination = service.getPagination(cp);
+					appsList = service.getAppsSortList(pagination, sc, sv);
+				}
+				
+				// 카테고리, 제목, 작성자
+				else {
+					String sc = request.getParameter("sc");
+					String sv = request.getParameter("sv");
+					pagination = service.getPagination(cp, sc, sv);
+					appsList = service.getAppsSearchList(pagination, sc, sv);
+				}
+				
 				List<Category> category = new BoardService().selectCategoryList(boardTableName);
 				request.setAttribute("pagination", pagination);
 				request.setAttribute("appsList", appsList);
@@ -65,12 +89,13 @@ public class AppsController extends HttpServlet {
 				}
 			}
 			
+
+			
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
