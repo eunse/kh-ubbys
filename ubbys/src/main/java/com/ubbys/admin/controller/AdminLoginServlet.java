@@ -15,23 +15,23 @@ import com.ubbys.admin.model.service.AdminService;
 import com.ubbys.user.vo.User;
 
 
-@WebServlet("/adminLogin")
+@WebServlet("/admin/adminLogin")
 public class AdminLoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
+
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/admin/adminLogin.jsp");
 		view.forward(request, response);
 	}
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
 		String userEmail = request.getParameter("inputEmail");
 		String userPw = request.getParameter("inputPw");
 		String saveId = request.getParameter("saveId");
-		
 		
 		try {
 			AdminService service = new AdminService();
@@ -53,14 +53,15 @@ public class AdminLoginServlet extends HttpServlet {
 				response.addCookie(cookie);
 				
 				System.out.println("로그인 성공");
-				
-				response.sendRedirect("adminMain");
+
+				response.sendRedirect("/ubbys/admin/adminMain");
 							
 			} else {
 				session.setAttribute("modalTitle", "로그인 실패");
 				session.setAttribute("modalText", "로그인 권한이 없습니다.");
 				System.out.println("로그인 실패");
-				response.sendRedirect("adminLogin");
+
+				response.sendRedirect("/ubbys/admin/adminLogin");
 				System.out.println(loginUser);
 			}	
 			

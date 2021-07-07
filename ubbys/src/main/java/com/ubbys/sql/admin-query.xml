@@ -6,7 +6,7 @@
 	<entry key="adminLogin">
 		SELECT user_id, user_email, user_nickname, user_regdate, user_is_admin,
 		user_pic, user_link, user_interest, user_introduce
-		FROM "USER"
+		FROM "USER_LIST"
 		LEFT JOIN user_info USING(user_id)
 		WHERE user_email =? AND user_pw = ? AND user_is_admin = 'Y'
 	</entry>

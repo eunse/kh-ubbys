@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-@WebServlet("/adminLogout")
+@WebServlet("/admin/adminLogout")
 public class AdminLogoutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -17,7 +17,7 @@ public class AdminLogoutServlet extends HttpServlet {
 		
 		
 		request.getSession().invalidate();
-		response.sendRedirect("adminLogin");
+		response.sendRedirect("/admin/adminLogin");
 	}
 
 	
