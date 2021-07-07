@@ -21,6 +21,17 @@
 		WHERE RNUM BETWEEN ? AND ?
 	</entry>
 	
+		<!-- Qna 목록 조회(페이징제외) SQL -->
+	<entry key="selectQnaListAll">
+		SELECT * FROM
+    	(SELECT ROWNUM RNUM, A.* FROM
+			(SELECT * FROM QNA_LIST
+			  WHERE QNA_STATUS = 'Y'
+			  ORDER BY QNA_POST_ID DESC
+			)A
+        )
+	</entry>
+	
 
 	<!-- Qna 상세 조회 SQL -->
 	<entry key="selectQna">
