@@ -349,4 +349,38 @@ public class AppsDAO extends BoardDAO {
 		}
 		return result;
 	}
+	
+	/** MyApps 목록 조회 DAO
+	 * @param conn
+	 * @param userNo
+	 * @return myAppsList
+	 * @throws Exception
+	 */
+	public List<Board> selectMyQnaList(Connection conn, int userNo) throws Exception{
+		List<Board> myAppsList = new ArrayList<Board>();
+		String sql = prop.getProperty("selectMyAppsList");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userNo);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Board board = new Board();
+				
+				board.setPostId(rs.getInt("APPS_POST_ID"));
+				board.setCategoryName(rs.getString("APPS_CATEGORY_NAME"));
+				board.setPostTitle(rs.getString("APPS_TITLE"));
+				board.setPostLike(rs.getInt("APPS_LIKE"));
+				board.setUserNo(rs.getInt("USER_ID"));
+				board.setPostContent(rs.getString("APPS_CONTENT_SUBSTR"));
+				
+				myAppsList.add(board);
+				
+			}
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return myAppsList;
+	}
 }

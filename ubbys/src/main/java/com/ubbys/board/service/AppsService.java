@@ -10,6 +10,7 @@ import java.util.Locale.Category;
 
 import com.ubbys.board.dao.AppsDAO;
 import com.ubbys.board.vo.Apps;
+import com.ubbys.board.vo.Board;
 import com.ubbys.board.vo.Pagination;
 import com.ubbys.board.vo.Tag;
 
@@ -193,4 +194,17 @@ public class AppsService extends BoardService {
 		return result;
 	}
 
+	/**MyApps 목록 조회 Service
+	 * @param userNo
+	 * @return myAppsList
+	 * @throws Exception
+	 */
+	public List<Board> selectMyAppsList(int userNo) throws Exception{
+		Connection conn = getConnection();
+		List<Board> myAppsList = dao.selectMyQnaList(conn, userNo);
+		
+		close(conn);
+		
+		return myAppsList;
+	}
 }
