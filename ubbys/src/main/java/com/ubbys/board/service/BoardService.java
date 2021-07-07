@@ -8,8 +8,14 @@ import java.util.List;
 import com.ubbys.board.dao.BoardDAO;
 import com.ubbys.board.vo.Board;
 import com.ubbys.board.vo.Category;
+import com.ubbys.board.vo.Like;
 import com.ubbys.board.vo.Pagination;
-
+import com.ubbys.user.vo.User;
+/**
+ * 
+ * @author 백승훈
+ *
+ */
 public class BoardService {
 	private BoardDAO dao = new BoardDAO();
 	/**
@@ -38,18 +44,80 @@ public class BoardService {
 		close(conn);
 		return category;
 	}
-	
-	/**MyApps 목록 조회 Service
-	 * @param userNo
-	 * @return myAppsList
+
+	/**
+	 * 게시물 좋아요 회수 조회 Service
+	 * @param boardTableName
+	 * @param postId
+	 * @return result
 	 * @throws Exception
 	 */
-	public List<Board> selectMyAppsList(int userNo) throws Exception{
+	public int selectLike(String boardTableName, int postId) throws Exception {
 		Connection conn = getConnection();
-		List<Board> myAppsList = dao.selectMyQnaList(conn, userNo);
-		
+		int result = dao.selectLike(conn, boardTableName, postId);
 		close(conn);
-		
-		return myAppsList;
+		return result;
+	}
+	/**
+	 * 게시물 좋아요 여부 조회 Service
+	 * @param boardTableName
+	 * @param postId
+	 * @param loginUserNo
+	 * @return like
+	 * @throws Exception
+	 */
+	public Like selectLike(String boardTableName, int postId, int loginUserNo) throws Exception {
+		Connection conn = getConnection();
+		Like like = dao.selectLike(conn, boardTableName, postId, loginUserNo);
+		close(conn);
+		return like;
+	}
+	
+	/**
+	 * 게시글 좋아요 추가 Service
+	 * @param boardTableName
+	 * @param userNo
+	 * @param postId
+	 * @return result
+	 * @throws Exception
+	 */
+	public int insertLike(String boardTableName, int userNo, int postId) throws Exception {
+		Connection conn = getConnection();
+		int result = dao.insertLike(conn, boardTableName, userNo, postId);
+		if(result > 0) {
+			String addSub = "+";
+			result = dao.updateLike(conn, boardTableName, postId, addSub);
+			if(result > 0) {
+				commit(conn);
+			} else {
+				rollback(conn);
+			}
+		}
+		close(conn);
+		return result;
+	}
+	
+	/**
+	 * 게시글 좋아요 삭제 Service
+	 * @param boardTableName
+	 * @param userNo
+	 * @param postId
+	 * @return result
+	 * @throws Exception
+	 */
+	public int deleteLike(String boardTableName, int userNo, int postId) throws Exception {
+		Connection conn = getConnection();
+		int result = dao.deleteLike(conn, boardTableName, userNo, postId);
+		if(result > 0) {
+			String addSub = "-";
+			result = dao.updateLike(conn, boardTableName, postId, addSub);
+			if(result > 0) {
+				commit(conn);
+			} else {
+				rollback(conn);
+			}
+		} 
+		close(conn);
+		return result;
 	}
 }

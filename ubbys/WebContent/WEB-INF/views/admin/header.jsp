@@ -29,7 +29,6 @@
 	-moz-user-select: none;
 	user-select: none;
 }
-
 @media ( min-width : 768px) {
 	.bd-placeholder-img-lg {
 		font-size: 3.5rem;
@@ -87,7 +86,7 @@
 						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
 							<li><a href="${contextPath}/admin/qnaList" class="link-dark rounded">게시글 목록</a></li>
 							<li><a href="${contextPath}/admin/qnaWrite" class="link-dark rounded">게시글 작성</a></li>
-							<li><a href="#" class="link-dark rounded">댓글 목록</a></li>
+							<li><a href="${contextPath}/admin/replyList" class="link-dark rounded">댓글 목록</a></li>
 						</ul>
 					</div>
 				</li>
@@ -114,6 +113,3 @@
 			</ul>
 		</div>
 		<div class="b-example-divider"></div>
-	</main>
-</body>
-</html>

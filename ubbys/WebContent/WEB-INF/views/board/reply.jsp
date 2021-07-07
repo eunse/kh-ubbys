@@ -77,15 +77,10 @@
 
 
 <script>
-
-
 let beforeReplyRow; 
-
-
 //-----------------------------------------------------------------------------------------
 //댓글 등록
 function addReply() {
-
 	const replyContent = $("#replyContent").val();
     if(loginUserId == ""){
     	console.log("로그인 필요");
@@ -115,9 +110,6 @@ function addReply() {
      }
   }
 } 
-
-
-
 //-----------------------------------------------------------------------------------------
 //해당 게시글 댓글 목록 조회
 function selectReplyList(){
@@ -127,7 +119,8 @@ function selectReplyList(){
      type : "POST",
      dataType : "JSON",  
      success : function(rList){
-       console.log(rList);
+
+       /* console.log(rList); */
        
             $("#replyListArea").html(""); 
             
@@ -157,8 +150,9 @@ function selectReplyList(){
                  var ul = $("<ul>").addClass("reply-action list-inline me-2").attr("id", "replyBtnArea");
       
                  var childLi1 = $("<li>").addClass("list-inline-item");
-                 var showUpdate = $("<button>").addClass("btn btn-primary btn-sm ml-1 showUpdateReply").text("수정").attr("id", "showUpdateReply").attr("onclick", "showUpdateReply()");
-                 childLi1.append(showUpdate);
+                 var showUpdate = $("<button>").addClass("btn btn-primary btn-sm ml-1 showUpdateReply").text("수정").attr("id", "showUpdateReply").attr("onclick", "showUpdate(this)");
+                 var deleteReply = $("<button>").addClass("btn btn-primary btn-sm ml-1").text("삭제").attr("id", "deleteReply").attr("onclick", "deleteReply("+item.replyId+")");
+                 childLi1.append(showUpdate).append(deleteReply);
       
                  var childLi2 = $("<li>").addClass("list-inline-item");
                  var deleteReply = $("<button>").addClass("btn btn-primary btn-sm ml-1").text("삭제").attr("id", "deleteReply").attr("onclick", "deleteReply()");
@@ -181,10 +175,8 @@ function selectReplyList(){
             //수정창 시작-----------------------------------------------------------------------------------------
               var updateLi = $("<li>").addClass("list-group-item updateArea").attr("id", "updateLi");
               var uDivTop = $("<div>").addClass("d-flex justify-content-between align-items-center");
-
               var uDivch = $("<div>").addClass("ms-2 me-auto");
               uDivTop.append(uDivch);
-
               var uDivchch = $("<div>").addClass("fw-bold");
               uDivch.append(uDivchch); 
 			
@@ -192,17 +184,14 @@ function selectReplyList(){
               uDivchch.append(updateC);
               /* var uImg = $("<img>").attr("src","#").addClass("user-image rounded-circle me-2").text("닉네임 : ");
               uDivchch.append(uImg); */
-
               var uDivBottom = $("<div>").addClass("input-group ms-2 my-2");
-
-              var uTextarea = $("<textarea>").addClass("form-control").attr("id", "edit-reply").attr("rows","5");
+              var uTextarea = $("<textarea>").addClass("edit-reply form-control").attr("rows","5");
               var uButton = $("<button>").addClass("btn btn-outline-primary").text("수정").attr("onclick", "updateReply(" + item.replyId + ", this)");
               uDivBottom.append(uTextarea).append(uButton);
               
               //수정창 마무리
               updateLi.append(uDivTop).append(uDivBottom);
             //수정창 끝-------------------------------------------------------------------------------------------
-
               //댓글 + 수정창
               topUl.append(li).append(updateLi);
     
@@ -222,10 +211,19 @@ function selectReplyList(){
 }
 // ---------------------------
 // 댓글 수정창 여닫
+$(document).ready(function(){
+	
 $('.showUpdateReply').click(function(){
-    $(this).parent().parent().parent().parent().next(".updateArea").slideToggle(200)
-  })
-
+  	if($(this).parent().parent().parent().parent().next(".updateArea").css("display") == "none" ){
+        $(this).parent().parent().parent().parent().siblings("li.updateArea").slideUp(200);
+        $(this).parent().parent().parent().parent().next(".updateArea").slideDown(200);
+	
+ 	 }else{
+	   $(this).parent().parent().parent().parent().next(".updateArea").slideUp(200); 
+  	}
+  });
+  
+}); 
 // ---------------------------
 // 댓글 수정 기능
 function updateReply(replyId, el){
@@ -248,28 +246,27 @@ function updateReply(replyId, el){
 		}
 	});
 }
-
-
 // ---------------------------
 // 댓글 삭제 기능
 function deleteReply(replyId){
-
-    $.ajax({
-      url :"${contextPath}/replyDeleteReply",
-      type : "POST",
-      data : {"replyId" : replyId},
-      success : function(result){
-        if(result > 0){
-          console.log("댓글 삭제 성공");
-          selectReplyList();
-        }
-      },
-      error : function(){
-        console.log("댓글 삭제 실패");
-      }
-    });
+	if(confirm("댓글을 삭제하시겠습니까?")){
+  		
+        $.ajax({
+          url :"${contextPath}/reply/deleteReply",
+          type : "POST",
+          data : {"replyId" : replyId},
+          success : function(result){
+            if(result > 0){
+              console.log("댓글 삭제 성공");
+              //selectReplyList();
+            }
+          },
+          error : function(){
+            console.log("댓글 삭제 실패");
+          }
+    	});
+	}
 }
-
-
+// -------------------------------------------
+// 좋아요
 </script>
-

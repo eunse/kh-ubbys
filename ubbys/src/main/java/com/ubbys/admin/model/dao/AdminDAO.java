@@ -103,10 +103,8 @@ public class AdminDAO {
 				user.setUserNickname(rs.getString("USER_NICKNAME"));
 				user.setUserRegdate(rs.getDate("USER_REGDATE"));
 				user.setUserIsAdmin(rs.getString("USER_IS_ADMIN"));
-				
-				userList.add(user);
-			}
 			
+			}
 			
 		} finally {
 			
@@ -114,7 +112,6 @@ public class AdminDAO {
 			close(pstmt);
 			
 		}
-	
 		
 		return userList;
 	}

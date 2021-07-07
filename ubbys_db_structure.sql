@@ -12,6 +12,15 @@ CREATE TABLE "USER" (
 	USER_IS_ADMIN	CHAR(1)	DEFAULT 'N' CHECK(USER_IS_ADMIN IN('Y','N'))	NOT NULL
 );
 
+--------------------------------------------------------------------------------
+-- 관리자용 회원 VIEW
+--------------------------------------------------------------------------------
+CREATE OR REPLACE VIEW USER_LIST AS
+SELECT USER_ID, USER_EMAIL, USER_PW, USER_NICKNAME, USER_REGDATE, USER_IS_ADMIN
+FROM "USER"
+JOIN USER_INFO USING(USER_ID)
+WHERE USER_EMAIL <> 'unreg';
+
 COMMENT ON COLUMN "USER".USER_ID IS '회원 번호';
 COMMENT ON COLUMN "USER".USER_EMAIL IS '회원 이메일';
 COMMENT ON COLUMN "USER".USER_PW IS '회원 비밀번호';
@@ -512,6 +521,11 @@ CREATE OR REPLACE VIEW apps_list AS
     JOIN apps_categories USING(apps_category_id)
     JOIN "USER" USING(user_id);
 
+SELECT apps_post_id, apps_category_name, apps_title, apps_date, apps_icon, apps_like, apps_status, user_id, user_nickname, SUBSTR(apps_content,1,30) AS apps_content_substr, COUNT()
+FROM apps
+JOIN apps_categories USING(apps_category_id)
+JOIN "USER" USING(user_id);
+
 SELECT * FROM apps_list WHERE apps_status = 'Y';
 SELECT * FROM (
     SELECT ROWNUM RNUM, A.* FROM (
@@ -529,7 +543,7 @@ SELECT COUNT(*) FROM apps_list WHERE apps_status = 'Y';
 -- 글번호, 카테고리이름, 카테고리ID, 글 제목, 작성일, 아이콘 경로, 좋아요 수, 상태, 사용자 번호, 해시태그 이름, 해시태그 번호
 --------------------------------------------------------------------------------
 CREATE OR REPLACE VIEW apps_view AS
-    SELECT apps_post_id, apps_icon, apps_category_name, apps_title, user_nickname, apps_content, apps_url, apps_like, apps_date 
+    SELECT apps_post_id, apps_icon, apps_category_name, apps_title, user_nickname, apps_content, apps_url, apps_like, apps_date, user_id
     FROM apps 
     JOIN apps_categories USING(apps_category_id)
     JOIN "USER" USING(user_id);
@@ -593,7 +607,6 @@ DELETE FROM apps WHERE apps_post_id = 55 AND user_id = 1;
 --------------------------------------------------------------------------------
 SELECT * FROM apps_tags WHERE apps_post_id = 55;
 DELETE FROM apps_tags WHERE apps_post_id = 55;
-
 
 --------------------------------------------------------------------------------
 -- 관리자 메뉴 회원목록 출력을 위한 VIEW
