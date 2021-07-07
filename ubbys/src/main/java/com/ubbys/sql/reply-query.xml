@@ -38,12 +38,43 @@
 		WHERE reply_id = ?
 	</entry>
 	
-	<!-- QnaReply 좋아요 SQL -->
-	<entry key="likeQnaReply">
-		UPDATE qna_reply SET
-		reply_like = ?
-		WHERE reply_id = ?
+	<!-- ======================== 좋아요 ================================ -->
+	
+	<!-- Reply 목록에 좋아요 누른 유저 목록 조회 SQL -->
+	<entry key="selectUserList">
+		SELECT user_id FROM qna_reply_likes WHERE reply_id = ?
 	</entry>
+	
+	<!-- Reply 좋아요 확인 SQL -->
+	<entry key="replyLikeCheck">
+		SELECT reply_id, user_id FROM qna_reply_likes WHERE reply_id = ? AND user_id = ?
+	</entry>
+	
+	<!-- Reply 좋아요 삽입 SQL -->
+	<entry key="replyLike">
+		INSERT INTO qna_reply_likes VALUES(seq_reply_like_no.NEXTVAL, ?, ?)
+	</entry>
+	
+	<!-- Reply 좋아요 수 증가 SQL -->
+	<entry key="replyLikeIncrease">
+		UPDATE reply SET reply_like = reply_like+1 WHERE reply_id = ?
+	</entry>
+	
+	<!-- Reply 좋아요 취소 SQL -->
+	<entry key="replyLikeCancel">
+		DELETE FROM qna_reply_likes WHERE reply_id = ? AND user_id = ?
+	</entry>
+	
+	<!-- Reply 좋아요 수 감소 SQL -->
+	<entry key="replyLikeDecrease">
+		UPDATE reply SET reply_like = reply_like-1 WHERE reply_id = ?
+	</entry>
+	
+	<!-- Reply 좋아요 수 SQL -->
+	<entry key="replyLikeCount">
+		SELECT reply_like FROM reply WHERE reply_id = ?
+	</entry>
+
 	
 	<!-- 내 QnaReply 목록 조회 -->
 	<entry key="myReplyList">
