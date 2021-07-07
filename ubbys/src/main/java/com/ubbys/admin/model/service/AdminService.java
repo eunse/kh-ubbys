@@ -66,8 +66,7 @@ public class AdminService {
 
 		String condition = null;
 		
-//		condition 양 끝에는 띄어쓰기를 반드시 추가하여
-//		SQL 구문이 연속되서 작성되는 것을 방지함
+
 		switch (searchKey) {
 		case "userEmail":
 			condition = " AND USER_EMAIL LIKE '%" + searchValue + "%'  ";
@@ -198,6 +197,24 @@ public class AdminService {
 		return unRegUserList;
 	}
 
-	
+	/** 탈퇴 회원관리 목록 조회 Service (정렬용)
+	 * @param pagination
+	 * @param searchKey
+	 * @param searchValue
+	 * @return userList
+	 * @throws Exception
+	 */
+	public List<UnRegUser> getUnRegUserSoltList(Pagination pagination, String searchKey, String searchValue) throws Exception {
+
+		Connection conn = getConnection();
+
+		String condition = createCondition(searchKey, searchValue);
+
+		List<UnRegUser> unRegUserList = dao.selectSortUnRegUserList(conn, pagination, condition);
+
+		close(conn);
+
+		return unRegUserList;
+	}
 
 }
