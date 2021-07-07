@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.ubbys.board.service.AppsService;
 import com.ubbys.board.service.ReplyService;
 import com.ubbys.board.service.SelectQnaService;
+import com.ubbys.board.vo.Board;
 import com.ubbys.board.vo.Qna;
 import com.ubbys.board.vo.QnaPagination;
 import com.ubbys.board.vo.Reply;
@@ -43,9 +45,10 @@ public class MyPageServlet extends HttpServlet {
 			System.out.println("내질문"+myQnaList);
 
 			// 내 apps 목록 관련
-//			SelectAppsService appsService = new SelectAppsService();
-//			List<Apps> myAppsList = service.selectMyAppsList(userNo);
-//			request.setAttribute("myAppsList", myAppsList);
+			AppsService appsService = new AppsService();
+			List<Board> myAppsList = appsService.selectMyAppsList(userNo);
+			request.setAttribute("myAppsList", myAppsList);
+			System.out.println("내앱"+myAppsList);
 			
 			// 내 댓글 목록 관련
 			ReplyService replyService = new ReplyService();
@@ -65,6 +68,8 @@ public class MyPageServlet extends HttpServlet {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			request.setAttribute("errorMsg", "알 수 없는 오류가 발생하였습니다.");
+            request.getRequestDispatcher("/WEB-INF/views/common/error.jsp").forward(request, response);
 		}
 	}
 

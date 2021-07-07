@@ -496,6 +496,7 @@ CREATE OR REPLACE VIEW MYPAGE_QNA_LIST AS
     JOIN "USER" USING(USER_ID)
     LEFT JOIN (SELECT QNA_POST_ID, COUNT(*) REPLY_COUNT
                     FROM QNA_REPLY 
+	       	    WHERE REPLY_STATUS = 'Y'
                     GROUP BY QNA_POST_ID) USING(QNA_POST_ID);  
 
 --------------------------------------------------------------------------------
@@ -607,3 +608,11 @@ DELETE FROM apps WHERE apps_post_id = 55 AND user_id = 1;
 SELECT * FROM apps_tags WHERE apps_post_id = 55;
 DELETE FROM apps_tags WHERE apps_post_id = 55;
 
+--------------------------------------------------------------------------------
+-- 관리자 메뉴 회원목록 출력을 위한 VIEW
+--------------------------------------------------------------------------------
+CREATE OR REPLACE VIEW USER_LIST AS
+SELECT USER_ID, USER_EMAIL, USER_PW, USER_NICKNAME, USER_REGDATE, USER_IS_ADMIN
+FROM "USER"
+JOIN USER_INFO USING(USER_ID)
+WHERE USER_EMAIL <> 'unreg';

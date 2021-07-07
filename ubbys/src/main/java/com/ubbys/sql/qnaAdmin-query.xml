@@ -4,7 +4,7 @@
 
 	<!-- 카테고리 목록 조회 SQL -->
 	<entry key="selectQnaCategory">
-		SELECT * FROM qna_categories
+		SELECT * FROM qna_categories		
 	</entry>
 	
 	<!-- na 다음 게시글 번호 얻어오기 SQL -->

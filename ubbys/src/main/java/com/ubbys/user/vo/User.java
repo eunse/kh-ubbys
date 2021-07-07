@@ -49,6 +49,16 @@ public class User {
 		this.userIntroduce = userIntroduce;
 	}
 
+	public User(int userNo, String userEmail, String userNickname, Date userRegdate,
+			String userIsAdmin) {
+		super();
+		this.userNo = userNo;
+		this.userEmail = userEmail;
+		this.userNickname = userNickname;
+		this.userRegdate = userRegdate;
+		this.userIsAdmin = userIsAdmin;
+	}
+
 	public int getUserNo() {
 		return userNo;
 	}
@@ -117,5 +127,5 @@ public class User {
 				+ userPic + ", userLink=" + userLink + ", userInterest=" + userInterest + ", userIntroduce="
 				+ userIntroduce + "]";
 	}
-	
+
 }

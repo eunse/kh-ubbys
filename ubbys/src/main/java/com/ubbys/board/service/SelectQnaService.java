@@ -3,6 +3,7 @@ package com.ubbys.board.service;
 import static com.ubbys.common.JDBCTemplate.*;
 import java.sql.Connection;
 import java.util.List;
+import java.util.Map;
 
 import com.ubbys.board.dao.SelectQnaDAO;
 import com.ubbys.board.vo.Qna;
@@ -27,7 +28,8 @@ public class SelectQnaService {
 		
 		return new QnaPagination(cp, listCount);
 	}
-
+	
+	
 	/** Qna 목록 조회 Service
 	 * @param pagination
 	 * @return qnaList
@@ -38,6 +40,23 @@ public class SelectQnaService {
 		Connection conn = getConnection();
 		
 		List<Qna> qnaList = dao.selectQnaList(conn, pagination);
+		
+		close(conn);
+		
+		return qnaList;
+	}
+	/** Qna 목록 조회 Service (로그인유저)
+	 * @param pagination
+	 * @return qnaList
+	 * @throws Exception
+	 */
+	public List<Qna> selectQnaList(QnaPagination pagination, int loginUserId) throws Exception {
+		
+		Connection conn = getConnection();
+		
+		List<Qna> qnaList = dao.selectQnaList(conn, pagination);
+		
+		qnaList = dao.getLikeFlag(conn, qnaList, loginUserId);
 		
 		close(conn);
 		
@@ -75,72 +94,124 @@ public class SelectQnaService {
 		return myQnaList;
 	}
 	
-
-	/** qna 제목이 일치하는 글 수 카운트 + 페이지네이션 생성 Service
-	 * @param cp
-	 * @param qnaTitle
-	 * @return pagination
-	 * @throws Exception
-	 */
-	public QnaPagination getSearchTPage(int cp, String qnaTitle) throws Exception {
-
-		Connection conn = getConnection();
-
-		int listCount = dao.getTListCount(conn, cp, qnaTitle);
-
-		close(conn);
-
-		return new QnaPagination(cp, listCount);
-	}
-	/** qna 제목 조건 검색 Service
+	
+	/** qna 정렬 목록 조회 Service
 	 * @param pagination
-	 * @param qnaTitle
+	 * @param searchCondition
+	 * @param searchValue
 	 * @return qnaList
 	 * @throws Exception
 	 */
-	public List<Qna> searchQnaTitle(QnaPagination pagination, String qnaTitle) throws Exception {
+	public List<Qna> selectQnaSortList(QnaPagination pagination, String searchCondition, String searchValue) throws Exception {
 
 		Connection conn = getConnection();
-
-		List<Qna> qnaList = dao.searchQnaTitle(conn, pagination, qnaTitle);
-
+		
+		String condition = createCondition(searchCondition, searchValue);
+		
+		List<Qna> qnaList = dao.sortQnaList(conn, pagination, condition);
+		
 		close(conn);
-
+		
 		return qnaList;
 	}
-
-	/** qna 작성자가 일치하는 글 수 카운트 + 페이지네이션 생성 Service
-	 * @param cp
-	 * @param qnaTitle
-	 * @return pagination
-	 * @throws Exception
-	 */
-	public QnaPagination getSearchNPage(int cp, String userNickname) throws Exception {
-
-		Connection conn = getConnection();
-
-		int listCount = dao.getTListCount(conn, cp, userNickname);
-
-		close(conn);
-
-		return new QnaPagination(cp, listCount);
-	}
-	/** qna 작성자 조건 검색 Service
+	/** qna 정렬 목록 조회 Service (로그인유저)
 	 * @param pagination
-	 * @param userNickname
+	 * @param searchCondition
+	 * @param searchValue
 	 * @return qnaList
 	 * @throws Exception
 	 */
-	public List<Qna> searchQnaAuthor(QnaPagination pagination, String userNickname) throws Exception {
+	public List<Qna> selectQnaSortList(QnaPagination pagination, String searchCondition, String searchValue, int loginUserId) throws Exception {
 
 		Connection conn = getConnection();
-
-		List<Qna> qnaList = dao.searchQnaAuthor(conn, pagination, userNickname);
-
+		
+		String condition = createCondition(searchCondition, searchValue);
+		
+		List<Qna> qnaList = dao.sortQnaList(conn, pagination, condition);
+		
+		qnaList = dao.getLikeFlag(conn, qnaList, loginUserId);
+		
 		close(conn);
-
+		
 		return qnaList;
 	}
-
+	
+	
+	/** qna 검색 조건이 일치하는 글 수 카운트 + 페이지네이션 생성 Service
+	 * @param cp
+	 * @param searchCondition
+	 * @param searchValue
+	 * @return QnaPagination
+	 * @throws Exception
+	 */
+	public QnaPagination getPagination(int cp, String searchCondition, String searchValue) throws Exception {
+		
+		Connection conn = getConnection();
+		
+		String condition = createCondition(searchCondition, searchValue);
+		
+		int listCount = dao.getListCount(conn, cp, condition);
+		
+		close(conn);
+		
+		return new QnaPagination(cp, listCount);
+	}
+	/** qna 검색 목록 조회 Service
+	 * @param pagination
+	 * @return qnaList
+	 * @throws Exception
+	 */
+	public List<Qna> selectQnaList(QnaPagination pagination, String searchCondition, String searchValue) throws Exception {
+		
+		Connection conn = getConnection();
+		
+		String condition = createCondition(searchCondition, searchValue);
+		
+		List<Qna> qnaList = dao.selectQnaList(conn, pagination, condition);
+		
+		close(conn);
+		
+		return qnaList;
+	}
+	/** qna 검색 목록 조회 Service (로그인유저)
+	 * @param pagination
+	 * @return qnaList
+	 * @throws Exception
+	 */
+	public List<Qna> selectQnaList(QnaPagination pagination, String searchCondition, String searchValue, int loginUserId) throws Exception {
+		
+		Connection conn = getConnection();
+		
+		String condition = createCondition(searchCondition, searchValue);
+		
+		List<Qna> qnaList = dao.selectQnaList(conn, pagination, condition);
+		
+		qnaList = dao.getLikeFlag(conn, qnaList, loginUserId);
+		
+		close(conn);
+		
+		return qnaList;
+	}
+	
+	// SQL 조건식 반환 메소드
+	public String createCondition(String searchCondition, String searchValue) {
+		
+		String condition = null;
+		
+		switch(searchCondition) {
+		
+		case "qnaTitle" : condition = " AND qna_title like '%"+searchValue+"%' "; break;
+		
+		case "userNickname" : condition = " AND user_nickname like '%"+searchValue+"%' "; break;
+		
+		case "qnaCategoryId" : condition = " AND qna_category_id like '%"+searchValue+"%' "; break;
+		
+		case "sortNewest" : condition = " ORDER BY qna_post_id "+searchValue+" "; break;
+		
+		case "sortLike" : condition = " ORDER BY qna_like "+searchValue+" "; break;
+		
+		}
+		return condition;
+	}
 
 }

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.ubbys.wrapper.EncryptWrapper;
 
-@WebFilter(filterName = "encryptFilter", urlPatterns = {"/login", "/signup", "/user/changePw", "/user/deleteAccount"})
+@WebFilter(filterName = "encryptFilter", urlPatterns = {"/login", "/signup", "/user/changePw", "/user/deleteAccount", "/admin/adminLogin"})
 public class EncryptFilter implements Filter {
 
 	public void destroy() {

@@ -44,7 +44,7 @@
 
 		<div class="container d-flex justify-content-center">
 			<form class="form-signin text-center col-4" method="POST"
-				action="${contextPath}/adminLogin">
+				action="${contextPath}/admin/adminLogin">
 
 				<h1 class="h3 mb-3 fw-normal">관리자 로그인</h1>
 
@@ -61,7 +61,7 @@
 
 				<div class="checkbox mb-3">
 					<label> <input type="checkbox" name="saveId" id="saveId">
-						ID 기억하기
+						Email 기억하기
 					</label>
 				</div>
 				<button class="w-100 btn btn-lg btn-primary" type="submit">로그인</button>

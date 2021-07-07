@@ -12,7 +12,7 @@
           <p>${ qna.userNickname }</p>
         </div>
         <div class="col-md-2 gap-3 mb-sm-3">
-          <button type="button" class="btn btn-outline-danger btn-lg w-100 float-end" id="qna-like-btn">
+          <button type="button" class="btn btn-outline-secondary btn-lg w-100 float-end" id="qna-like-btn">
           	<i class="bi bi-heart me-2" id="qna-like"></i><span id="qna-like-count">${ qna.qnaLike }</span>
           </button>
         </div>
@@ -28,11 +28,17 @@
       
       
       <!-- 댓글이 include될 부분 -->
-      <jsp:include page="../reply.jsp"></jsp:include>
+      <jsp:include page="reply.jsp"></jsp:include>
     
     
-    
-      <a href="qnaList?cp=${ param.cp }" class="btn btn-outline-primary">이전 목록</a>
+      <c:choose>
+        <c:when test="${ !empty param.sc && !empty param.sv }">
+          <a href="qnaList?sc=${param.sc }&sv=${param.sv }&cp=${ param.cp }" class="btn btn-outline-primary">이전 목록</a>
+        </c:when>
+        <c:otherwise>
+          <a href="qnaList?cp=${ param.cp }" class="btn btn-outline-primary">이전 목록</a>
+        </c:otherwise>
+      </c:choose>
       
       <c:if test="${ qna.userId == sessionScope.loginUser.userNo }">
         <button class="btn btn-primary float-end" id="qnqUpdateBtn" onclick="fnRequest('UpdateForm');">수정</button>
@@ -50,7 +56,7 @@
 
 <script>
 
-const loginUserId = ${loginUser.userNo};
+const loginUserId = "${loginUser.userNo}";
 const qnaPostId = ${ qna.qnaPostId };
 let qnaLike = ${qna.qnaLike};
 

@@ -44,7 +44,7 @@ public class BoardService {
 		close(conn);
 		return category;
 	}
-	
+
 	/**
 	 * 게시물 좋아요 회수 조회 Service
 	 * @param boardTableName
@@ -120,6 +120,4 @@ public class BoardService {
 		close(conn);
 		return result;
 	}
-	
-	
 }

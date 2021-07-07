@@ -12,6 +12,8 @@ import java.util.List;
 
 import java.util.Properties;
 
+import com.ubbys.board.vo.Apps;
+import com.ubbys.board.vo.Board;
 import com.ubbys.board.vo.Category;
 import com.ubbys.board.vo.Like;
 import com.ubbys.user.vo.User;
@@ -110,7 +112,7 @@ public class BoardDAO {
 		}
 		return postId;
 	}
-	
+
 	/**
 	 * 게시물 좋아요 회수 조회 DAO
 	 * @param conn

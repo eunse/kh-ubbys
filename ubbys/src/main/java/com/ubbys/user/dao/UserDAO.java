@@ -192,34 +192,118 @@ public class UserDAO {
 		return result;
 	}
 
-	/**
-	 * 회원 탈퇴 DAO
-	 * 
+	
+	/** 탈퇴시 비밀번호 확인 DAO
 	 * @param conn
 	 * @param currentPw
 	 * @param userNo
 	 * @return result
 	 * @throws Exception
 	 */
-	public int delectAccount(Connection conn, String currentPw, int userNo) throws Exception {
+	public int passwordCheck(Connection conn, String currentPw, int userNo) throws Exception {
 		int result = 0;
-		System.out.println("DAO : " + currentPw);
+		String sql = prop.getProperty("passwordCheck");
 		try {
-			String sql = prop.getProperty("deleteAccount");
-
 			pstmt = conn.prepareStatement(sql);
-
+			pstmt.setString(1, currentPw);
+			pstmt.setInt(2, userNo);
+			rs = pstmt.executeQuery();
+			if(rs.next()) result = rs.getInt(1);
+			System.out.println(result);
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return result;
+	}
+	/** 탈퇴할 회원 정보 DAO
+	 * @param conn
+	 * @param currentPw
+	 * @param userNo
+	 * @return unregUser
+	 * @throws Exception
+	 */
+	public User getUnregUser(Connection conn, int userNo) throws Exception {
+		User unregUser = new User();
+		String sql = prop.getProperty("getUnregUser");
+		try {
+			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, userNo);
-			pstmt.setString(2, currentPw);
-
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				unregUser.setUserNo(rs.getInt("USER_ID"));
+				unregUser.setUserEmail(rs.getString("USER_EMAIL"));
+				unregUser.setUserPw(rs.getString("USER_PW"));
+				unregUser.setUserNickname(rs.getString("USER_NICKNAME"));
+				unregUser.setUserRegdate(rs.getDate("USER_REGDATE"));
+				unregUser.setUserIsAdmin(rs.getString("USER_IS_ADMIN"));
+			}
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return unregUser;
+	}
+	/** 탈퇴할 회원 정보 탈퇴회원 테이블에 삽입 DAO
+	 * @param conn
+	 * @param unregUser
+	 * @return result
+	 * @throws Exception
+	 */
+	public int insertUnregUser(Connection conn, User unregUser) throws Exception {
+		int result = 0;
+		String sql = prop.getProperty("insertUnregUser");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, unregUser.getUserNo());
+			pstmt.setString(2, unregUser.getUserEmail());
+			pstmt.setString(3, unregUser.getUserPw());
+			pstmt.setString(4, unregUser.getUserNickname());
+			pstmt.setDate(5, unregUser.getUserRegdate());
+			pstmt.setString(6, unregUser.getUserIsAdmin());
 			result = pstmt.executeUpdate();
-
 		} finally {
 			close(pstmt);
 		}
-
 		return result;
 	}
+	/** 회원 테이블의 탈퇴회원 정보 변경 DAO
+	 * @param conn
+	 * @param userNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updateUnregUser(Connection conn, int userNo) throws Exception {
+		int result = 0;
+		String sql = prop.getProperty("updateUnregUser");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userNo);
+			result = pstmt.executeUpdate();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	/** 회원 추가정보 테이블 탈퇴회원 행 삭제 DAO
+	 * @param conn
+	 * @param userNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updateUnregUserInfo(Connection conn, int userNo) throws Exception {
+		int result = 0;
+		String sql = prop.getProperty("updateUnregUserInfo");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userNo);
+			result = pstmt.executeUpdate();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
 
 	/**
 	 * 중복검사 DAO
@@ -312,4 +396,14 @@ public class UserDAO {
 		}
 		return loginUser;
 	}
+
+
+
+
+
+
+
+
+
+
 }
