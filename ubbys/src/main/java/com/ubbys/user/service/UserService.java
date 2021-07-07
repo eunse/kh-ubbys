@@ -142,9 +142,9 @@ public class UserService {
 				
 				result = dao.updateUnregUser(conn, userNo);
 				
-				if(result>0) { // 회원 테이블의 탈퇴유저 정보 변경 성공 -> user_info 테이블의 해당 유저 정보 삭제
+				if(result>0) { // 회원 테이블의 탈퇴유저 정보 변경 성공 -> user_info 테이블의 해당 유저 정보 변경
 					
-					result = dao.deleteUnregUser(conn, userNo);
+					result = dao.updateUnregUserInfo(conn, userNo);
 					
 					if(result>0) commit(conn); // 탈퇴 처리 성공~!
 					else {
