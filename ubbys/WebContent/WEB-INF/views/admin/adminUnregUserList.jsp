@@ -19,7 +19,7 @@
 				</select>
 			</div>
 			<div class="col-xs-12 col-sm-4 w-50">
-				<form action="${contextPath }/adminUnuser/unRegList" method="POST"
+				<form action="${contextPath }/admin/adminUnuser/unRegList" method="POST"
 					id="UnRegUserSearchForm">
 					<div class="input-group mb-3" class="qna-search-area">
 						<select class="form-select" id="searchKey" name="sk">

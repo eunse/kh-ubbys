@@ -17,7 +17,16 @@
         </div>
         <div class="col-md-2 d-grid gap-3 mb-sm-3">
           <a href="${apps.appsLink}" target="_blank" class="btn btn-primary btn-lg"><i class="bi bi-download"></i> 다운로드</a>
-          <button type="button" class="btn btn-outline-secondary btn-lg"><i class="bi bi-heart"></i> ${apps.postLike}</button>
+          <c:choose>
+          <c:when test="${like.postId == apps.postId}">
+          <button type="button" class="btn btn-outline-secondary btn-lg" id="btnLike"><i class="bi bi-heart-fill text-danger"></i> <span id="likeCount">${apps.postLike}</span></button>
+          <script>function getLikeId() {return ${like.postId}}</script>
+          </c:when>
+          <c:otherwise>
+          <button type="button" class="btn btn-outline-secondary btn-lg" id="btnLike"><i class="bi bi-heart"></i> <span id="likeCount">${apps.postLike}</span></button>
+          <script>function getLikeId() { return 0 }</script>
+          </c:otherwise>
+          </c:choose>
         </div>
       </div>
       <div class="app-content col-md-9">${apps.postContent}</div>
