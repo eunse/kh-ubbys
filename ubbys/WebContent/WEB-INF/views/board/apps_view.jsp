@@ -35,8 +35,7 @@
       <a href="write?no=${apps.postId}" class="btn btn-outline-primary">수정</a>
       <button type="button" id="deleteBtn" class="btn btn-outline-danger">삭제</button>
       </c:if>
-      <fmt:formatDate var="postDate" value="${apps.postDate}" pattern="YYYY년 M월 d일 HH:mm:ss"/>  
-      <small class="float-end">작성일시: ${postDate}</small>
+      <small class="float-end">작성일시: ${apps.postDate}</small>
     </div>
     <script src="${contextPath}/resources/js/board_view.js" defer></script>
 <jsp:include page="../common/footer.jsp" />

@@ -52,7 +52,7 @@ public class AppsDAO extends BoardDAO {
 				apps.setPostId(rs.getInt("apps_post_id"));
 				apps.setCategoryName(rs.getString("apps_category_name"));
 				apps.setPostTitle(rs.getString("apps_title"));
-				apps.setPostDate(rs.getDate("apps_date"));
+				apps.setPostDate(rs.getString("apps_date"));
 				apps.setAppsIconUrl(rs.getString("apps_icon"));
 				apps.setPostLike(rs.getInt("apps_like"));
 				apps.setUserName(rs.getString("user_nickname"));
@@ -151,7 +151,7 @@ public class AppsDAO extends BoardDAO {
 				apps.setCategoryName(rs.getString("apps_category_name"));
 				apps.setPostTitle(rs.getString("apps_title"));
 				apps.setPostContent(rs.getString("apps_content"));
-				apps.setPostDate(rs.getDate("apps_date"));
+				apps.setPostDate(rs.getString("apps_date"));
 				apps.setAppsIconUrl(rs.getString("apps_icon"));
 				apps.setPostLike(rs.getInt("apps_like"));
 				apps.setUserName(rs.getString("user_nickname"));

@@ -6,7 +6,7 @@ public class Board {
 	protected int postId;
 	protected String postTitle;
 	protected String postContent;
-	protected Date postDate;
+	protected String postDate;
 	protected int userNo;
 	protected String userName;
 	protected int postLike;
@@ -39,11 +39,11 @@ public class Board {
 		this.postContent = postContent;
 	}
 
-	public Date getPostDate() {
+	public String getPostDate() {
 		return postDate;
 	}
 
-	public void setPostDate(Date postDate) {
+	public void setPostDate(String postDate) {
 		this.postDate = postDate;
 	}
 
