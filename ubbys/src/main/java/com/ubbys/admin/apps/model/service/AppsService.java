@@ -38,4 +38,19 @@ public class AppsService {
 		return appsList;
 	}
 
+	/** apps 삭제 Service
+	 * @param postId
+	 * @return result
+	 * @throws Exception
+	 */
+	public int deleteApps(int postId) throws Exception {
+		
+		Connection conn = getConnection();
+		int result = dao.deleteApps(conn, postId);
+		if(result>0) commit(conn);
+		else rollback(conn);
+		close(conn);
+		return result;
+	}
+
 }

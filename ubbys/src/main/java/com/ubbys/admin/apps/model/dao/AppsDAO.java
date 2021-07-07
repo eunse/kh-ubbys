@@ -14,7 +14,6 @@ import java.util.Properties;
 import com.ubbys.board.vo.Apps;
 import com.ubbys.board.vo.Pagination;
 
-
 public class AppsDAO {
 	protected Statement stmt = null;
 	protected PreparedStatement pstmt = null;
@@ -83,6 +82,25 @@ public class AppsDAO {
 			close(pstmt);
 		}
 		return appsList;
+	}
+
+	/** apps 삭제 DAO
+	 * @param conn
+	 * @param postId
+	 * @return result
+	 * @throws Exception
+	 */
+	public int deleteApps(Connection conn, int postId) throws Exception {
+		int result = 0;
+		String sql = prop.getProperty("deleteApps");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, postId);
+			result = pstmt.executeUpdate();
+		} finally {
+			close(pstmt);
+		}
+		return result;
 	}
 
 }

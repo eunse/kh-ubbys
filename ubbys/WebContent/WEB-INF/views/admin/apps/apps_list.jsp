@@ -48,26 +48,27 @@
           </thead>
           <tbody>
           	<c:choose>
-          		<c:when test="${empty appsList }">
+          		<c:when test="${ empty appsList }">
           			<tr>
           				<td colspan="8">게시글이 존재하지 않습니다.</td>
           			</tr>
           		</c:when>
           		
           		<c:otherwise>
-          			<c:forEach items="${ appsList }" var="a">
+          			<c:forEach items="${ appsList }" var="apps">
+                        <input type="hidden" name="no" value="${ apps.postId }">
           				<tr>
-          					<td>${ a.postId }</td>
-          					<td>${ a.categoryName}</td>
+          					<td>${ apps.postId }</td>
+          					<td>${ apps.categoryName}</td>
           					<td>
-          						<a href="apps/view?no=${ a.postId }&cp=${ pagination.currentPage }">${ a.postTitle }</a>
+          						<a href="apps/view?no=${ apps.postId }&cp=${ pagination.currentPage }">${ apps.postTitle }</a>
           					</td>
-          					<td>${ a.postLike }</td>
-          					<td>${ a.userName }</td>
-          					<td>${ a.postDate }</td>
+          					<td>${ apps.postLike }</td>
+          					<td>${ apps.userName }</td>
+          					<td>${ apps.postDate }</td>
           					<td>
-          						<a href="" class="btn btn-primary btn-sm">수정</a>
-                				<a href="" class="btn btn-danger btn-sm">삭제</a>
+          						<a href="${ contextPath }/admin/appsUpdateform" class="btn btn-primary btn-sm">수정</a>
+                				<a href="${ contextPath }/admin/appsDeleteAlert?no=${ apps.postId }" class="btn btn-danger btn-sm">삭제</a>
           					</td>
           				</tr>
           			</c:forEach>
@@ -75,7 +76,6 @@
           	</c:choose>
           </tbody>
         </table>
-        <a href="${contextPath }/admin/appsWrite" class="btn btn-primary float-end">작성하기</a>
         
         
         
@@ -127,3 +127,5 @@
       
     </div>
 <jsp:include page="../footer.jsp" />
+
+<script src="${contextPath}/resources/js/adminApps_fn.js"></script>
