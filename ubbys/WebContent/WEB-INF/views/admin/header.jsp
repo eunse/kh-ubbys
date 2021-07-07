@@ -39,7 +39,6 @@
 	rel="stylesheet">
 <script src="${contextPath}/resources/admin/js/sidebars.js" defer></script>
 </head>
-
 <body>
 	<main>
 		<div class="flex-shrink-0 p-3 bg-white" style="width: 280px;">
@@ -49,7 +48,6 @@
 				class="fs-5 fw-semibold"> ADMIN</span>
 			</a>
 			<ul class="list-unstyled ps-0">
-
 				
 					<li class="mb-1">
 
@@ -112,5 +110,4 @@
 				</li>
 			</ul>
 		</div>
-		</main>
 		<div class="b-example-divider"></div>
