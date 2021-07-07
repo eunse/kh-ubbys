@@ -53,6 +53,20 @@ public class SelectQnaService {
 
 
 	
+	/** 댓글 작성을 위한 qna 목록 조회 Service
+	 * @return qnaList
+	 * @throws Exception
+	 */
+	public List<Qna> selectQnaList() throws Exception {
+		Connection conn = getConnection();
+		
+		List<Qna> qnaList = dao.selectQnaList(conn);
+		
+		close(conn);
+		return qnaList;
+	}
+	
+	
 	/** qna 상세 조회 service
 	 * @param qnaPostId
 	 * @return qna
@@ -154,6 +168,8 @@ public class SelectQnaService {
 	
 	
 	// ----------------------검색  끝----------------------------------------
+	
+	
 	
 
 }

@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -277,6 +278,45 @@ public class SelectQnaDAO {
 				qnaList.add(vo);
 			}
 			
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		
+		return qnaList;
+	}
+	
+	
+	/** qna 상세 조회
+	 * @param conn
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<Qna> selectQnaList(Connection conn) throws SQLException {
+		
+		List<Qna> qnaList = new ArrayList<Qna>();
+		
+		try{
+			String sql = prop.getProperty("selectQnaListAll");
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+						
+			while(rs.next()) {
+				
+				Qna vo = new Qna();
+				
+				vo.setQnaPostId(rs.getInt("QNA_POST_ID"));
+				vo.setQnaCategoryName(rs.getString("QNA_CATEGORY_NAME"));
+				vo.setQnaTitle(rs.getString("QNA_TITLE"));
+				vo.setQnaLike(rs.getInt("QNA_LIKE"));
+				vo.setQnaReplyCount(rs.getInt("REPLY_COUNT"));
+				vo.setUserNickname(rs.getString("USER_NICKNAME"));
+				vo.setQnaDate(rs.getString("QNA_DATE"));
+				
+				
+				qnaList.add(vo);
+			}
 		} finally {
 			close(rs);
 			close(pstmt);

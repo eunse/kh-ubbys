@@ -104,14 +104,14 @@ public class AdminDAO {
 				user.setUserRegdate(rs.getDate("USER_REGDATE"));
 				user.setUserIsAdmin(rs.getString("USER_IS_ADMIN"));
 				
-//				List<String> filePath = new ArrayList<String>();
-//				List<String> fileName = new ArrayList<String>();
-//				
-//				filePath.add(rs.getString("FILE_PATH"));
-//				fileName.add(rs.getString("FILE_NM"));
-//				
-//				user.setFilePath(filePath);
-//				user.setFileName(fileName);
+				List<String> filePath = new ArrayList<String>();
+				List<String> fileName = new ArrayList<String>();
+				
+				filePath.add(rs.getString("FILE_PATH"));
+				fileName.add(rs.getString("FILE_NM"));
+				
+				user.setFilePath(filePath);
+				user.setFileName(fileName);
 				
 				userList.add(user);
 			}
