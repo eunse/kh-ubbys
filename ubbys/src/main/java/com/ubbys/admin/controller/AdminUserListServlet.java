@@ -13,7 +13,7 @@ import com.ubbys.admin.model.service.AdminService;
 import com.ubbys.board.vo.Pagination;
 import com.ubbys.user.vo.User;
 
-@WebServlet("/admin/adminUser/*") // 경로 바꾸기
+@WebServlet("/adminUser/*") // 경로 바꾸기
 public class AdminUserListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -22,7 +22,7 @@ public class AdminUserListServlet extends HttpServlet {
 
 		String uri = request.getRequestURI();
 		String contextPath = request.getContextPath();
-		String command =  uri.substring((contextPath + "/adminUser/").length()); 
+		String command =  uri.substring((contextPath + "/admin/adminUser/").length()); 
 		
 		int cp = request.getParameter("cp") == null ? 1 : Integer.parseInt(request.getParameter("cp"));
 

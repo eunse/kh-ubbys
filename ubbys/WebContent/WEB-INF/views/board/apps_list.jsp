@@ -15,9 +15,11 @@
         <div class="col-xs-12 col-sm-4">
           <select class="form-select">
             <option selected>카테고리 전체</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+            <c:if test="${!empty category}">
+            <c:forEach items="${category}" var="c">
+            <option value="${c.categoryId}">${c.categoryName}</option>
+            </c:forEach>
+            </c:if>
           </select>
         </div>
         <div class="col-xs-12 col-sm-4">

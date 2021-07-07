@@ -44,7 +44,7 @@
 
 		<div class="container d-flex justify-content-center">
 			<form class="form-signin text-center col-4" method="POST"
-				action="${contextPath}/admin/adminLogin">
+				action="${contextPath}/adminLogin">
 
 				<h1 class="h3 mb-3 fw-normal">관리자 로그인</h1>
 
