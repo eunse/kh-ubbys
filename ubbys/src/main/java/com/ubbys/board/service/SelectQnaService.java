@@ -58,6 +58,7 @@ public class SelectQnaService {
 		
 		return qnaList;
 	}
+	
 	/** Qna 목록 조회 Service (로그인유저)
 	 * @param pagination
 	 * @return qnaList
@@ -75,7 +76,23 @@ public class SelectQnaService {
 		
 		return qnaList;
 	}
-
+	
+	/** (특정 사용자) Qna 목록 조회 Service
+	 * @param pagination
+	 * @return qnaList
+	 * @throws Exception
+	 */
+	public List<Qna> selectQnaList(QnaPagination pagination, int userNo, int dummy) throws Exception {
+		
+		Connection conn = getConnection();
+		
+		List<Qna> qnaList = dao.selectQnaList(conn, pagination, userNo, dummy);
+		
+		close(conn);
+		
+		return qnaList;
+	}
+	
 	/** Qna 상세 조회 Service
 	 * @param qnaPostId
 	 * @param loginUserId 

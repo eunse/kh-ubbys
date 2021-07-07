@@ -52,7 +52,7 @@ public class AppsDAO extends BoardDAO {
 				apps.setPostId(rs.getInt("apps_post_id"));
 				apps.setCategoryName(rs.getString("apps_category_name"));
 				apps.setPostTitle(rs.getString("apps_title"));
-				apps.setPostDate(rs.getDate("apps_date"));
+				apps.setPostDate(rs.getString("apps_date"));
 				apps.setAppsIconUrl(rs.getString("apps_icon"));
 				apps.setPostLike(rs.getInt("apps_like"));
 				apps.setUserName(rs.getString("user_nickname"));
@@ -60,7 +60,59 @@ public class AppsDAO extends BoardDAO {
 				apps.setTagList(new ArrayList<Tag>());
 
 				pstmtForTag = conn.prepareStatement(sqlForTag);
-				pstmtForTag.setInt(1, rs.getInt("apps_post_Id"));
+				pstmtForTag.setInt(1, rs.getInt("apps_post_id"));
+				rsForTag = pstmtForTag.executeQuery();
+				while(rsForTag.next()) {
+					Tag tag = new Tag();
+					tag.setTagId(rsForTag.getInt("apps_tag_id"));
+					tag.setTagName(rsForTag.getString("apps_tag_name"));
+					apps.getTagList().add(tag);
+				}			
+				appsList.add(apps);
+			}
+		} finally {
+			close(rsForTag);
+			close(pstmtForTag);
+			close(rs);
+			close(pstmt);
+		}
+		return appsList;
+	}
+	
+	/**
+	 * (특정 사용자) apps 게시판 목록 조회 DAO
+	 * @param conn
+	 * @param pagination
+	 * @param userNo
+	 * @return appsList
+	 * @throws Exception
+	 */
+	public List<Apps> selectAppsList(Connection conn, Pagination pagination, int userNo) throws Exception {
+		List<Apps> appsList = new ArrayList<Apps>();
+		String sql = prop.getProperty("selectAppsListByUser");
+		String sqlForTag = prop.getProperty("selectAppsTags");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			int startRow = (pagination.getCurrentPage() - 1) * pagination.getLimit() + 1;
+			int endRow = (startRow + pagination.getLimit() - 1);
+			pstmt.setInt(1, userNo);
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, endRow);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Apps apps = new Apps();
+				apps.setPostId(rs.getInt("apps_post_id"));
+				apps.setCategoryName(rs.getString("apps_category_name"));
+				apps.setPostTitle(rs.getString("apps_title"));
+				apps.setPostDate(rs.getString("apps_date"));
+				apps.setAppsIconUrl(rs.getString("apps_icon"));
+				apps.setPostLike(rs.getInt("apps_like"));
+				apps.setUserName(rs.getString("user_nickname"));
+				apps.setAppsSummary(rs.getString("apps_content_substr"));
+				apps.setTagList(new ArrayList<Tag>());
+
+				pstmtForTag = conn.prepareStatement(sqlForTag);
+				pstmtForTag.setInt(1, rs.getInt("apps_post_id"));
 				rsForTag = pstmtForTag.executeQuery();
 				while(rsForTag.next()) {
 					Tag tag = new Tag();
@@ -99,7 +151,7 @@ public class AppsDAO extends BoardDAO {
 				apps.setCategoryName(rs.getString("apps_category_name"));
 				apps.setPostTitle(rs.getString("apps_title"));
 				apps.setPostContent(rs.getString("apps_content"));
-				apps.setPostDate(rs.getDate("apps_date"));
+				apps.setPostDate(rs.getString("apps_date"));
 				apps.setAppsIconUrl(rs.getString("apps_icon"));
 				apps.setPostLike(rs.getInt("apps_like"));
 				apps.setUserName(rs.getString("user_nickname"));

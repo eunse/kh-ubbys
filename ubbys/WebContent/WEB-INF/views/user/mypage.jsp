@@ -39,6 +39,7 @@
   <div class="row mb-5">
     <%-- 내 appsList --%>
     <div class="col-md-8 list-apps">
+    <h2 class="mb-3">내 apps 게시글</h2>
       <div class="row">
         <c:choose>
           <c:when test="${empty appsList}">
@@ -74,7 +75,7 @@
     </div>
 
     <div class="col-md-4 list-sm-qna">
-      <h2 class="mb-3">recently_added_qna</h2>
+      <h2 class="mb-3">내 qna 게시글</h2>
       <div class="list-group mb-3">
         <c:choose>
           <c:when test="${empty qnaList}">
