@@ -18,6 +18,40 @@
 		ORDER BY reply_id
 	</entry>
 	
+	<!-- 관리자 댓글 목록 조회 -->
+	<entry key="selectAdminList">
+		SELECT * FROM
+    	(SELECT ROWNUM RNUM, A.* FROM
+			(SELECT reply_id, reply_content, reply_like, reply_date, qna_post_id, user_id, user_nickname, user_pic
+				FROM qna_reply
+				JOIN "USER" USING(user_id)
+				JOIN user_info USING(user_id)
+				WHERE reply_status = 'Y'
+				ORDER BY reply_id desc
+			)A
+        )
+		WHERE RNUM BETWEEN ? AND ?
+		
+	</entry>
+	
+	<!-- 관리자 댓글 1개 조회 -->
+	<entry key="selectReply">
+		SELECT reply_id, reply_content, reply_like, reply_date, qna_post_id, user_id, user_nickname, user_pic
+		FROM qna_reply
+		JOIN "USER" USING(user_id)
+		JOIN user_info USING(user_id)
+		WHERE reply_status = 'Y'
+		AND reply_id = ?
+	</entry>
+	
+	<!-- 관리자 전체 댓글 수 조회 -->
+	<entry key="getReplyListCountAll">
+		SELECT COUNT(*) FROM qna_reply_list
+		JOIN "USER" USING(user_id)
+		JOIN user_info USING(user_id)
+		WHERE reply_status='Y'
+	</entry>
+	
 	<!-- 댓글 삽입 -->
 	<entry key="insertReply">
 		INSERT INTO qna_reply
@@ -51,5 +85,6 @@
 		WHERE user_id = ? AND reply_status='Y'
 		ORDER BY reply_id
 	</entry>
+
 
 </properties>
