@@ -4,7 +4,6 @@
 <style>
     .qna-reply-content .updateArea {
       display: none;
-      list-style-type: none;
     }
 </style>
 
@@ -13,44 +12,51 @@
 <%-- 회원번호 : ${loginUser.userNo} <br>
 목록 : ${rList } <br>
 게시글번호 : ${qna.qnaPostId} <br>  --%>
+
 <%-- 테스트 --%>
-  <div class="replyList mt-5 pt-2">
-      <ul class="qna-reply-content list-group col-md-9" id="replyListArea">
+  <div class="replyList mt-5 pt-2"  id="replyListArea">
+      <ul class="qna-reply-content list-group col-md-9">
         <c:forEach items="${rList}" var="reply">
           <li class="list-group-item">
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-between align-items-center" id="div1">
               <div class="ms-2 me-auto">
                 <div class="fw-bold">
                   <img src="${contextPath}/${reply.userPic}" class="user-image rounded-circle me-2">${reply.userNickname}
                 </div>
               </div>
-              <p class="date me-2">작성일 : ${reply.replyDate}</p>
+              <span class="date me-2">작성일 : ${reply.replyDate}</span>
               <c:if test="${reply.userId == sessionScope.loginUser.userNo}">
-              <ul class="reply-action replyBtnArea list-inline me-2">
+              <ul class="reply-action list-inline me-2" id="replyBtnArea">
                 <li class="list-inline-item">
-                  <button class="btn btn-primary btn-sm ml-1 showUpdateReply" id="showUpdateReply" onclick="showUpdate(this)">수정</button><button class="btn btn-primary btn-sm ml-1" id="deleteReply" onclick="deleteReply(${reply.replyId})">삭제</button>
+                  <button class="btn btn-primary btn-sm ml-1 showUpdateReply" id="showUpdateReply" onclick="showUpdateReply()">수정</button>
+                </li>
+                <li class="list-inline-item">
+                  <button class="btn btn-primary btn-sm ml-1" id="deleteReply" onclick="deleteReply(${reply.replyId})">삭제</button>
                 </li>
               </ul>
               </c:if>
-              <button class="btn btn-outline-secondary btn-sm" id="reply-like-btn">
-                <i class="bi bi-heart" id="reply-like"><span id="reply-like-count">${reply.replyLike }</span></i> 
+              <button class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-heart">${reply.replyLike }</i> 
               </button>
             </div>
-            <div class="ms-2">${reply.replyContent }</div>
+            <div class="ms-2" id="lastDiv">${reply.replyContent }</div>
           </li>
+          <%-- 수정창 시작 --%>
           <li class="list-group-item updateArea">
             <div class="d-flex justify-content-between align-items-center">
               <div class="ms-2 me-auto">
                 <div class="fw-bold">
                   <pre>수정할 내용</pre>
+                  <%--<img src="#" class="user-image rounded-circle me-2">{사용자명} --%>
                 </div>
               </div>
             </div>
             <div class="input-group ms-2 my-2">
-              <textarea class="edit-reply form-control" rows="5"></textarea>
+              <textarea class="form-control" id="edit-reply" rows="5"></textarea>
               <button class="btn btn-outline-primary" onclick="updateReply(${reply.replyId}, this)">수정</button>
             </div>
           </li>
+          <%-- 수정창 끝 --%>
         </c:forEach>
       </ul>
   </div>
@@ -71,15 +77,10 @@
 
 
 <script>
-
-
 let beforeReplyRow; 
-
-
 //-----------------------------------------------------------------------------------------
 //댓글 등록
 function addReply() {
-
 	const replyContent = $("#replyContent").val();
     if(loginUserId == ""){
     	console.log("로그인 필요");
@@ -89,7 +90,7 @@ function addReply() {
      }else{
     	 
        $.ajax({ 
-         url : "${contextPath}/reply/insertReply", 
+         url : "${contextPath}/replyInsertReply", 
          type : "POST",
          data : {"userId" : loginUserId,
              "qnaPostId" : qnaPostId,
@@ -99,7 +100,7 @@ function addReply() {
         	 console.log("댓글 등록 성공");
              $("#replyContent").val(""); 
              
-             //selectReplyList(); 
+             selectReplyList(); 
            }
          },
          error : function(){
@@ -109,34 +110,31 @@ function addReply() {
      }
   }
 } 
-
-
-
 //-----------------------------------------------------------------------------------------
 //해당 게시글 댓글 목록 조회
 function selectReplyList(){
     $.ajax({ 
-     url : "${contextPath}/reply/list",
+     url : "${contextPath}/replyList",
      data : {"qnaPostId" : qnaPostId},
      type : "POST",
      dataType : "JSON",  
-     success : function(list){
+     success : function(rList){
+
        /* console.log(rList); */
        
-            //$("#replyListArea").html(""); 1
             $("#replyListArea").html(""); 
             
             
-            $.each(list, function(index, item){
+            $.each(rList, function(index, item){
             	
               // console.log(item.userNickname); 
-              //var topDiv = $("<div>").addClass("replyList mt-5 pt-2");
-          	  //var topUl = $("<ul>").addClass("qna-reply-content list-group col-md-9").attr("id", "replyListArea");
+              var topDiv = $("<div>").addClass("replyList mt-5 pt-2").attr("id", "replyListArea");
+          	  var topUl = $("<ul>").addClass("qna-reply-content list-group col-md-9");
     
               var li = $("<li>").addClass("list-group-item");
     
-              var div1 = $("<div>").addClass("d-flex justify-content-between align-items-center");
-              var lastDiv = $("<div>").addClass("ms-2").html(item.replyContent);
+              var div1 = $("<div>").addClass("d-flex justify-content-between align-items-center").attr("id", "div1");
+              var lastDiv = $("<div>").addClass("ms-2").html(item.replyContent).attr("id", "lastDiv");
               var div2 = $("<div>").addClass("ms-2 me-auto");
     
               var div3 = $("<div>").addClass("fw-bold");
@@ -145,28 +143,26 @@ function selectReplyList(){
               var rWriter = $("<img>").attr("src","${contextPath}"+"/"+item.userPic).addClass("user-image rounded-circle me-2"); 
               div3.append(rWriter).append(item.userNickname);
     
-              var rDate = $("<p>").addClass("date me-2").text("작성일 : "+item.replyDate);
+              var rDate = $("<span>").addClass("date me-2").text("작성일 : "+item.replyDate);
     
                if (item.userId == loginUserId) { 
     
-                 var ul = $("<ul>").addClass("reply-action replyBtnArea list-inline me-2");
+                 var ul = $("<ul>").addClass("reply-action list-inline me-2").attr("id", "replyBtnArea");
       
                  var childLi1 = $("<li>").addClass("list-inline-item");
-                 var showUpdate = $("<button>").addClass("btn btn-primary btn-sm ml-1 showUpdateReply").text("수정").attr("id", "showUpdateReply").attr("onclick", "showUpdate()");
+                 var showUpdate = $("<button>").addClass("btn btn-primary btn-sm ml-1 showUpdateReply").text("수정").attr("id", "showUpdateReply").attr("onclick", "showUpdate(this)");
                  var deleteReply = $("<button>").addClass("btn btn-primary btn-sm ml-1").text("삭제").attr("id", "deleteReply").attr("onclick", "deleteReply("+item.replyId+")");
                  childLi1.append(showUpdate).append(deleteReply);
       
-                 //var childLi2 = $("<li>").addClass("list-inline-item");
-                 //childLi2.append(deleteReply);
+                 var childLi2 = $("<li>").addClass("list-inline-item");
+                 var deleteReply = $("<button>").addClass("btn btn-primary btn-sm ml-1").text("삭제").attr("id", "deleteReply").attr("onclick", "deleteReply()");
+                 childLi2.append(deleteReply);
       
-                 //ul.append(childLi1).append(childLi2);
-                 ul.append(childLi1);
+                 ul.append(childLi1).append(childLi2);
                } 
     
-              var button = $("<button>").addClass("btn btn-outline-secondary btn-sm").attr("id", "reply-like-btn");
-              var i = $("<i>").addClass("bi bi-heart").text((item.replyLike)).attr("id", "reply-like");
-              var span = $("<span>").attr("id", "reply-like-count").text(replyLike);
-              i.append(span);
+              var button = $("<button>").addClass("btn btn-outline-secondary btn-sm");
+              var i = $("<i>").addClass("bi bi-heart").text((item.replyLike));
               button.append(i);
               div1.append(div2).append(rDate).append(ul).append(button);
     
@@ -177,12 +173,10 @@ function selectReplyList(){
               li.append(div1).append(lastDiv);
               
             //수정창 시작-----------------------------------------------------------------------------------------
-              var updateLi = $("<li>").addClass("list-group-item updateArea");
+              var updateLi = $("<li>").addClass("list-group-item updateArea").attr("id", "updateLi");
               var uDivTop = $("<div>").addClass("d-flex justify-content-between align-items-center");
-
               var uDivch = $("<div>").addClass("ms-2 me-auto");
               uDivTop.append(uDivch);
-
               var uDivchch = $("<div>").addClass("fw-bold");
               uDivch.append(uDivchch); 
 			
@@ -190,26 +184,20 @@ function selectReplyList(){
               uDivchch.append(updateC);
               /* var uImg = $("<img>").attr("src","#").addClass("user-image rounded-circle me-2").text("닉네임 : ");
               uDivchch.append(uImg); */
-
               var uDivBottom = $("<div>").addClass("input-group ms-2 my-2");
-
-              var uTextarea = $("<textarea>").addClass("form-control").attr("id", "edit-reply").attr("rows","5");
+              var uTextarea = $("<textarea>").addClass("edit-reply form-control").attr("rows","5");
               var uButton = $("<button>").addClass("btn btn-outline-primary").text("수정").attr("onclick", "updateReply(" + item.replyId + ", this)");
               uDivBottom.append(uTextarea).append(uButton);
               
               //수정창 마무리
               updateLi.append(uDivTop).append(uDivBottom);
             //수정창 끝-------------------------------------------------------------------------------------------
-
               //댓글 + 수정창
-             //topUl.append(li).append(updateLi);
-             // $("#replyListArea").append(li).append(updateLi);
+              topUl.append(li).append(updateLi);
     
               // 마지막 마무리
-             // $(".replyList").append(topUl); 1
+              $("#replyListArea").append(topUl);
               //$("#replyListArea").append(topUl).append(listButton); // 목록 버튼
-              
-              $("#replyListArea").append(li).append(updateLi);
               
             });
        
@@ -223,7 +211,6 @@ function selectReplyList(){
 }
 // ---------------------------
 // 댓글 수정창 여닫
-
 $(document).ready(function(){
 	
 $('.showUpdateReply').click(function(){
@@ -237,8 +224,6 @@ $('.showUpdateReply').click(function(){
   });
   
 }); 
-
-
 // ---------------------------
 // 댓글 수정 기능
 function updateReply(replyId, el){
@@ -246,14 +231,14 @@ function updateReply(replyId, el){
 	const replyContent = $(el).prev().val();
 	
 	$.ajax({
-		url : "${contextPath}/reply/updateReply",
+		url : "${contextPath}/replyUpdateReply",
 		type : "POST",
 		data : {"replyId" : replyId,
 				"replyContent" : replyContent},
 		success : function(result){
 			if(result > 0 ){
 				console.log("댓글 수정 성공");
-				//selectReplyList();
+				selectReplyList();
 			}
 		},
 		error : function(){
@@ -261,8 +246,6 @@ function updateReply(replyId, el){
 		}
 	});
 }
-
-
 // ---------------------------
 // 댓글 삭제 기능
 function deleteReply(replyId){
@@ -284,96 +267,6 @@ function deleteReply(replyId){
     	});
 	}
 }
-
-
 // -------------------------------------------
 // 좋아요
-/*
-let replyLike = ${reply.replyLike};
-replyLikeCheck(); 
-
-function replyLikeCheck(){
-	
-	let flag = false;
-	
-	$.ajax({
-		url : "${contextPath}/reply/likeCheck",
-		type : "POST",
-		data : {"replyId" : replyId},
-		dataType : "JSON",
-		
-		success : function(rList){
-			
-			$.each(rList, function(index, item){
-				
-				if(item.userNo == loginUserId){
-					flag = true;
-				}
-			});
-			
-			if(flag){
-				$("#reply-like-btn").html("");
-				var i = $("<i>").addClass("bi bi-heart-fill").text((item.replyLike)).attr("id", "reply-like");
-				var span = $("<span>").attr("id", "reply-like-count").text(replyLike);
-				i.append(span);
-				$("#reply-like-btn").append(i);
-			}
-		},
-		error : function(){
-			console.log("에러");
-		}
-	});
-}
-
-$("#reply-like-btn").on("click", function(){
-	
-	$.ajax({
-		url : "${contextPath}/reply/like",
-		type : "POST",
-		data : {"replyId" : replyId},
-		
-		success : function(result){
-			if(result > 0){
-				$("#reply-like-btn").html("");
-				var i = $("<i>").addClass("bi bi-heart-fill").text((item.replyLike)).attr("id", "reply-like");
-				var span = $("<span>").attr("id", "reply-like-count");
-				i.append(span);
-				$("#reply-like-btn").append(i);
-				
-			}else{
-				$("#reply-like-btn").html("");
-				var i = $("<i>").addClass("bi bi-heart").text((item.replyLike)).attr("id", "reply-like");
-				var span = $("<span>").attr("id", "reply-like-count");
-				i.append(span);
-				$("#reply-like-btn").append(i);
-				
-			}
-			replyLikeCount();
-		},
-		error : function(){
-			console.log("좋아요 클릭 에러");
-		}
-	});
-});
-
-function replyLikeCount(){
-	
-	$.ajax({
-		url : "replyLikeCount",
-		type : "POST",
-		data : {"replyId" : replyId},
-		
-		success : function(result){
-			$("#reply-like-btn").text(result);
-		},
-		error : function(){
-			console.log("에러다");
-		}
-	});
-}
-
-*/
-
-
 </script>
-

@@ -351,5 +351,4 @@ public class AppsDAO extends BoardDAO {
 		return result;
 	}
 
-
 }

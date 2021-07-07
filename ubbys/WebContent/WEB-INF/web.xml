@@ -12,7 +12,6 @@
     <res-auth>Container</res-auth>
   </resource-ref>
   
-
   <error-page>
 	<error-code>404</error-code>
     <location>/WEB-INF/views/common/error404.jsp</location>

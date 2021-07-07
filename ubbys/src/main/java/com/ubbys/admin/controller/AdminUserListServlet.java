@@ -13,7 +13,7 @@ import com.ubbys.admin.model.service.AdminService;
 import com.ubbys.board.vo.Pagination;
 import com.ubbys.user.vo.User;
 
-@WebServlet("/admin/adminUser/*") // 경로 바꾸기
+@WebServlet("/adminUser/*") // 경로 바꾸기
 public class AdminUserListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
