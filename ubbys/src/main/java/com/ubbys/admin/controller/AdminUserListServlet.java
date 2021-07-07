@@ -22,7 +22,7 @@ public class AdminUserListServlet extends HttpServlet {
 
 		String uri = request.getRequestURI();
 		String contextPath = request.getContextPath();
-		String command =  uri.substring((contextPath + "/adminUser/").length()); 
+		String command =  uri.substring((contextPath + "/admin/adminUser/").length()); 
 		
 		int cp = request.getParameter("cp") == null ? 1 : Integer.parseInt(request.getParameter("cp"));
 

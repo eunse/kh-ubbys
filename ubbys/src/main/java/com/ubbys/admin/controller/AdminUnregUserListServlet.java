@@ -25,7 +25,7 @@ public class AdminUnregUserListServlet extends HttpServlet {
 
 			String uri = request.getRequestURI();
 			String contextPath = request.getContextPath();
-			String command = uri.substring((contextPath + "/adminUnuser/").length());
+			String command = uri.substring((contextPath + "/admin/adminUnuser/").length());
 
 			int cp = request.getParameter("cp") == null ? 1 : Integer.parseInt(request.getParameter("cp"));
 

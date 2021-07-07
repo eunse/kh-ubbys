@@ -60,9 +60,9 @@
 							aria-expanded="false">회원 관리</button>
 						<div class="collapse" id="user-collapse">
 							<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-								<li><a href="/ubbys/adminUser/list"
+								<li><a href="${contextPath}/admin/adminUser/list"
 									class="link-dark rounded">회원 목록</a></li>
-								<li><a href="/ubbys/adminUnuser/unRegList"
+								<li><a href="${contextPath}/admin/adminUnuser/unRegList"
 									class="link-dark rounded">탈퇴 회원 목록</a></li>
 							</ul>
 						</div>
@@ -75,7 +75,7 @@
 					<div class="collapse show" id="apps-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
 							<li><a href="#" class="link-dark rounded">게시글 목록</a></li>
-							<li><a href="#" class="link-dark rounded">게시글 작성</a></li>
+							<li><a href="" class="link-dark rounded">게시글 작성</a></li>
 						</ul>
 					</div>
 				</li>
@@ -100,12 +100,12 @@
 						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
 
 							<c:if test="${!empty loginUser}">
-								<li><a href="/ubbys/adminLogout" class="link-dark rounded">Sign
+								<li><a href="/ubbys/admin/adminLogout" class="link-dark rounded">Sign
 										out</a></li>
 							</c:if>
 
 							<c:if test="${empty loginUser}">
-								<li><a href="/ubbys/adminLogin" class="link-dark rounded">Sign
+								<li><a href="/ubbys/admin/adminLogin" class="link-dark rounded">Sign
 										In</a></li>
 							</c:if>
 						</ul>
