@@ -85,6 +85,44 @@
 		WHERE user_id = ? AND reply_status='Y'
 		ORDER BY reply_id
 	</entry>
+	
+	
+	<!-- 좋아요 관련 SQL -->
+	
+	<!-- 댓글 좋아요를 누른 유저 목록 SQL -->
+	<entry key="selectUserList">
+		SELECT user_id FROM qna_reply_likes WHERE reply_id = ?
+	</entry>
+	
+	<!-- 댓글 좋아요 확인 SQL -->
+	<entry key="replyLikeCheck">
+		SELECT reply_id, user_id FROM qna_reply_likes WHERE reply_id = ? AND user_id = ?
+	</entry>
+	
+	<!-- 댓글 좋아요 삽입 SQL -->
+	<entry key="replyLike">
+		INSERT INTO qna_reply_likes VALUES(seq_qna_reply_like_no.NEXTVAL, ?, ?)
+	</entry>
+	
+	<!-- 댓글 좋아요 수 증가 SQL -->
+	<entry key="replyLikeIncrease">
+		UPDATE qna_reply SET reply_like = reply_like+1 WHERE reply_id = ?
+	</entry>
+	
+	<!-- 댓글 좋아요 취소 SQL -->
+	<entry key="replyLikeCancel">
+		DELETE FROM qna_reply_likes WHERE reply_id = ? AND user_id = ?
+	</entry>
+	
+	<!-- 댓글 좋아요 수 감소 SQL -->
+	<entry key="replyLikeDecrease">
+		UPDATE reply SET reply_like = reply_like-1 WHERE reply_id = ?
+	</entry>
+	
+	<!-- 댓글 좋아요 수 SQL -->
+	<entry key="replyLikeCount">
+		SELECT reply_like FROM qna_reply WHERE reply_id = ?
+	</entry>
 
 
 </properties>

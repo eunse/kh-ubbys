@@ -78,7 +78,23 @@ public class ReplyController extends HttpServlet {
 				int result = service.deleteReply(replyId);
 				
 				response.getWriter().print(result);
-				
+			}
+			else if(command.equals("likeCheck")) {
+				int replyId = Integer.parseInt(request.getParameter("replyId"));
+				List<User> rList = service.selectUserList(replyId);
+				Gson gson = new Gson();
+				gson.toJson(rList, response.getWriter());
+			}
+			else if(command.equals("like")) {
+				int replyId = Integer.parseInt(request.getParameter("replyId"));
+				int userId = Integer.parseInt(request.getParameter("userId"));
+				int result = service.replyLike(replyId, userId);
+				response.getWriter().print(result);
+			}
+			else if(command.equals("likeCount")) {
+				int replyId = Integer.parseInt(request.getParameter("replyId"));
+				int result = service.replyLikeCount(replyId);
+				response.getWriter().print(result);
 			}
 			
 		} catch (Exception e) {

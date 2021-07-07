@@ -13,6 +13,7 @@
 <%-- 회원번호 : ${loginUser.userNo} <br>
 목록 : ${rList } <br>
 게시글번호 : ${qna.qnaPostId} <br>  --%>
+${reply }
 <%-- 테스트 --%>
   <div class="replyList mt-5 pt-2">
       <ul class="qna-reply-content list-group col-md-9" id="replyListArea">
@@ -113,14 +114,14 @@ function selectReplyList(){
      data : {"qnaPostId" : qnaPostId},
      type : "POST",
      dataType : "JSON",  
-     success : function(list){
+     success : function(rList){
        /* console.log(rList); */
        
             //$("#replyListArea").html(""); 1
             $("#replyListArea").html(""); 
             
             
-            $.each(list, function(index, item){
+            $.each(rList, function(index, item){
             	
               // console.log(item.userNickname); 
               //var topDiv = $("<div>").addClass("replyList mt-5 pt-2");
@@ -211,9 +212,9 @@ function selectReplyList(){
 }
 // ---------------------------
 // 댓글 수정창 여닫
-$(document).on("click", ".showUpdateReply", function(){
+$(document).on("click", ".showUpdateReply", function(){ // 동적 요소가 적용된 후에도 동작함
 	
-/* $('.showUpdateReply').click(function(){ */
+/* $('.showUpdateReply').click(function(){ */ // 동적으로 요소가 생겼을 경우 동작하지 않는다.
   	if($(this).parent().parent().parent().parent().next(".updateArea").css("display") == "none" ){
         $(this).parent().parent().parent().parent().siblings("li.updateArea").slideUp(200);
         $(this).parent().parent().parent().parent().next(".updateArea").slideDown(200);
@@ -222,7 +223,7 @@ $(document).on("click", ".showUpdateReply", function(){
 	   $(this).parent().parent().parent().parent().next(".updateArea").slideUp(200); 
   	}
  /*  }); */
-  
+
 }); 
 // ---------------------------
 // 댓글 수정 기능
@@ -269,85 +270,6 @@ function deleteReply(replyId){
 }
 // -------------------------------------------
 // 좋아요
-/*
-let replyLike = ${reply.replyLike};
-replyLikeCheck(); 
-function replyLikeCheck(){
-	
-	let flag = false;
-	
-	$.ajax({
-		url : "${contextPath}/reply/likeCheck",
-		type : "POST",
-		data : {"replyId" : replyId},
-		dataType : "JSON",
-		
-		success : function(rList){
-			
-			$.each(rList, function(index, item){
-				
-				if(item.userNo == loginUserId){
-					flag = true;
-				}
-			});
-			
-			if(flag){
-				$("#reply-like-btn").html("");
-				var i = $("<i>").addClass("bi bi-heart-fill").text((item.replyLike)).attr("id", "reply-like");
-				var span = $("<span>").attr("id", "reply-like-count").text(replyLike);
-				i.append(span);
-				$("#reply-like-btn").append(i);
-			}
-		},
-		error : function(){
-			console.log("에러");
-		}
-	});
-}
-$("#reply-like-btn").on("click", function(){
-	
-	$.ajax({
-		url : "${contextPath}/reply/like",
-		type : "POST",
-		data : {"replyId" : replyId},
-		
-		success : function(result){
-			if(result > 0){
-				$("#reply-like-btn").html("");
-				var i = $("<i>").addClass("bi bi-heart-fill").text((item.replyLike)).attr("id", "reply-like");
-				var span = $("<span>").attr("id", "reply-like-count");
-				i.append(span);
-				$("#reply-like-btn").append(i);
-				
-			}else{
-				$("#reply-like-btn").html("");
-				var i = $("<i>").addClass("bi bi-heart").text((item.replyLike)).attr("id", "reply-like");
-				var span = $("<span>").attr("id", "reply-like-count");
-				i.append(span);
-				$("#reply-like-btn").append(i);
-				
-			}
-			replyLikeCount();
-		},
-		error : function(){
-			console.log("좋아요 클릭 에러");
-		}
-	});
-});
-function replyLikeCount(){
-	
-	$.ajax({
-		url : "replyLikeCount",
-		type : "POST",
-		data : {"replyId" : replyId},
-		
-		success : function(result){
-			$("#reply-like-btn").text(result);
-		},
-		error : function(){
-			console.log("에러다");
-		}
-	});
-}
-*/
+
+
 </script>
