@@ -14,7 +14,7 @@ import com.ubbys.board.vo.Pagination;
 import com.ubbys.user.vo.UnRegUser;
 
 
-@WebServlet("/adminUnuser/*")
+@WebServlet("/admin/adminUnuser/*")
 public class AdminUnregUserListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

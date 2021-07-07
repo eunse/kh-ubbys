@@ -15,7 +15,7 @@ import com.ubbys.admin.model.service.AdminService;
 import com.ubbys.user.vo.User;
 
 
-@WebServlet("/adminLogin")
+@WebServlet("/admin/adminLogin")
 public class AdminLoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -40,7 +40,7 @@ public class AdminLoginServlet extends HttpServlet {
 			
 			if(loginUser != null) {
 				session.setAttribute("loginUser", loginUser);
-				session.setMaxInactiveInterval(3600);
+				
 				
 				Cookie cookie = new Cookie("saveId", userEmail);
 				if(saveId != null) {
@@ -60,7 +60,7 @@ public class AdminLoginServlet extends HttpServlet {
 				session.setAttribute("modalTitle", "로그인 실패");
 				session.setAttribute("modalText", "로그인 권한이 없습니다.");
 				System.out.println("로그인 실패");
-				response.sendRedirect("adminLogin");
+				response.sendRedirect("/admin/adminLogin");
 				System.out.println(loginUser);
 			}	
 			
