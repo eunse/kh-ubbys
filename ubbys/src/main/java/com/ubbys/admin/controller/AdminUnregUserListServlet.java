@@ -53,7 +53,7 @@ public class AdminUnregUserListServlet extends HttpServlet {
 					String searchValue = request.getParameter("sv");
 
 					pagination = service.getPagination(cp, searchKey, searchValue);
-					unRegUserList = service.selectunRegUserList(pagination, searchKey, searchValue);
+					unRegUserList = service.selectUnRegUserList(pagination, searchKey, searchValue);
 
 				}
 

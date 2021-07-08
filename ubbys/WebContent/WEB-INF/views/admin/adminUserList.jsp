@@ -64,8 +64,8 @@
 									<fmt:formatDate value="${u.userRegdate}" pattern="yyyy-MM-dd" />
 								</c:otherwise>
 							</c:choose></td>
-						<td><a href="/ubbys/adminUpdatePage?userEmail=${u.userEmail}"
-							class="btn btn-primary btn-sm">수정</a> <a href="#"
+						<td><a href="/ubbys/admin/adminUpdatePage?userEmail=${u.userEmail}"
+							class="btn btn-primary btn-sm">수정</a> <a href="/ubbys/admin/adminDeleteAccount"
 							class="btn btn-danger btn-sm">삭제</a></td>
 					</tr>
 				</c:forEach>
