@@ -18,8 +18,11 @@
         </div>
 
         <div class="checkbox mb-3">
+          <c:if test="${!empty cookie.saveId.value }">
+            <c:set var="checked" value="checked"/>
+          </c:if>
           <label>
-            <input type="checkbox" name="saveId" id="saveId"> Email 기억하기
+            <input type="checkbox" name="saveId" id="saveId" ${checked}> Email 기억하기
           </label>
         </div>
         <button class="w-100 btn btn-lg btn-primary" type="submit">로그인</button>
