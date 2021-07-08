@@ -7,9 +7,9 @@ const checkObj = {
 };
 
 // // 현재 비밀번호 유효성 검사
-// // 조건 : 영어, 숫자, 10글자 이상
+// // 조건 : 영어, 숫자, 특수기호 8글자 이상
 $("#inputPresentPw").on("input", function () {
-    const regExp = /^[a-zA-Z0-9]{10,}$/;
+    const regExp = /^[a-zA-Z0-9!#-_]{8,}$/;
 
     const pwd1 = $(this).val().trim();
 
@@ -21,11 +21,11 @@ $("#inputPresentPw").on("input", function () {
         checkObj.inputPresentPw = false;
     }
 });
-
+ 
 // // 새 비밀번호 유효성 검사
-// // 조건 : 영어, 숫자, 10글자 이상
+// // 조건 : 영어, 숫자, 특수기호 8글자 이상
 $("#inputChangePw").on("input", function () {
-    const regExp = /^[a-zA-Z0-9]{10,}$/;
+    const regExp = /^[a-zA-Z0-9!#-_]{8,}$/;
 
     const pwd1 = $(this).val().trim();
 
@@ -33,7 +33,7 @@ $("#inputChangePw").on("input", function () {
        $("#checkPwd1").text("유효한 비밀번호 입니다.").css("color", "green");
         checkObj.inputChangePw = true;
     } else {
-        $("#checkPwd1").text("비밀번호는 영어, 숫자 10자리로 입력하세요.").css("color", "red");
+        $("#checkPwd1").text("비밀번호는 알파벳, 숫자, 특수문자(!#-_)를 포함한 8자리 이상으로 입력하세요.").css("color", "red");
         checkObj.inputChangePw = false;
     }
 });
