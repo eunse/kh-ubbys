@@ -91,9 +91,16 @@ public class UserService {
 			if(result > 0) { // 회원 추가정보 수정 성공
 				commit(conn);
 			}else if(result == 0){ // 회원 추가정보가 없을 경우 0행이 반환됨.
+				
 				result = dao.insertUserInfo(conn, user);
+				
 				if(result > 0) { // 회원 추가정보 삽입 성공
-					commit(conn);
+					result = dao.updateUserInfo(conn, user);
+					if(result > 0) { // 삽입 성공 후 입력 받은 값으로 수정 성공
+						commit(conn);
+					}else { // 실패..
+						rollback(conn);
+					}
 				}else { // 회원 추가정보 삽입 실패
 					rollback(conn);
 				}
