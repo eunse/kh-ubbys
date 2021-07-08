@@ -6,7 +6,9 @@
     <div class="container">
       <h1 class="h3 mt-5">apps</h1>
       <form class="needs-validation" id="apps-write" method="post" enctype="multipart/form-data" role="form" action="write" novalidate>
+        <c:if test="${!empty apps}">
         <input type="hidden" name="no" value="${apps.postId}">
+        </c:if>
         <div class="row align-items-end">
           <div class="col-md-4">
             <div class="mb-3">

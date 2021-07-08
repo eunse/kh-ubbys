@@ -197,7 +197,9 @@ public class AppsServlet extends HttpServlet {
 				if(mpRequest.getParameter("no") != null) {
 					apps.setPostId(Integer.parseInt(mpRequest.getParameter("no")));
 					flag = true; // 수정하는 경우
-				} 
+				} else if(mpRequest.getParameter("no") == null || mpRequest.getParameter("no") == ""){
+					apps.setPostId(postId);
+				}
 				postId = service.insertApps(apps, tagList, flag);
 				
 				if(postId > 0) {

@@ -39,7 +39,13 @@
               <div class="dropdown text-end">
                 <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1"
                   data-bs-toggle="dropdown" aria-expanded="false">
-                  <img src="${contextPath}/${sessionScope.loginUser.userPic}" width="32" height="32" class="rounded-circle me-2">
+                  <c:choose><c:when test="${!empty sessionScope.loginUser.userPic}">
+                  <img src="${contextPath}${sessionScope.loginUser.userPic}" width="32" height="32" class="rounded-circle me-2">
+                  </c:when>
+                  <c:otherwise>
+                  <img src="http://via.placeholder.com/32" width="32" height="32" class="rounded-circle me-2">
+                  </c:otherwise>
+                  </c:choose>
                   ${sessionScope.loginUser.userNickname}
                   
                 </a>
