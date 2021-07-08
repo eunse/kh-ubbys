@@ -74,7 +74,7 @@ public class AppsDAO {
 				a.setPostTitle(rs.getString("APPS_TITLE"));
 				a.setPostLike(rs.getInt("APPS_LIKE"));
 				a.setUserName(rs.getString("USER_NICKNAME"));
-				a.setPostDate(rs.getDate("APPS_DATE"));
+				a.setPostDate(rs.getString("APPS_DATE"));
 				appsList.add(a);
 			}
 		} finally {
@@ -127,7 +127,7 @@ public class AppsDAO {
 				a.setPostTitle(rs.getString("APPS_TITLE"));
 				a.setPostLike(rs.getInt("APPS_LIKE"));
 				a.setUserName(rs.getString("USER_NICKNAME"));
-				a.setPostDate(rs.getDate("APPS_DATE"));
+				a.setPostDate(rs.getString("APPS_DATE"));
 				appsList.add(a);
 			}
 		} finally {
@@ -181,7 +181,7 @@ public class AppsDAO {
 				a.setPostTitle(rs.getString("APPS_TITLE"));
 				a.setPostLike(rs.getInt("APPS_LIKE"));
 				a.setUserName(rs.getString("USER_NICKNAME"));
-				a.setPostDate(rs.getDate("APPS_DATE"));
+				a.setPostDate(rs.getString("APPS_DATE"));
 				appsList.add(a);
 			}
 		} finally {
@@ -190,7 +190,5 @@ public class AppsDAO {
 		}
 		return appsList;
 	}
-
-
 
 }
