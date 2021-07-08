@@ -32,7 +32,7 @@ public class QnaController extends HttpServlet {
 			QnaService service = new QnaService();
 			
 			int cp = request.getParameter("cp")==null? 1 : Integer.parseInt(request.getParameter("cp"));
-			
+			System.out.println(cp);
 			// qna 글 작성 입력페이지 이동
 			if(command.equals("Write")){
 				

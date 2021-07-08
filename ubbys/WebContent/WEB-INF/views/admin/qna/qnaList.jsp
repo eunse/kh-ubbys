@@ -6,10 +6,7 @@
     <div class="container py-5">
       <h2>QNA</h2>
       
-      <form action="${contextPath }/admin/qnaList" name="formQna" method="POST" >
       	<div class="input-group mb-3 w-50" style="width: 150px !important; float: left; margin-right: 15px;">
-
-        
           <select class="form-select" id="sortCondition">
             <option value="sortNewest">최근 작성순</option>
             <option value="sortLike">좋아요 많은 순</option>
@@ -90,13 +87,6 @@
         </c:otherwise>
       </c:choose>
         
-      </form>
-      
-      
-      <a href="${contextPath }/admin/qnaWrite?cp=${pagination.currentPage}" class="btn btn-primary float-end">작성하기</a>
-        
-      
-      
     <%---------------------- Pagination start----------------------%>
 	<%-- 페이징 처리 시 주소를 쉽게 작성할 수 있도록 필요한 변수를 미리 선언 --%>
 	

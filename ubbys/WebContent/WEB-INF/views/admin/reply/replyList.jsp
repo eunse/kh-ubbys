@@ -7,14 +7,6 @@
       <h2>Reply</h2>
       
       <form action="${contextPath }/admin/replyList" name="formReply" method="POST" >
-      	<div class="input-group mb-3 w-50" style="width: 150px !important; float: left; margin-right: 15px;">
-
-        
-          <select class="form-select" id="sortCondition">
-            <option value="sortNewest">최근 작성순</option>
-            <option value="sortLike">좋아요 많은 순</option>
-          </select>
-        </div>
         
       	<div class="input-group mb-3" style="width: 250px !important; float: left; margin-right: 15px;">
         </div>

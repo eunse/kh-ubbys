@@ -5,7 +5,7 @@
 
     <div class="container">
       <h1 class="h3 mt-5">QNA 글작성</h1>
-      <form class="form-write" id="form-write" action="${ contextPath }/admin/qnaInsert?cp=${ param.cp }" method="POST">
+      <form class="form-write" id="form-write" action="${ contextPath }/admin/qnaInsert" method="POST">
         <div class="row align-items-end">
           <div class="col-md-2">
             <div class="mb-3">
