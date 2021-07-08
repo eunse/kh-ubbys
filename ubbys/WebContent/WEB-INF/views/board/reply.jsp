@@ -33,10 +33,10 @@ ${reply }
                 </li>
               </ul>
               </c:if>
-              <button class="btn btn-outline-secondary btn-sm" id="reply-like-btn">
-                <%-- <i class="bi bi-heart" id="reply-like"><span id="reply-like-count">${reply.replyLike }</span></i> --%> 
+              <%-- <button class="btn btn-outline-secondary btn-sm" id="reply-like-btn">
+                <%-- <i class="bi bi-heart" id="reply-like"><span id="reply-like-count">${reply.replyLike }</span></i> 
                 <i class="bi bi-heart" id="reply-like">${reply.replyLike }</i>
-              </button>
+              </button>--%>
             </div>
             <div class="ms-2">${reply.replyContent }</div>
           </li>
@@ -157,12 +157,13 @@ function selectReplyList(){
                  ul.append(childLi1);
                } 
     
-              var button = $("<button>").addClass("btn btn-outline-secondary btn-sm").attr("id", "reply-like-btn");
-              var i = $("<i>").addClass("bi bi-heart").text((item.replyLike)).attr("id", "reply-like");
+              //var button = $("<button>").addClass("btn btn-outline-secondary btn-sm").attr("id", "reply-like-btn");
+              //var i = $("<i>").addClass("bi bi-heart").text((item.replyLike)).attr("id", "reply-like");
               //var span = $("<span>").attr("id", "reply-like-count").text("replyLike");
               //i.append(span);
-              button.append(i);
-              div1.append(div2).append(rDate).append(ul).append(button);
+              //button.append(i);
+              //div1.append(div2).append(rDate).append(ul).append(button);
+              div1.append(div2).append(rDate).append(ul);
     
               
               
@@ -268,21 +269,6 @@ function deleteReply(replyId){
     	});
 	}
 }
-// -------------------------------------------
-// 좋아요
-$(document).on("click", "#reply-like-btn", function(){
-	
-	
-	
-	
-	if( $(this).children().hasClass("bi bi-heart") ){
-		$(this).children().removeClass("bi bi-heart");
-		$(this).children().addClass("bi bi-heart-fill").text(1);
-	}else if( $(this).children().hasClass("bi bi-heart-fill") ){
-		$(this).children().removeClass("bi bi-heart-fill");
-		$(this).children().addClass("bi bi-heart").text(0);
-	}	
-		
-});
+
 
 </script>
