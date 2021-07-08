@@ -6,10 +6,10 @@
 	<entry key="getReplyListCount">
 		SELECT COUNT(*) FROM qna_reply_list WHERE reply_status='Y' AND qna_post_id = ?
 	</entry>
-
+	
 	<!-- 댓글 목록 조회 -->
 	<entry key="selectList">
-		SELECT reply_id, reply_content, reply_like, reply_date, qna_post_id, user_id, user_nickname, user_pic
+		SELECT reply_id, reply_content, reply_like, TO_CHAR(reply_date, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분"') reply_date, qna_post_id, user_id, user_nickname, user_pic
 		FROM qna_reply
 		JOIN "USER" USING(user_id)
 		JOIN user_info USING(user_id)
