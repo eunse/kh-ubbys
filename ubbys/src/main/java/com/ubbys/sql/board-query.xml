@@ -11,7 +11,7 @@
 			SELECT ROWNUM RNUM, A.* FROM (
 				SELECT * FROM apps_list
         		WHERE apps_status = 'Y'
-        		ORDER BY apps_post_id DESC
+        		ORDER BY apps_date DESC
         	) A
    		)
 		WHERE RNUM BETWEEN ? AND ?
@@ -23,7 +23,7 @@
 				SELECT * FROM apps_list
         		WHERE apps_status = 'Y'
         		AND user_id = ?
-        		ORDER BY apps_post_id DESC
+        		ORDER BY apps_date DESC
         	) A
    		)
 		WHERE RNUM BETWEEN ? AND ?
@@ -44,7 +44,7 @@
 		INSERT INTO apps VALUES(?, ?, ?, ?, ?, DEFAULT, DEFAULT, DEFAULT, ?, ?)
 	</entry>
 	<entry key="updateApps">
-		UPDATE apps SET apps_post_title = ?, apps_post_content = ?, apps_icon = ?, apps_url = ?, 
+		UPDATE apps SET apps_title = ?, apps_content = ?, apps_icon = ?, apps_url = ?, 
 		apps_category_id = ? 
 		WHERE apps_post_id = ?
 	</entry>

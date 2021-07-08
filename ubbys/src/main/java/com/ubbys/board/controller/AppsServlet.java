@@ -50,14 +50,21 @@ public class AppsServlet extends HttpServlet {
 		String command = request.getRequestURI().substring((request.getContextPath() + "/apps/").length());
 		
 		try {
-			// Current Page
+			// 목록 출력에 필요한 조건(파라미터) 취득 
 			int cp = request.getParameter("cp") == null ? 1 : Integer.parseInt(request.getParameter("cp"));
+			String categoryId = request.getParameter("category") == null ? "" : request.getParameter("category");
+			String searchKey = request.getParameter("q") == null ? "" : request.getParameter("q");
+			String searchType = request.getParameter("searchType") == null ? "" : request.getParameter("searchType");
 			
 			// 목록
 			if (command.equals("list")) {
-				Pagination pagination = service.getPagination(boardTableName, cp);
-				List<Apps> appsList = service.selectAppsList(pagination);
+//				Pagination pagination = service.getPagination(boardTableName, cp);
+//				List<Apps> appsList = service.selectAppsList(pagination);
+
+				Pagination pagination = service.getPagination(boardTableName, cp, categoryId, searchKey, searchType);
+				List<Apps> appsList = service.selectAppsList(pagination, categoryId, searchKey, searchType);
 				List<Category> category = service.selectCategoryList(boardTableName);
+				
 				request.setAttribute("category", category);
 				request.setAttribute("pagination", pagination);
 				request.setAttribute("appsList", appsList);

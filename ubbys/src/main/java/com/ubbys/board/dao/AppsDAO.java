@@ -130,6 +130,71 @@ public class AppsDAO extends BoardDAO {
 		}
 		return appsList;
 	}
+	
+	/**
+	 * 검색 조건에 따른 apps 게시판 목록 조회 DAO
+	 * @param conn
+	 * @param pagination
+	 * @return appsList
+	 * @throws Exception
+	 */
+	public List<Apps> selectAppsList(Connection conn, Pagination pagination, String categoryId, String searchKey, String searchType) throws Exception {
+		List<Apps> appsList = new ArrayList<Apps>();
+		String sql = "SELECT * FROM ( SELECT ROWNUM RNUM, A.* FROM (SELECT * FROM apps_list ";
+		if(searchKey.length() != 0 && searchType.equals("tag")) {
+			sql += " JOIN apps_tags USING(apps_post_id) JOIN tags USING(apps_tag_id) ";
+		}
+		sql += " WHERE apps_status = 'Y' ";
+		if(searchKey.length() != 0 && (searchType.equals("tag"))) {
+			sql += " AND apps_tag_name LIKE '" + searchKey + "' ";
+		}
+		if(searchKey.length() != 0 && (searchType.equals("title"))) {
+			sql += " AND apps_title LIKE '%" + searchKey + "%' ";
+		}
+		if(categoryId.length() != 0) {
+			sql += " AND apps_category_id = " + categoryId;
+		}
+		sql += " ORDER BY apps_date DESC) A) WHERE RNUM BETWEEN ? AND ?";
+		System.out.println(sql);
+		String sqlForTag = prop.getProperty("selectAppsTags");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			int startRow = (pagination.getCurrentPage() - 1) * pagination.getLimit() + 1;
+			int endRow = (startRow + pagination.getLimit() - 1);
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Apps apps = new Apps();
+				apps.setPostId(rs.getInt("apps_post_id"));
+				apps.setCategoryName(rs.getString("apps_category_name"));
+				apps.setPostTitle(rs.getString("apps_title"));
+				apps.setPostDate(rs.getString("apps_date"));
+				apps.setAppsIconUrl(rs.getString("apps_icon"));
+				apps.setPostLike(rs.getInt("apps_like"));
+				apps.setUserName(rs.getString("user_nickname"));
+				apps.setAppsSummary(rs.getString("apps_content_substr"));
+				apps.setTagList(new ArrayList<Tag>());
+
+				pstmtForTag = conn.prepareStatement(sqlForTag);
+				pstmtForTag.setInt(1, rs.getInt("apps_post_id"));
+				rsForTag = pstmtForTag.executeQuery();
+				while(rsForTag.next()) {
+					Tag tag = new Tag();
+					tag.setTagId(rsForTag.getInt("apps_tag_id"));
+					tag.setTagName(rsForTag.getString("apps_tag_name"));
+					apps.getTagList().add(tag);
+				}			
+				appsList.add(apps);
+			}
+		} finally {
+			close(rsForTag);
+			close(pstmtForTag);
+			close(rs);
+			close(pstmt);
+		}
+		return appsList;
+	}
 
 	/**
 	 * apps 게시글 상세 조회 DAO
@@ -403,38 +468,37 @@ public class AppsDAO extends BoardDAO {
 		return result;
 	}
 	
-	/** MyApps 목록 조회 DAO
+	/**
+	 * 조건을 건 게시글 수 DAO
 	 * @param conn
-	 * @param userNo
-	 * @return myAppsList
+	 * @param boardTableName
+	 * @param searchKey
+	 * @param searchVal
+	 * @return listCount
 	 * @throws Exception
 	 */
-	public List<Board> selectMyQnaList(Connection conn, int userNo) throws Exception{
-		List<Board> myAppsList = new ArrayList<Board>();
-		String sql = prop.getProperty("selectMyAppsList");
+	public int getListCount(Connection conn, String categoryId, String searchKey, String searchType) throws Exception {
+		int listCount = 0;
+		String sql = "SELECT COUNT(*) FROM (SELECT COUNT(*) FROM apps_list JOIN apps_tags USING(apps_post_id) JOIN tags USING(apps_tag_id) WHERE apps_status = 'Y' ";
+		if(searchKey.length() != 0 && searchType.equals("tag")) {
+			sql += " AND apps_tag_name = '" + searchKey + "' ";
+		}
+		if(searchKey.length() != 0 && searchType.equals("title")) {
+			sql += " AND apps_title = '" + searchKey + "' ";
+		}
+		if(categoryId.length() != 0) {
+			sql += " AND apps_category_id = '" + categoryId + "' ";
+		}
+		sql += " GROUP BY apps_post_id)";
+		System.out.println(sql);
 		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, userNo);
-			
-			rs = pstmt.executeQuery();
-			while(rs.next()) {
-				Board board = new Board();
-				
-				board.setPostId(rs.getInt("APPS_POST_ID"));
-				board.setCategoryName(rs.getString("APPS_CATEGORY_NAME"));
-				board.setPostTitle(rs.getString("APPS_TITLE"));
-				board.setPostLike(rs.getInt("APPS_LIKE"));
-				board.setUserNo(rs.getInt("USER_ID"));
-				board.setPostContent(rs.getString("APPS_CONTENT_SUBSTR"));
-				
-				myAppsList.add(board);
-				
-			}
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			if(rs.next()) listCount = rs.getInt(1);
 		} finally {
 			close(rs);
-			close(pstmt);
+			close(stmt);
 		}
-		return myAppsList;
+		return listCount;
 	}
-
 }

@@ -61,6 +61,24 @@ public class AppsService extends BoardService {
 	}
 
 	/**
+	 * apps 게시판 검색 결과 목록 조회 Service
+	 * @param pagination
+	 * @return boardList
+	 * @throws Exception
+	 */
+	public List<Apps> selectAppsList(Pagination pagination, String categoryId, String searchKey, String searchType) throws Exception {
+		Connection conn = getConnection();
+		List<Apps> appsList = dao.selectAppsList(conn, pagination, categoryId, searchKey, searchType);
+		for(Apps apps : appsList) {
+			String postContent = apps.getAppsSummary();
+			postContent = postContent.replaceAll("<br>", " ");
+			apps.setAppsSummary(postContent);
+		}
+		close(conn);
+		return appsList;
+	}
+
+	/**
 	 * apps 게시글 상세 조회 Service
 	 * @param postId
 	 * @return
@@ -218,17 +236,19 @@ public class AppsService extends BoardService {
 		return result;
 	}
 	
-	/**MyApps 목록 조회 Service
+	/**
+	 * apps 조건 페이징 처리 객체 생성용 Service
+	 * @param boardTableName
+	 * @param cp
 	 * @param userNo
-	 * @return myAppsList
+	 * @return pagination
 	 * @throws Exception
 	 */
-	public List<Board> selectMyAppsList(int userNo) throws Exception{
+	public Pagination getPagination(String boardTableName, int cp, String categoryId, String searchKey, String searchType) throws Exception {
 		Connection conn = getConnection();
-		List<Board> myAppsList = dao.selectMyQnaList(conn, userNo);
-		
+		int listCount = dao.getListCount(conn, categoryId, searchKey, searchType);
 		close(conn);
 		
-		return myAppsList;
+		return new Pagination(cp, listCount);
 	}
 }

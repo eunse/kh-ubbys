@@ -62,7 +62,7 @@
                   </div>
                   <div class="card-footer">
                     <c:forEach items="${apps.tagList}" var="tag">
-                      <a href="#" class="card-hashtag">#${tag.tagName}</a>
+                      <a href="apps/list?searchType=tag&q=${tag.tagName}" class="card-hashtag">#${tag.tagName}</a>
                     </c:forEach>
                   </div>
                 </div>

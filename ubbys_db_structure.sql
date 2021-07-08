@@ -467,7 +467,7 @@ CREATE OR REPLACE VIEW QNA_LIST AS
     JOIN "USER" USING(USER_ID)
     LEFT JOIN (SELECT QNA_POST_ID, COUNT(*) REPLY_COUNT
                     FROM QNA_REPLY
-	       	    WHERE REPLY_STATUS = 'Y'
+                   WHERE REPLY_STATUS = 'Y'
                     GROUP BY QNA_POST_ID) USING(QNA_POST_ID)
 ;
 
@@ -542,7 +542,7 @@ SELECT * FROM (
         ORDER BY apps_post_id DESC
     ) A
 )
-WHERE RNUM BETWEEN 1 AND 10;
+WHERE RNUM BETWEEN 1 AND 9;
 
 SELECT COUNT(*) FROM apps_list WHERE apps_status = 'Y';
 
