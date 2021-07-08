@@ -17,7 +17,9 @@ public class LogoutServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getSession().invalidate();
-		response.sendRedirect(request.getHeader("referer"));
+		//response.sendRedirect(request.getHeader("referer"));
+		// 로그인이 필요한 페이지에서 로그아웃 할 경우 발생하는 세션 오류 방지를 위해 최상위 주소로 이동
+		response.sendRedirect(request.getContextPath());
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

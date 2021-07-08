@@ -70,64 +70,6 @@ public class AdminDAO {
 		return loginUser;
 	}
 
-
-	/** 회원 목록 조회 DAO (페이지네이션 처리)
-	 * @param conn
-	 * @param pagination
-	 * @return userList
-	 * @throws Exception
-	 */
-	public List<User> selectUserList(Connection conn, Pagination pagination) throws Exception {
-		
-		List<User> userList = new ArrayList<User>();
-		
-		String sql = prop.getProperty("selectUserList");
-		
-		try {
-			pstmt = conn.prepareStatement(sql);
-			
-			int startRow = (pagination.getCurrentPage() - 1) * pagination.getLimit() + 1;
-			int endRow = (startRow + pagination.getLimit() - 1);
-			pstmt.setInt(1, startRow);
-			pstmt.setInt(2, endRow);
-			
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
-				
-				User user = new User();
-				
-				user.setUserNo(rs.getInt("USER_ID"));
-				user.setUserEmail(rs.getString("USER_EMAIL"));
-				user.setUserPw(rs.getString("USER_PW"));
-				user.setUserNickname(rs.getString("USER_NICKNAME"));
-				user.setUserRegdate(rs.getDate("USER_REGDATE"));
-				user.setUserIsAdmin(rs.getString("USER_IS_ADMIN"));
-				
-				List<String> filePath = new ArrayList<String>();
-				List<String> fileName = new ArrayList<String>();
-				
-				filePath.add(rs.getString("FILE_PATH"));
-				fileName.add(rs.getString("FILE_NM"));
-				
-				user.setFilePath(filePath);
-				user.setFileName(fileName);
-				
-				userList.add(user);
-			}
-			
-			
-		} finally {
-			
-			close(rs);
-			close(pstmt);
-			
-		}
-		
-		
-		return userList;
-	}
-
 	
 
 	/** 회원 목록 조회 DAO
@@ -204,17 +146,6 @@ public class AdminDAO {
 				user.setUserNickname(rs.getString("USER_NICKNAME"));
 				user.setUserRegdate(rs.getDate("USER_REGDATE"));
 				user.setUserIsAdmin(rs.getString("USER_IS_ADMIN"));
-				
-				//List<String> filePath = new ArrayList<String>();
-				//List<String> fileName = new ArrayList<String>();
-				
-//				2) 생성된 리스트에 DB 조회 결과를 추가 
-				//filePath.add(rs.getString("FILE_PATH"));
-				//fileName.add(rs.getString("FILE_NM"));
-				
-//				3) 리스트에 board에 set
-				//user.setFilePath(filePath);
-				//user.setFileName(fileName);
 				
 				userList.add(user);
 
@@ -380,7 +311,7 @@ public class AdminDAO {
 	 * @return unRegUserList
 	 * @throws Exception
 	 */
-	public List<UnRegUser> selectUnregUserList(Connection conn) throws Exception {
+	public List<UnRegUser> selectUnregUserList(Connection conn, Pagination pagination) throws Exception {
 		
 		List<UnRegUser> unRegUserList = null;
 		
@@ -458,6 +389,190 @@ public class AdminDAO {
 		return unRegUserList;
 	}
 
+	/** 탈퇴 회원 목록 검색용 DAO
+	 * @param conn
+	 * @param pagination
+	 * @param condition
+	 * @return userList
+	 * @throws Exception
+	 */
+	public List<UnRegUser> selectUnRegUserList(Connection conn, Pagination pagination, String condition)  throws Exception{
+		
+		List<UnRegUser> unRegUserList = new ArrayList<UnRegUser>();
+		
+		String sql = prop.getProperty("searchUnRegUserList1") + condition + prop.getProperty("searchUnRegUserList2");
+		
+		try {
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			int startRow = (pagination.getCurrentPage() - 1) * pagination.getLimit() + 1;
+			int endRow = startRow + pagination.getLimit() - 1;
+
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				UnRegUser unRegUser = new UnRegUser();
+				
+				unRegUser.setUserNo(rs.getInt("USER_ID"));
+				unRegUser.setUserEmail(rs.getString("USER_EMAIL"));
+				unRegUser.setUserPw(rs.getString("USER_PW"));
+				unRegUser.setUserNickname(rs.getString("USER_NICKNAME"));
+				unRegUser.setUserRegdate(rs.getDate("USER_REGDATE"));
+				unRegUser.setUserUnRegdate(rs.getDate("User_UNREGDATE"));
+				
+				unRegUserList.add(unRegUser);
+
+			}
+			
+		} finally {
+			
+			close(rs);
+			close(pstmt);
+			
+		}
+		return unRegUserList;
+	}
+
+	/** 탈퇴 회원 정보 조회 DAO(정렬용)
+	 * @param conn
+	 * @param pagination
+	 * @param condition
+	 * @return unRegUserList
+	 * @throws Exception
+	 */
+	public List<UnRegUser> selectSortUnRegUserList(Connection conn, Pagination pagination, String condition) throws Exception{
+		
+		List<UnRegUser> unRegUserList = new ArrayList<UnRegUser>();
+		
+		String sql = prop.getProperty("sortUnregUserList1")+condition+prop.getProperty("sortUnregUserList2");
+		try {
+			pstmt = conn.prepareStatement(sql);
+
+			int startRow = (pagination.getCurrentPage() - 1) * pagination.getLimit() + 1;
+			int endRow = startRow + pagination.getLimit() - 1;
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+
+				UnRegUser un = new UnRegUser();
+
+				un.setUserNo(rs.getInt("USER_ID"));
+				un.setUserEmail(rs.getString("USER_EMAIL"));
+				un.setUserPw(rs.getString("USER_PW"));
+				un.setUserNickname(rs.getString("USER_NICKNAME"));
+				un.setUserRegdate(rs.getDate("USER_REGDATE"));
+				un.setUserUnRegdate(rs.getDate("USER_UNREGDATE"));
+
+				unRegUserList.add(un);
+			}
+		} finally {
+			
+			close(rs);
+			close(pstmt);
+		}
+		return unRegUserList;
+	}
+
+	/** 관리자용 탈퇴 회원정보 DAO
+	 * @param conn
+	 * @param userNo
+	 * @return unregUser
+	 * @throws Exception
+	 */
+	public User getUnregUser(Connection conn, int userNo) throws Exception  {
+		User unregUser = new User();
+		String sql = prop.getProperty("getUnregUser");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userNo);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				unregUser.setUserNo(rs.getInt("USER_ID"));
+				unregUser.setUserEmail(rs.getString("USER_EMAIL"));
+				unregUser.setUserPw(rs.getString("USER_PW"));
+				unregUser.setUserNickname(rs.getString("USER_NICKNAME"));
+				unregUser.setUserRegdate(rs.getDate("USER_REGDATE"));
+				unregUser.setUserIsAdmin(rs.getString("USER_IS_ADMIN"));
+			}
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return unregUser;
+	}
+
+	/** 관리자용 탈퇴시킬 회원 정보  탈퇴회원 테이블에 삽입 DAO
+	 * @param conn
+	 * @param unregUser
+	 * @return result
+	 * @throws Exception
+	 */
+	public int insertUnregUser(Connection conn, User unregUser) throws Exception {
+		int result = 0;
+		String sql = prop.getProperty("insertUnregUser");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, unregUser.getUserNo());
+			pstmt.setString(2, unregUser.getUserEmail());
+			pstmt.setString(3, unregUser.getUserPw());
+			pstmt.setString(4, unregUser.getUserNickname());
+			pstmt.setDate(5, unregUser.getUserRegdate());
+			pstmt.setString(6, unregUser.getUserIsAdmin());
+			result = pstmt.executeUpdate();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	/** 관리자용 회원 테이블의 탈퇴회원 정보 변경 DAO
+	 * @param conn
+	 * @param userNo
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateUnregUser(Connection conn, int userNo) throws Exception {
+		int result = 0;
+		String sql = prop.getProperty("updateUnregUser");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userNo);
+			result = pstmt.executeUpdate();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	/** 관리자용 회원 추가정보 테이블 탈퇴회원 행 삭제 DAO
+	 * @param conn
+	 * @param userNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int deleteUnregUser(Connection conn, int userNo) throws Exception {
+		int result = 0;
+		String sql = prop.getProperty("deleteUnregUser");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userNo);
+			result = pstmt.executeUpdate();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
 	
+	
+	
+
+
 
 }

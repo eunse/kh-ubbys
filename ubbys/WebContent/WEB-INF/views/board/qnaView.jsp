@@ -41,8 +41,8 @@
       </c:choose>
       
       <c:if test="${ qna.userId == sessionScope.loginUser.userNo }">
-        <button class="btn btn-primary float-end" id="qnqUpdateBtn" onclick="fnRequest('UpdateForm');">수정</button>
-        <button class="btn btn-danger float-end me-2" id="qnqDeleteBtn" onclick="fnRequest('DeleteAlert');">삭제</button>
+        <button class="btn btn-primary float-end" id="qnaUpdateBtn" onclick="fnRequest('UpdateForm');">수정</button>
+        <button class="btn btn-danger float-end me-2" id="qnaDeleteBtn" onclick="fnRequest('DeleteAlert');">삭제</button>
       </c:if>
     </div>
 <jsp:include page="../common/footer.jsp" />

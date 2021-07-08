@@ -69,10 +69,10 @@ $("#inputPresentPw, #inputChangePw").on("focusout", function () {
         $("#checkPwd").html("&nbsp;");
         $("#checkPwd1").html("&nbsp;");
         checkObj.changePwConfirm = false;
-    } else if (presentPw != changePw) {
-        $("#checkPwd1").text("").css("color", "green");
+    } else if (presentPw != changePw && changePw != "") {
+        $("#checkPwd1").text("사용 가능한 비밀번호입니다.").css("color", "green");
         checkObj.changePwConfirm = true;
-    } else {
+    } else if( presentPw == changePw){
         $("#checkPwd1").text("현재 비밀번호와 일치합니다 변경해 주세요.").css("color", "red");
         checkObj.changePwConfirm = false;
     }

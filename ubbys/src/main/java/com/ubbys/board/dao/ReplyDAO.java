@@ -323,7 +323,7 @@ public class ReplyDAO {
 		return rList;
 	}
 
-	/** Reply 좋아요 확인 DAO
+	/** 댓글 좋아요 확인 DAO
 	 * @param conn
 	 * @param replyId
 	 * @param userId
@@ -348,7 +348,7 @@ public class ReplyDAO {
 		return result;
 	}
 
-	/** Reply 게시글 좋아요 삽입 DAO
+	/** 댓글 좋아요 삽입 DAO
 	 * @param conn
 	 * @param replyId
 	 * @param userId
@@ -371,7 +371,7 @@ public class ReplyDAO {
 		return result;
 	}
 
-	/** Reply 게시글 좋아요 수 증가 DAO
+	/** 댓글  좋아요 수 증가 DAO
 	 * @param conn
 	 * @param replyId
 	 * @return result
@@ -392,7 +392,7 @@ public class ReplyDAO {
 		return result;
 	}
 
-	/** Reply 게시글 좋아요 취소 DAO
+	/** 댓글 좋아요 취소 DAO
 	 * @param conn
 	 * @param replyId
 	 * @param userId
@@ -414,7 +414,7 @@ public class ReplyDAO {
 		return result;
 	}
 
-	/** Reply 게시글 종아요 수 감소 DAO
+	/** 댓글 좋아요 수 감소 DAO
 	 * @param conn
 	 * @param replyId
 	 * @return result

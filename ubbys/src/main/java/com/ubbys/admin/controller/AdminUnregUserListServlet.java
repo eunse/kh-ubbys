@@ -14,59 +14,63 @@ import com.ubbys.board.vo.Pagination;
 import com.ubbys.user.vo.UnRegUser;
 
 
-@WebServlet("/adminUnuser/*")
+@WebServlet("/admin/adminUnuser/*")
+
 public class AdminUnregUserListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-		protected void doGet(HttpServletRequest request, HttpServletResponse response)
-				throws ServletException, IOException {
-			
-			request.setCharacterEncoding("UTF-8");
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-			String uri = request.getRequestURI();
-			String contextPath = request.getContextPath();
-			String command = uri.substring((contextPath + "/admin/adminUnuser/").length());
+		String uri = request.getRequestURI();
+		String contextPath = request.getContextPath();
+		String command = uri.substring((contextPath + "/admin/adminUnuser/").length());
 
-			int cp = request.getParameter("cp") == null ? 1 : Integer.parseInt(request.getParameter("cp"));
+		int cp = request.getParameter("cp") == null ? 1 : Integer.parseInt(request.getParameter("cp"));
 
-			try {
-				AdminService service = new AdminService(); // 
+		try {
+			AdminService service = new AdminService(); //
 
-				if (command.equals("unRegList")) {
+			if (command.equals("unRegList")) {
 
-					Pagination pagination = null;
-					List<UnRegUser> unRegUserList = null;
+				Pagination pagination = null;
+				List<UnRegUser> unRegUserList = null;
 
-					if (request.getParameter("sv") == null) {
-						pagination = service.getPagination(cp);
+				if (request.getParameter("sv") == null) {
+					pagination = service.getPagination(cp);
 
-						unRegUserList = service.selectUnregUserList(pagination);
+					unRegUserList = service.selectUnregUserList(pagination);
+					
+				} else if (request.getParameter("sk").substring(0, 4).equals("sort")) {
+					String searchKey = request.getParameter("sk");
+					String searchValue = request.getParameter("sv");
 
-					} else {
-						String searchKey = request.getParameter("sk");
-						String searchValue = request.getParameter("sv");
+					pagination = service.getPagination(cp, searchKey, searchValue);
+					unRegUserList = service.getUnRegUserSoltList(pagination, searchKey, searchValue);
 
-						pagination = service.getPagination(cp, searchKey, searchValue);
-						unRegUserList = service.selectunRegUserList(pagination, searchKey, searchValue);
+				} else {
+					String searchKey = request.getParameter("sk");
+					String searchValue = request.getParameter("sv");
 
-					}
-
-					request.setAttribute("pagination", pagination);
-					request.setAttribute("unRegUserList", unRegUserList);
-					request.getRequestDispatcher("/WEB-INF/views/admin/adminUnregUserList.jsp").forward(request,
-							response);
+					pagination = service.getPagination(cp, searchKey, searchValue);
+					unRegUserList = service.selectUnRegUserList(pagination, searchKey, searchValue);
 
 				}
 
-			} catch (Exception e) {
-				e.printStackTrace();
+				request.setAttribute("pagination", pagination);
+				request.setAttribute("unRegUserList", unRegUserList);
+				request.getRequestDispatcher("/WEB-INF/views/admin/adminUnregUserList.jsp").forward(request, response);
+
 			}
-		}
 
-		protected void doPost(HttpServletRequest request, HttpServletResponse response)
-				throws ServletException, IOException {
-			doGet(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+	}
 
-	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
+
 }

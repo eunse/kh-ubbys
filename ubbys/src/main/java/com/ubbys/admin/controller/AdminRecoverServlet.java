@@ -8,16 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-@WebServlet("/admin/adminLogout")
-public class AdminLogoutServlet extends HttpServlet {
+@WebServlet("/AdminRecoverServlet")
+public class AdminRecoverServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		
-		request.getSession().invalidate();
-		response.sendRedirect("/admin/adminLogin");
 	}
 
 	

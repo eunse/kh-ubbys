@@ -15,6 +15,7 @@ import java.util.Locale.Category;
 
 import com.ubbys.board.dao.AppsDAO;
 import com.ubbys.board.vo.Apps;
+import com.ubbys.board.vo.Board;
 import com.ubbys.board.vo.Like;
 import com.ubbys.board.vo.Pagination;
 import com.ubbys.board.vo.Tag;

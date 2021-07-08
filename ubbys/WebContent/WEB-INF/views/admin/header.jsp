@@ -39,7 +39,6 @@
 	rel="stylesheet">
 <script src="${contextPath}/resources/admin/js/sidebars.js" defer></script>
 </head>
-
 <body>
 	<main>
 		<div class="flex-shrink-0 p-3 bg-white" style="width: 280px;">
@@ -49,15 +48,14 @@
 				class="fs-5 fw-semibold"> ADMIN</span>
 			</a>
 			<ul class="list-unstyled ps-0">
-
 				
 					<li class="mb-1">
 
 						<button
 							class="btn btn-toggle align-items-center rounded collapsed"
 							data-bs-toggle="collapse" data-bs-target="#user-collapse"
-							aria-expanded="false">회원 관리</button>
-						<div class="collapse" id="user-collapse">
+							aria-expanded="true">회원 관리</button>
+						<div class="collapse show" id="user-collapse">
 							<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
 								<li><a href="${contextPath}/admin/adminUser/list"
 									class="link-dark rounded">회원 목록</a></li>
@@ -73,8 +71,8 @@
 						aria-expanded="true">apps 게시판 관리</button>
 					<div class="collapse show" id="apps-collapse">
 						<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-							<li><a href="#" class="link-dark rounded">게시글 목록</a></li>
-							<li><a href="" class="link-dark rounded">게시글 작성</a></li>
+							<li><a href="${contextPath}/admin/appsList" class="link-dark rounded">게시글 목록</a></li>
+							<li><a href="${contextPath}/admin/appsWrite" class="link-dark rounded">게시글 작성</a></li>
 						</ul>
 					</div>
 				</li>

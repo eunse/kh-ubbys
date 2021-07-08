@@ -66,8 +66,7 @@ public class AdminService {
 
 		String condition = null;
 		
-//		condition 양 끝에는 띄어쓰기를 반드시 추가하여
-//		SQL 구문이 연속되서 작성되는 것을 방지함
+
 		switch (searchKey) {
 		case "userEmail":
 			condition = " AND USER_EMAIL LIKE '%" + searchValue + "%'  ";
@@ -170,7 +169,7 @@ public class AdminService {
 		
 		Connection conn = getConnection();
 		
-		List <UnRegUser> unRegUserList = dao.selectUnregUserList(conn);
+		List <UnRegUser> unRegUserList = dao.selectUnregUserList(conn, pagination);
 		
 		close(conn);
 		
@@ -184,13 +183,13 @@ public class AdminService {
 	 * @return unRegUserList
 	 * @throws Exception
 	 */
-	public List<UnRegUser> selectunRegUserList(Pagination pagination, String searchKey, String searchValue) throws Exception {
+	public List<UnRegUser> selectUnRegUserList(Pagination pagination, String searchKey, String searchValue) throws Exception {
 		
 		Connection conn = getConnection();
 		
 		String condition = createCondition(searchKey, searchValue);
 		
-		List<UnRegUser> unRegUserList = dao.selectunRegUserList(conn, pagination, condition);
+		List<UnRegUser> unRegUserList = dao.selectUnRegUserList(conn, pagination, condition);
 		
 		close(conn);
 		
@@ -198,6 +197,70 @@ public class AdminService {
 		return unRegUserList;
 	}
 
-	
+	/** 탈퇴 회원관리 목록 조회 Service (정렬용)
+	 * @param pagination
+	 * @param searchKey
+	 * @param searchValue
+	 * @return userList
+	 * @throws Exception
+	 */
+	public List<UnRegUser> getUnRegUserSoltList(Pagination pagination, String searchKey, String searchValue) throws Exception {
+
+		Connection conn = getConnection();
+
+		String condition = createCondition(searchKey, searchValue);
+
+		List<UnRegUser> unRegUserList = dao.selectSortUnRegUserList(conn, pagination, condition);
+
+		close(conn);
+
+		return unRegUserList;
+	}
+
+	/** 관리자용 탈퇴 Service
+	 * @param userNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int deleteAccount(int userNo) throws Exception{
+		
+		Connection conn = getConnection();
+		int result = 0;
+		
+		User unregUser = dao.getUnregUser(conn, userNo);
+		
+		// 탈퇴할 회원 정보를 얻어왔다면 -> 탈퇴회원 테이블에 INSERT
+		result = dao.insertUnregUser(conn, unregUser);
+		
+		if(result>0) { // 탈퇴회원 테이블에 INSERT 성공 -> 회원 테이블의 탈퇴유저 정보를 변경
+			
+			result = dao.updateUnregUser(conn, userNo);
+			System.out.println(result);
+			
+			if(result>0) { // 회원 테이블의 탈퇴유저 정보 변경 성공 -> user_info 테이블의 해당 유저 정보 삭제
+				
+				result = dao.deleteUnregUser(conn, userNo);
+				System.out.println(result);
+				
+				if(result>0) commit(conn); // 탈퇴 처리 성공~!
+				else {
+					result=0;
+					rollback(conn);
+				}
+				
+			} else {
+				result=0;
+				rollback(conn);
+			}
+			
+		} else { // 탈퇴회원 테이블 삽입 실패
+			result=0;
+			rollback(conn);
+		}
+		
+		close(conn);
+		
+		return result;
+	}
 
 }

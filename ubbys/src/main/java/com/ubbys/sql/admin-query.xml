@@ -6,7 +6,7 @@
 	<entry key="adminLogin">
 		SELECT user_id, user_email, user_nickname, user_regdate, user_is_admin,
 		user_pic, user_link, user_interest, user_introduce
-		FROM "USER"
+		FROM "USER_LIST"
 		LEFT JOIN user_info USING(user_id)
 		WHERE user_email =? AND user_pw = ? AND user_is_admin = 'Y'
 	</entry>
@@ -15,7 +15,7 @@
 	<entry key="selectUserList">
 		SELECT user_id, user_email, user_nickname, user_regdate, user_is_admin,
 		user_pic, user_link, user_interest, user_introduce
-		FROM "USER"
+		FROM "USER_LIST"
 		LEFT JOIN user_info USING(user_id)
 	</entry>
 
@@ -90,6 +90,36 @@
 		) A
 		)
 		WHERE RNUM BETWEEN ? AND ?
+	</entry>
+	
+	<!-- 정렬 -->
+	<entry key="sortUnRegUserList1">
+		SELECT * FROM
+			(SELECT ROWNUM RNUM, A.* FROM
+				(SELECT * FROM UNREG_USER_LIST
+	</entry>
+	
+	<entry key="sortUnRegUserList2">
+				) A
+			)
+		WHERE RNUM BETWEEN ? AND?
+	</entry>
+	
+	<!-- 탈퇴 -->
+	<entry key="getUnregUser">
+		SELECT * FROM "USER" WHERE user_id = ? AND user_email != 'unreg'
+	</entry>
+	
+	<entry key="insertUnregUser">
+		INSERT INTO UNREG_USER VALUES (?, ?, ?, ?, ?, ?, DEFAULT)
+	</entry>
+	
+	<entry key="updateUnregUser">
+		UPDATE "USER" SET user_email='unreg', user_pw='unreg', user_nickname='(탈퇴회원)' WHERE user_id=?
+	</entry>
+	
+	<entry key="deleteUnregUser">
+		DELETE FROM USER_INFO WHERE user_id=?
 	</entry>
 	
 </properties>
