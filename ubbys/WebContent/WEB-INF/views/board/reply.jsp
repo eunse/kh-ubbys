@@ -270,6 +270,19 @@ function deleteReply(replyId){
 }
 // -------------------------------------------
 // 좋아요
-
+$(document).on("click", "#reply-like-btn", function(){
+	
+	
+	
+	
+	if( $(this).children().hasClass("bi bi-heart") ){
+		$(this).children().removeClass("bi bi-heart");
+		$(this).children().addClass("bi bi-heart-fill").text(1);
+	}else if( $(this).children().hasClass("bi bi-heart-fill") ){
+		$(this).children().removeClass("bi bi-heart-fill");
+		$(this).children().addClass("bi bi-heart").text(0);
+	}	
+		
+});
 
 </script>
