@@ -6,6 +6,7 @@
     <div class="container">
       <h1 class="h3 mt-5">apps</h1>
       <form class="needs-validation" id="apps-write" method="post" enctype="multipart/form-data" role="form" action="write" novalidate>
+        <input type="hidden" name="no" value="${apps.postId}">
         <div class="row align-items-end">
           <div class="col-md-4">
             <div class="mb-3">
@@ -18,7 +19,9 @@
               <div id="uploadImagePreview" class="apps-image__preview rounded-3 mb-3" style="background-image: url(${apps.appsIconUrl});"></div>
               </c:otherwise>
               </c:choose>
-              <input accept="image/*" class="form-control" type="file" id="userImageInput" onchange="loadFile(event)" name="appIcon" required>
+              <input accept="image/*" class="form-control" type="file" id="userImageInput" onchange="loadFile(event)" name="appIcon" 
+                <c:if test="${empty apps.appsIconUrl}">required</c:if>
+              >
               <div class="invalid-feedback">
                 이미지를 등록해주세요.
               </div>

@@ -160,7 +160,6 @@ public class AppsDAO extends BoardDAO {
 			sql += " ORDER BY apps_like DESC ";
 		}		
 		sql += ") A) WHERE RNUM BETWEEN ? AND ?";
-		System.out.println(sql);
 		String sqlForTag = prop.getProperty("selectAppsTags");
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -296,15 +295,19 @@ public class AppsDAO extends BoardDAO {
 	 */
 	public int updateApps(Connection conn, Apps apps) throws Exception {
 		int result = 0;
-		String sql = prop.getProperty("updateApps");
+//		String sql = prop.getProperty("updateApps");
+		String sql = "UPDATE apps SET apps_title = ?, apps_content = ?";
+		if(apps.getAppsIconUrl() != null) {
+		      sql += ", apps_icon = '" + apps.getAppsIconUrl() + "'";	
+		}
+		      sql += ", apps_url = ?,  apps_category_id = ? WHERE apps_post_id = ?";
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, apps.getPostTitle());
 			pstmt.setString(2, apps.getPostContent());
-			pstmt.setString(3, apps.getAppsIconUrl());
-			pstmt.setString(4, apps.getAppsLink());
-			pstmt.setInt(5, apps.getCategoryId());
-			pstmt.setInt(6, apps.getPostId());
+			pstmt.setString(3, apps.getAppsLink());
+			pstmt.setInt(4, apps.getCategoryId());
+			pstmt.setInt(5, apps.getPostId());
 			result = pstmt.executeUpdate();
 		} finally {
 			close(pstmt);
