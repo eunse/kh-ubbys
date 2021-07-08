@@ -99,5 +99,14 @@
     <script src="${contextPath}/resources/js/hashtag.js" defer></script>
     <script src="${contextPath}/resources/js/ckeditor.js" defer></script>
     <script src="${contextPath}/resources/js/apps_write.js" defer></script>
+    <script>
+      const categoryName = "${apps.categoryName}";
+        $("#selectCategory > option").each(function (index, item) {
+          if ($(item).text() == categoryName) {
+            $(item).prop("selected", true);
+          }
+        })
+    </script>
+    
 
 <jsp:include page="../common/footer.jsp" />
