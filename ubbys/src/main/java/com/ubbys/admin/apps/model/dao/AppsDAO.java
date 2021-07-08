@@ -75,6 +75,7 @@ public class AppsDAO {
 				a.setPostLike(rs.getInt("APPS_LIKE"));
 				a.setUserName(rs.getString("USER_NICKNAME"));
 				a.setPostDate(rs.getString("APPS_DATE"));
+				a.setUserNo(rs.getInt("USER_ID"));
 				appsList.add(a);
 			}
 		} finally {

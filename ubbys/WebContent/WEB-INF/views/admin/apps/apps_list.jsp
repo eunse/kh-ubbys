@@ -67,7 +67,7 @@
           					<td>${ apps.userName }</td>
           					<td>${ apps.postDate }</td>
           					<td>
-          						<a href="${ contextPath }/admin/appsUpdateform" class="btn btn-primary btn-sm">수정</a>
+          						<a href="${ contextPath }/admin/appsWrite?no=${ apps.postId }&author=${ apps.userNo }" class="btn btn-primary btn-sm">수정</a>
                 				<a href="${ contextPath }/admin/appsDeleteAlert?no=${ apps.postId }&cp=${ pagination.currentPage }" class="btn btn-danger btn-sm">삭제</a>
           					</td>
           				</tr>

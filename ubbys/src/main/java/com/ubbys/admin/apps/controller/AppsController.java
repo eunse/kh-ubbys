@@ -1,6 +1,7 @@
 package com.ubbys.admin.apps.controller;
 
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,15 +11,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.oreilly.servlet.MultipartRequest;
 import com.ubbys.admin.apps.model.service.AppsService;
 import com.ubbys.board.service.BoardService;
 import com.ubbys.board.vo.Apps;
 import com.ubbys.board.vo.Category;
-import com.ubbys.board.vo.Like;
 import com.ubbys.board.vo.Pagination;
+import com.ubbys.board.vo.Tag;
+import com.ubbys.common.UbbysRenamePolicy;
 import com.ubbys.user.vo.User;
 
-@WebServlet({"/admin/appsList", "/admin/appsDeleteAlert", "/admin/appsDelete", "/admin/appsView"})
+@WebServlet({"/admin/appsList", "/admin/appsDeleteAlert", "/admin/appsDelete", "/admin/appsView", "/admin/appsWrite"})
 public class AppsController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -99,9 +102,29 @@ public class AppsController extends HttpServlet {
 				request.getRequestDispatcher("/WEB-INF/views/admin/apps/apps_view.jsp").forward(request, response);
 			}
 			
-
-			
-			
+			// apps 작성/수정
+			else if(command.equals("Write")) {
+				List<Category> category = new BoardService().selectCategoryList(boardTableName);
+				request.setAttribute("category", category);
+				path = "/WEB-INF/views/admin/apps/apps_write.jsp";
+				
+				if(request.getParameter("no") != null) {
+					int postId = Integer.parseInt(request.getParameter("no"));
+					Apps apps = new AppsService().selectApps(postId);
+					
+					// 수정에 이용할 부분
+					int no = Integer.parseInt(request.getParameter("no"));
+					int author = Integer.parseInt(request.getParameter("author"));
+					
+					apps.setPostContent(apps.getPostContent().replaceAll("<br>", "\r\n"));
+					request.setAttribute("no", no);
+					request.setAttribute("author", author);
+					request.setAttribute("apps", apps);
+					request.getRequestDispatcher(path).forward(request, response);
+				} else {
+					request.getRequestDispatcher(path).forward(request, response);
+				}
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -109,7 +132,74 @@ public class AppsController extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		String command = request.getRequestURI().substring((request.getContextPath() + "/admin/apps").length());
+		String path = null; 
+		String boardTableName = "apps";
+		HttpSession session = request.getSession();
+		String modalTitle = null;
+		String modalText = null;
+		
+		try {
+			int cp = request.getParameter("cp") == null ? 1 : Integer.parseInt(request.getParameter("cp"));
+			AppsService service = new AppsService();
+			
+			// apps 작성
+			if(command.equals("Write")) {
+				int maxSize = 2097152;
+				String root = session.getServletContext().getRealPath("/");
+				String filePath = "/upload/";
+				MultipartRequest mpRequest = new MultipartRequest(request, root+filePath, maxSize, "UTF-8", new UbbysRenamePolicy());
+				int userNo = ((User)session.getAttribute("loginUser")).getUserNo();
+				String postTitle = mpRequest.getParameter("inputTitle");
+				String postContent = mpRequest.getParameter("inputContent");
+				int categoryId = Integer.parseInt(mpRequest.getParameter("selectCategory"));
+				String appsLink = mpRequest.getParameter("inputDownloadUrl");
+				String tagString = mpRequest.getParameter("tagString");
+				Apps apps = new Apps();
+				apps.setPostTitle(postTitle);
+				apps.setPostContent(postContent);
+				apps.setCategoryId(categoryId);
+				apps.setUserNo(userNo);
+				apps.setAppsLink(appsLink);
+				String[] tagArr = tagString.split(",");
+				apps.setTagArr(tagArr);
+				List<Tag> tagList = new com.ubbys.board.service.AppsService().insertTagInAppsTags(tagArr);
+				apps.setTagList(tagList);
+				
+				Enumeration<String> images = mpRequest.getFileNames();
+				if(images.hasMoreElements()) {
+					String name = images.nextElement();
+					if(mpRequest.getFilesystemName(name) != null) { 
+						apps.setAppsIconUrl(request.getContextPath() + filePath + mpRequest.getFilesystemName(name));
+					}
+				}
+				int postId = 0;
+				boolean flag = false;
+				if(!mpRequest.getParameter("no").equals("")) {
+					apps.setPostId(Integer.parseInt(mpRequest.getParameter("no")));
+					apps.setUserNo(Integer.parseInt(mpRequest.getParameter("author")));
+					flag = true; // 수정하는 경우
+				} 
+				postId = new com.ubbys.board.service.AppsService().insertApps(apps, tagList, flag);
+				
+				if(postId > 0) {
+					path = request.getContextPath() + "/admin/appsView?no=" + postId + "&cp=1";
+
+				} else {
+					modalText = "게시글 등록에 실패했습니다.";
+					modalTitle = "게시글 등록 실패";
+					
+					path = request.getHeader("referer");
+				}
+				session.setAttribute("modalTitle", modalTitle);
+				session.setAttribute("modalText", modalText);
+				response.sendRedirect(path);
+				
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
