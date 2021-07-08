@@ -6,9 +6,11 @@ import java.sql.Connection;
 import java.util.List;
 
 import com.ubbys.admin.apps.model.dao.AppsDAO;
+import com.ubbys.board.dao.BoardDAO;
 import com.ubbys.board.vo.Apps;
 import com.ubbys.board.vo.Pagination;
 import com.ubbys.board.vo.QnaPagination;
+import com.ubbys.board.vo.Tag;
 
 public class AppsService {
 	AppsDAO dao = new AppsDAO();
@@ -111,6 +113,20 @@ public class AppsService {
 		case "userName" : condition = " AND user_nickname like '%"+sv+"%' "; break;
 		}
 		return condition;
+	}
+
+	/** apps 상세 조회 Servivce
+	 * @param postId
+	 * @return apps
+	 * @throws Exception
+	 */
+	public Apps selectApps(int postId) throws Exception {
+		Connection conn = getConnection();
+		Apps apps = new com.ubbys.board.dao.AppsDAO().selectApps(conn, postId);
+		List<Tag> tagList = new com.ubbys.board.dao.AppsDAO().selectAppsTags(conn, postId);
+		apps.setTagList(tagList);
+		close(conn);
+		return apps;
 	}
 
 

@@ -61,7 +61,7 @@
           					<td>${ apps.postId }</td>
           					<td>${ apps.categoryName}</td>
           					<td>
-          						<a href="apps/view?no=${ apps.postId }&cp=${ pagination.currentPage }">${ apps.postTitle }</a>
+          						<a href="${ contextPath }/admin/appsView?no=${ apps.postId }&cp=${ pagination.currentPage }">${ apps.postTitle }</a>
           					</td>
           					<td>${ apps.postLike }</td>
           					<td>${ apps.userName }</td>

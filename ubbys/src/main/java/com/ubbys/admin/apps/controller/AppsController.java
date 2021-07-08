@@ -14,9 +14,11 @@ import com.ubbys.admin.apps.model.service.AppsService;
 import com.ubbys.board.service.BoardService;
 import com.ubbys.board.vo.Apps;
 import com.ubbys.board.vo.Category;
+import com.ubbys.board.vo.Like;
 import com.ubbys.board.vo.Pagination;
+import com.ubbys.user.vo.User;
 
-@WebServlet({"/admin/appsList", "/admin/appsDeleteAlert", "/admin/appsDelete"})
+@WebServlet({"/admin/appsList", "/admin/appsDeleteAlert", "/admin/appsDelete", "/admin/appsView"})
 public class AppsController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -87,6 +89,14 @@ public class AppsController extends HttpServlet {
 					session.setAttribute("modalText", "게시글 삭제에 실패했습니다.");
 					request.getRequestDispatcher(request.getHeader("referer")).forward(request, response);
 				}
+			}
+			
+			// apps 상세
+			else if(command.equals("View")) {
+				int postId = Integer.parseInt(request.getParameter("no"));
+				Apps apps = service.selectApps(postId);
+				request.setAttribute("apps", apps);
+				request.getRequestDispatcher("/WEB-INF/views/admin/apps/apps_view.jsp").forward(request, response);
 			}
 			
 
