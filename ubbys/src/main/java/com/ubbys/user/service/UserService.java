@@ -84,12 +84,19 @@ public class UserService {
 		Connection conn = getConnection();
 		int result = dao.updateUser(conn, user);
 		
-		if(result > 0) {
+		if(result > 0) { // 회원정보 수정 성공
 			
 			result = dao.updateUserInfo(conn, user);
 			
-			if(result > 0) {
+			if(result > 0) { // 회원 추가정보 수정 성공
 				commit(conn);
+			}else if(result == 0){ // 회원 추가정보가 없을 경우 0행이 반환됨.
+				result = dao.insertUserInfo(conn, user);
+				if(result > 0) { // 회원 추가정보 삽입 성공
+					commit(conn);
+				}else { // 회원 추가정보 삽입 실패
+					rollback(conn);
+				}
 			}else {
 				rollback(conn);
 			}

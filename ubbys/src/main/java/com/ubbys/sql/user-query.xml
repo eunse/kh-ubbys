@@ -29,6 +29,10 @@
 		user_introduce = ?
 		WHERE user_id = ?
 	</entry>
+	<!-- 회원 추가정보에 행이 없을 때 삽입 -->
+	<entry key="insertUserInfo">
+		INSERT INTO user_info VALUES(?, null, null, null, null)
+	</entry>
 	<entry key="changePw">
 		UPDATE "USER" SET
 		user_pw = ?
