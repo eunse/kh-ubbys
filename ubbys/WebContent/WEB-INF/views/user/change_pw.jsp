@@ -18,7 +18,7 @@
 			<input type="password" class="form-control" id="inputChangePw"
 				name="inputChangePw" placeholder="변경할 비밀번호 입력" required> <label
 				for="inputChangePw">변경할 비밀번호</label>
-			<div id="pwHelp" class="form-text">영문/숫자를 혼합한 10자 이상</div>
+			<div id="pwHelp" class="form-text">영문/숫자를 혼합한 8자 이상</div>
             <div>
               <span id="checkPwd1"></span>
             </div>
