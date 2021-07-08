@@ -1,25 +1,16 @@
 --------------------------------------------------------------------------------
 -- 회원 테이블
 --------------------------------------------------------------------------------
-DROP TABLE USER;
+DROP TABLE "USER";
 
 CREATE TABLE "USER" (
 	USER_ID	NUMBER		NOT NULL,
 	USER_EMAIL	VARCHAR2(200)		NOT NULL,
-	USER_PW	VARCHAR2(50)		NOT NULL,
+	USER_PW	VARCHAR2(100)		NOT NULL,
 	USER_NICKNAME	VARCHAR2(100)		NOT NULL,
 	USER_REGDATE	DATE	DEFAULT SYSDATE	NOT NULL,
 	USER_IS_ADMIN	CHAR(1)	DEFAULT 'N' CHECK(USER_IS_ADMIN IN('Y','N'))	NOT NULL
 );
-
---------------------------------------------------------------------------------
--- 관리자용 회원 VIEW
---------------------------------------------------------------------------------
-CREATE OR REPLACE VIEW USER_LIST AS
-SELECT USER_ID, USER_EMAIL, USER_PW, USER_NICKNAME, USER_REGDATE, USER_IS_ADMIN
-FROM "USER"
-JOIN USER_INFO USING(USER_ID)
-WHERE USER_EMAIL <> 'unreg';
 
 COMMENT ON COLUMN "USER".USER_ID IS '회원 번호';
 COMMENT ON COLUMN "USER".USER_EMAIL IS '회원 이메일';
@@ -55,7 +46,7 @@ DROP TABLE UNREG_USER;
 CREATE TABLE UNREG_USER (
 	USER_ID	NUMBER		NOT NULL,
 	USER_EMAIL	VARCHAR2(200)		NOT NULL,
-	USER_PW	VARCHAR2(50)		NOT NULL,
+	USER_PW	VARCHAR2(100)		NOT NULL,
 	USER_NICKNAME	VARCHAR2(100)		NOT NULL,
 	USER_REGDATE	DATE	DEFAULT SYSDATE	NOT NULL,
 	USER_IS_ADMIN	CHAR(1)	DEFAULT 'N'	CHECK(USER_IS_ADMIN IN('Y','N')) NOT NULL,
@@ -107,8 +98,8 @@ CREATE TABLE QNA_CATEGORIES (
 	QNA_CATEGORY_NAME	VARCHAR2(50)		NOT NULL
 );
 
-COMMENT ON COLUMN QNA_CATEGORIES.QNA_CATEGORY_ID IS 'qna 카테고리 번호';
-COMMENT ON COLUMN QNA_CATEGORIES.QNA_CATEGORY_NAME IS 'qna 카테고리 이름';
+COMMENT ON COLUMN QNA_CATEGORIES.QNA_CATEGORY_ID IS 'QnA 카테고리 번호';
+COMMENT ON COLUMN QNA_CATEGORIES.QNA_CATEGORY_NAME IS 'QnA 카테고리 이름';
 
 --------------------------------------------------------------------------------
 -- qna 게시판 좋아요 테이블
@@ -117,12 +108,12 @@ DROP TABLE QNA_LIKES;
 
 CREATE TABLE QNA_LIKES (
 	LIKES_ID	NUMBER		NOT NULL,
-	QNA_POST_ID	NUMBER		NULL,
+	QNA_POST_ID	NUMBER NOT NULL,
 	USER_ID	NUMBER		NOT NULL
 );
 
 COMMENT ON COLUMN QNA_LIKES.LIKES_ID IS 'LIKE 번호';
-COMMENT ON COLUMN QNA_LIKES.QNA_POST_ID IS 'qna 게시글 번호';
+COMMENT ON COLUMN QNA_LIKES.QNA_POST_ID IS 'QnA 게시글 번호';
 COMMENT ON COLUMN QNA_LIKES.USER_ID IS '회원 번호';
 
 --------------------------------------------------------------------------------
@@ -161,7 +152,7 @@ CREATE TABLE QNA_REPLY_LIKES (
 
 COMMENT ON COLUMN QNA_REPLY_LIKES.LIKES_ID IS 'LIKE 번호';
 COMMENT ON COLUMN QNA_REPLY_LIKES.USER_ID IS '회원 번호';
-COMMENT ON COLUMN QNA_REPLY_LIKES.REPLY_ID IS 'qna 댓글 번호';
+COMMENT ON COLUMN QNA_REPLY_LIKES.REPLY_ID IS 'QnA 댓글 번호';
 
 
 --------------------------------------------------------------------------------
@@ -214,7 +205,7 @@ DROP TABLE APPS_LIKES;
 
 CREATE TABLE APPS_LIKES (
 	LIKES_ID	NUMBER		NOT NULL,
-	APPS_POST_ID	NUMBER		NULL,
+	APPS_POST_ID	NUMBER NOT NULL,
 	USER_ID	NUMBER		NOT NULL
 );
 
@@ -245,8 +236,8 @@ CREATE TABLE TAGS (
 	APPS_TAG_NAME	VARCHAR2(100)		NOT NULL
 );
 
-COMMENT ON COLUMN TAGS.APPS_TAG_ID IS 'apps 게시글 태그 번호';
-COMMENT ON COLUMN TAGS.APPS_TAG_NAME IS 'apps 게시글 태그 이름';
+COMMENT ON COLUMN TAGS.APPS_TAG_ID IS 'Apps 게시글 태그 번호';
+COMMENT ON COLUMN TAGS.APPS_TAG_NAME IS 'Apps 게시글 태그 이름';
 
 
 --------------------------------------------------------------------------------
@@ -425,33 +416,43 @@ REFERENCES QNA_REPLY (
 
 -- 회원 번호용
 CREATE SEQUENCE seq_user_no;
+DROP SEQUENCE seq_user_no;
 
 -- qna 게시글 번호용
 CREATE SEQUENCE seq_qna_no;
+DROP SEQUENCE seq_qna_no;
 
 -- qna 게시글 좋아요 번호용
 CREATE SEQUENCE seq_qna_like_no;
+DROP SEQUENCE seq_qna_like_no;
 
 -- qna 댓글 번호용 
 CREATE SEQUENCE seq_qna_reply_no;
+DROP SEQUENCE seq_qna_reply_no;
 
 -- qna 카테고리 번호 용 
 CREATE SEQUENCE seq_qna_category_no;
+DROP SEQUENCE seq_qna_category_no;
 
 -- qna 댓글 좋아요 번호용 
 CREATE SEQUENCE seq_qna_reply_like_no;
+DROP SEQUENCE seq_qna_reply_like_no;
 
 -- apps 게시글 번호용
 CREATE SEQUENCE seq_apps_no;
+DROP SEQUENCE seq_apps_no;
 
 -- apps 게시글 좋아요 번호용
 CREATE SEQUENCE seq_apps_like_no;
+DROP SEQUENCE seq_apps_like_no;
 
 -- apps 카테고리 번호 용 
 CREATE SEQUENCE seq_apps_category_no;
+DROP SEQUENCE seq_apps_category_no;
 
 -- tag 번호용
 CREATE SEQUENCE seq_tag_no;
+DROP SEQUENCE seq_tag_no;
 
 
 --------------------------------------------------------------------------------
@@ -486,6 +487,16 @@ CREATE OR REPLACE VIEW QNA_DETAIL AS
                     FROM QNA_REPLY 
                     GROUP BY QNA_POST_ID) USING(QNA_POST_ID)
 ;
+
+-- QNA 게시판 카테고리 샘플데이터
+INSERT INTO QNA_CATEGORIES VALUES(seq_qna_category_no.NEXTVAL, 'Java');
+INSERT INTO QNA_CATEGORIES VALUES(seq_qna_category_no.NEXTVAL, 'DB');
+INSERT INTO QNA_CATEGORIES VALUES(seq_qna_category_no.NEXTVAL, 'HTML/CSS');
+INSERT INTO QNA_CATEGORIES VALUES(seq_qna_category_no.NEXTVAL, 'Servlet/JSP');
+INSERT INTO QNA_CATEGORIES VALUES(seq_qna_category_no.NEXTVAL, 'WEB');
+INSERT INTO QNA_CATEGORIES VALUES(seq_qna_category_no.NEXTVAL, 'ETC');
+COMMIT;
+
 --------------------------------------------------------------------------------
 -- 내 Qna 게시판 글 상세 조회 VIEW
 -- 글번호, 글내용, 좋아요 수 , 댓글 수, 게시글 상태, 작성자 번호
@@ -622,7 +633,7 @@ SELECT * FROM apps_tags WHERE apps_post_id = 55;
 DELETE FROM apps_tags WHERE apps_post_id = 55;
 
 --------------------------------------------------------------------------------
--- 관리자 메뉴 회원목록 출력을 위한 VIEW
+-- 관리자 메뉴 회원 목록 출력을 위한 VIEW
 --------------------------------------------------------------------------------
 CREATE OR REPLACE VIEW USER_LIST AS
 SELECT USER_ID, USER_EMAIL, USER_PW, USER_NICKNAME, USER_REGDATE, USER_IS_ADMIN
@@ -630,10 +641,21 @@ FROM "USER"
 JOIN USER_INFO USING(USER_ID)
 WHERE USER_EMAIL <> 'unreg';
 
---------------------------------------------------------------------------------
--- 탈퇴한 회원목록 출력을 위한 VIEW (unreg_user_list)
---------------------------------------------------------------------------------
+-- 관리자 메뉴 탈퇴 회원 목록 출력을 위한 VIEW
 CREATE OR REPLACE VIEW UNREG_USER_LIST AS
 SELECT USER_ID, USER_EMAIL, USER_PW, USER_NICKNAME, USER_REGDATE, USER_IS_ADMIN, USER_UNREGDATE
 FROM "UNREG_USER"
 JOIN USER_INFO USING(USER_ID);
+
+BEGIN
+    FOR N IN 1..100 LOOP
+        INSERT INTO QNA
+        VALUES(SEQ_QNA_NO.NEXTVAL,
+                    N || '번째 질문',
+                    N || '번째 질문 내용',
+                    DEFAULT, DEFAULT, DEFAULT,
+                    FLOOR(DBMS_RANDOM.VALUE(1,7)), 1);
+    END LOOP;
+END;
+/
+COMMIT;
