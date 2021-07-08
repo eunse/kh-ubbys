@@ -31,7 +31,7 @@
 					</div>
 				</form>
 			</div>
-		</div>
+		</div>${pagination }
 		<table class="table table-striped table-hover w-100">
 			<thead>
 				<tr>
@@ -66,7 +66,7 @@
 							</c:choose></td>
 						<td><a href="/ubbys/admin/adminUpdatePage?userEmail=${u.userEmail}"
 							class="btn btn-primary btn-sm">수정</a> <a href="/ubbys/admin/adminDeleteAccount"
-							class="btn btn-danger btn-sm">삭제</a></td>
+							class="btn btn-danger btn-sm">탈퇴</a></td>
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -80,10 +80,10 @@
 			<%-- 검색시 사용될 부분 : 파라미터명 꼭 확인할 것 --%>
 			<c:when test="${ !empty param.sk && !empty param.sv }">
 				<c:set var="pageURL"
-					value="admin/adminUser/list?sc=${param.sk }&sv=${param.sv }" />
+					value="list?sc=${param.sk }&sv=${param.sv }" />
 			</c:when>
 			<c:otherwise>
-				<c:set var="pageURL" value="admin/adminUser/list?" />
+				<c:set var="pageURL" value="list?" />
 			</c:otherwise>
 		</c:choose>
 
@@ -155,4 +155,17 @@
 			$("#searchValue").val(searchValue);
 		}
 	}
+	
+
+	$(document).ready(function(){
+	    //스크롤 발생 이벤트 처리
+	    $('.container').scroll(function(){
+	        var scrollT = $(this).scrollTop(); //스크롤바의 상단위치
+	        var scrollH = $(this).height(); //스크롤바를 갖는 div의 높이
+	        var contentH = $('#divContent').height(); //문서 전체 내용을 갖는 div의 높이
+	        if(scrollT + scrollH +1 >= contentH) { // 스크롤바가 아래 쪽에 위치할 때
+	            $('#divContent').append(imgs);
+	        }
+	    });
+	});
 </script>

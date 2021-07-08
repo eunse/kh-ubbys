@@ -111,4 +111,14 @@ public class Pagination {
 		
 		if(nextPage > maxPage) { nextPage = maxPage; }
 	}
+
+	@Override
+	public String toString() {
+		return "Pagination [currentPage=" + currentPage + ", listCount=" + listCount + ", limit=" + limit
+				+ ", pageSize=" + pageSize + ", maxPage=" + maxPage + ", startPage=" + startPage + ", endPage="
+				+ endPage + ", prevPage=" + prevPage + ", nextPage=" + nextPage + "]";
+	}
+	
+	
+	
 }

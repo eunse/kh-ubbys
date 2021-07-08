@@ -80,10 +80,10 @@
 			<%-- 검색시 사용될 부분 : 파라미터명 꼭 확인할 것 --%>
 			<c:when test="${ !empty param.sk && !empty param.sv }">
 				<c:set var="pageURL"
-					value="admin/adminUnUser/unRegList?sc=${param.sk }&sv=${param.sv }" />
+					value="unRegList?sc=${param.sk }&sv=${param.sv }" />
 			</c:when>
 			<c:otherwise>
-				<c:set var="pageURL" value="admin/adminUser/unList?" />
+				<c:set var="pageURL" value="unRegList?" />
 			</c:otherwise>
 		</c:choose>
 
