@@ -4,17 +4,22 @@
 
 	<!-- 관리자 로그인 -->
 	<entry key="adminLogin">
-		SELECT user_id, user_email, user_nickname, user_regdate, user_is_admin,
-		user_pic, user_link, user_interest, user_introduce
+		SELECT user_id, user_email, user_nickname,
+		user_regdate, user_is_admin,
+		user_pic, user_link, user_interest,
+		user_introduce
 		FROM "USER_LIST"
 		LEFT JOIN user_info USING(user_id)
-		WHERE user_email =? AND user_pw = ? AND user_is_admin = 'Y'
+		WHERE
+		user_email =? AND user_pw = ? AND user_is_admin = 'Y'
 	</entry>
 
 	<!-- 회원 조회 -->
 	<entry key="selectUserList">
-		SELECT user_id, user_email, user_nickname, user_regdate, user_is_admin,
-		user_pic, user_link, user_interest, user_introduce
+		SELECT user_id, user_email, user_nickname,
+		user_regdate, user_is_admin,
+		user_pic, user_link, user_interest,
+		user_introduce
 		FROM "USER_LIST"
 		LEFT JOIN user_info USING(user_id)
 	</entry>
@@ -48,78 +53,103 @@
 		SELECT * FROM "USER"
 		WHERE USER_EMAIL = ?
 	</entry>
-	
+
 	<!-- 정렬 -->
 	<entry key="sortUserList1">
 		SELECT * FROM
-			(SELECT ROWNUM RNUM, A.* FROM
-				(SELECT * FROM USER_LIST
-				WHERE user_is_admin='N'
+		(SELECT ROWNUM RNUM, A.* FROM
+		(SELECT *
+		FROM USER_LIST
+		WHERE user_is_admin='N'
 	</entry>
-	
+
 	<entry key="sortUserList2">
-				) A
-			)
+		) A
+		)
 		WHERE RNUM BETWEEN ? AND?
 	</entry>
-	
-	<!-- 탈퇴회원 목록 조회  -->
+
+	<!-- 탈퇴회원 목록 조회 -->
 	<entry key="selectUnRegUser">
-	SELECT user_id, user_email, user_nickname, user_regdate, user_unregdate
-	FROM "UNREG_USER"
-	</entry>
-	
-	<!-- 탈퇴회원  -->
-	<entry key="selectUnRegUserList">
-		SELECT user_id, user_email, user_nickname, user_regdate, user_unregdate
+		SELECT user_id, user_email, user_nickname,
+		user_regdate, user_unregdate
 		FROM "UNREG_USER"
 	</entry>
-	
+
+	<!-- 탈퇴회원 -->
+	<entry key="selectUnRegUserList">
+		SELECT user_id, user_email, user_nickname,
+		user_regdate, user_unregdate
+		FROM "UNREG_USER"
+	</entry>
+
 	<!-- 탈퇴회원 검색 -->
 	<entry key="searchUnRegUserList1">
-	SELECT * FROM
+		SELECT * FROM
 		(SELECT ROWNUM RNUM, A.* FROM
 		(SELECT *
 		FROM UNREG_USER_LIST
-		
+
 	</entry>
-	
+
 	<entry key="searchUnRegUserList2">
-			ORDER BY
+		ORDER BY
 		USER_ID DESC
 		) A
 		)
 		WHERE RNUM BETWEEN ? AND ?
 	</entry>
-	
+
 	<!-- 정렬 -->
 	<entry key="sortUnRegUserList1">
 		SELECT * FROM
-			(SELECT ROWNUM RNUM, A.* FROM
-				(SELECT * FROM UNREG_USER_LIST
+		(SELECT ROWNUM RNUM, A.* FROM
+		(SELECT *
+		FROM UNREG_USER_LIST
 	</entry>
-	
+
 	<entry key="sortUnRegUserList2">
-				) A
-			)
+		) A
+		)
 		WHERE RNUM BETWEEN ? AND?
 	</entry>
-	
+
 	<!-- 탈퇴 -->
 	<entry key="getUnregUser">
-		SELECT * FROM "USER" WHERE user_id = ? AND user_email != 'unreg'
+		SELECT * FROM "USER" WHERE user_id = ? AND user_email
+		!= 'unreg'
 	</entry>
-	
+
 	<entry key="insertUnregUser">
-		INSERT INTO UNREG_USER VALUES (?, ?, ?, ?, ?, ?, DEFAULT)
+		INSERT INTO UNREG_USER VALUES (?, ?, ?, ?, ?, ?,
+		DEFAULT)
 	</entry>
-	
+
 	<entry key="updateUnregUser">
-		UPDATE "USER" SET user_email='unreg', user_pw='unreg', user_nickname='(탈퇴회원)' WHERE user_id=?
+		UPDATE "USER" SET user_email='unreg', user_pw='unreg',
+		user_nickname='(탈퇴회원)' WHERE user_id=?
 	</entry>
-	
+
 	<entry key="deleteUnregUser">
 		DELETE FROM USER_INFO WHERE user_id=?
 	</entry>
-	
+
+	<!-- 복구용 정보 조회 -->
+	<entry key="getUnregUser2">
+		SELECT * FROM "UNREG_USER" WHERE user_id = ?
+		AND user_email = 'unreg'
+	</entry>
+
+	<!-- 복구용쿼리 -->
+	<entry key="updateUser">
+		UPDATE "USER"
+		SET "USER".user_id = ?,
+		"USER".user_pw =?,
+		"USER".user_email = ?,
+		"USER".user_nickname = ?,
+		"USER".user_regdate = ?,
+		"USER".user_is_admin = ?
+		WHERE "USER".user_id = ?;
+	</entry>
+
 </properties>

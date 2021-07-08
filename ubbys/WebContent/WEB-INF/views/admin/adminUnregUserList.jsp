@@ -68,9 +68,8 @@
 								</c:otherwise>
 							</c:choose></td>
 						<td><a
-							href="/ubbys/adminUpdatePage?userEmail=${un.userEmail}"
-							class="btn btn-primary btn-sm">수정</a> <a href="#"
-							class="btn btn-danger btn-sm">삭제</a></td>
+							href="/ubbys/admin/adminRecover"
+							class="btn btn-primary btn-sm">회원 복구</a> 
 					</tr>
 				</c:forEach>
 			</tbody>
