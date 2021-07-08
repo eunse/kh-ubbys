@@ -55,6 +55,7 @@ public class AppsServlet extends HttpServlet {
 			String categoryId = request.getParameter("category") == null ? "" : request.getParameter("category");
 			String searchKey = request.getParameter("q") == null ? "" : request.getParameter("q");
 			String searchType = request.getParameter("searchType") == null ? "" : request.getParameter("searchType");
+			String sort = request.getParameter("sort") == null ? "" : request.getParameter("sort");
 			
 			// 목록
 			if (command.equals("list")) {
@@ -62,7 +63,7 @@ public class AppsServlet extends HttpServlet {
 //				List<Apps> appsList = service.selectAppsList(pagination);
 
 				Pagination pagination = service.getPagination(boardTableName, cp, categoryId, searchKey, searchType);
-				List<Apps> appsList = service.selectAppsList(pagination, categoryId, searchKey, searchType);
+				List<Apps> appsList = service.selectAppsList(pagination, categoryId, searchKey, searchType, sort);
 				List<Category> category = service.selectCategoryList(boardTableName);
 				
 				request.setAttribute("category", category);
