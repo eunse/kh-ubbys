@@ -39,7 +39,7 @@
               <div class="dropdown text-end">
                 <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1"
                   data-bs-toggle="dropdown" aria-expanded="false">
-                  <img src="${sessionScope.loginUser.userPic}" width="32" height="32" class="rounded-circle me-2">
+                  <img src="${contextPath}/${sessionScope.loginUser.userPic}" width="32" height="32" class="rounded-circle me-2">
                   ${sessionScope.loginUser.userNickname}
                   
                 </a>
