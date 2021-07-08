@@ -219,9 +219,10 @@ $(document).on("click", ".showUpdateReply", function(){ // 동적 요소가 적�
   	if($(this).parent().parent().parent().parent().next(".updateArea").css("display") == "none" ){
         $(this).parent().parent().parent().parent().siblings("li.updateArea").slideUp(200);
         $(this).parent().parent().parent().parent().next(".updateArea").slideDown(200);
-	
+		$(this).text("닫기");
  	 }else{
 	   $(this).parent().parent().parent().parent().next(".updateArea").slideUp(200); 
+	   $(this).text("수정");
   	}
  /*  }); */
 
