@@ -29,6 +29,7 @@ public class UserUpdateServlet extends HttpServlet {
 				// 프로필 관련
 				UserService userService = new UserService();
 				int userNo = ((User) session.getAttribute("loginUser")).getUserNo();
+				
 				User userInfo = userService.userInfo(userNo);
 				request.setAttribute("userInfo", userInfo);
 				System.out.println("userInfo" + userInfo);
@@ -47,6 +48,7 @@ public class UserUpdateServlet extends HttpServlet {
 			HttpSession session = request.getSession();
 			User loginUser = (User) session.getAttribute("loginUser");
 			int userNo = loginUser.getUserNo();
+			String userEmail = ((User) session.getAttribute("loginUser")).getUserEmail();
 			User user = new User();
 
 			int maxSize = 1024 * 1024 * 20;
@@ -58,13 +60,14 @@ public class UserUpdateServlet extends HttpServlet {
 
 			MultipartRequest mpRequest = new MultipartRequest(request, root + filePath, maxSize, "UTF-8",
 					new MyFileRenamePolicy());
-
+			
 			String userPic = mpRequest.getParameter("userImageInput");
 			String userNickName = mpRequest.getParameter("inputName");
 			String userLink = mpRequest.getParameter("inputWebsite");
 			String userInterest = mpRequest.getParameter("inputInterest");
 			String userIntroduce = mpRequest.getParameter("inputIntroduce");
-
+			
+			user.setUserEmail(userEmail);
 			user.setUserNo(userNo);
 			user.setUserPic(userPic); //
 			user.setUserNickname(userNickName);
@@ -87,12 +90,15 @@ public class UserUpdateServlet extends HttpServlet {
 					
 					user.setUserPic(filePath + picName);
 					user.setUserNo(userNo);
+					user.setUserEmail(userEmail);
 					
 					picList.add(user);
 				}
 				System.out.println("회원수정 user" +user);
 				for(User pic : picList) {
-					System.out.println("pic:"+pic);
+//					System.out.println("pic:"+pic);
+					session.setAttribute("loginUser", pic);
+//					System.out.println("pic : "+pic);
 				}
 			}
 			
