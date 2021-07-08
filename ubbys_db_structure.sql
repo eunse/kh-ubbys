@@ -629,3 +629,11 @@ SELECT USER_ID, USER_EMAIL, USER_PW, USER_NICKNAME, USER_REGDATE, USER_IS_ADMIN
 FROM "USER"
 JOIN USER_INFO USING(USER_ID)
 WHERE USER_EMAIL <> 'unreg';
+
+--------------------------------------------------------------------------------
+-- 탈퇴한 회원목록 출력을 위한 VIEW (unreg_user_list)
+--------------------------------------------------------------------------------
+CREATE OR REPLACE VIEW UNREG_USER_LIST AS
+SELECT USER_ID, USER_EMAIL, USER_PW, USER_NICKNAME, USER_REGDATE, USER_IS_ADMIN, USER_UNREGDATE
+FROM "UNREG_USER"
+JOIN USER_INFO USING(USER_ID);
