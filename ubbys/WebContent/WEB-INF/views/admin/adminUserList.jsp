@@ -31,7 +31,7 @@
 					</div>
 				</form>
 			</div>
-		</div>${pagination }
+		</div>
 		<table class="table table-striped table-hover w-100">
 			<thead>
 				<tr>
