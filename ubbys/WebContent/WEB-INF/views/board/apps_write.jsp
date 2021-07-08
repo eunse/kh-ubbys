@@ -97,6 +97,7 @@
       })()
     </script>
     <script src="${contextPath}/resources/js/hashtag.js" defer></script>
+    <script src="${contextPath}/resources/js/ckeditor.js" defer></script>
     <script src="${contextPath}/resources/js/apps_write.js" defer></script>
 
 <jsp:include page="../common/footer.jsp" />
