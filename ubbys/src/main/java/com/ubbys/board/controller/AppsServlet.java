@@ -194,8 +194,8 @@ public class AppsServlet extends HttpServlet {
 				}
 				int postId = 0;
 				boolean flag = false;
-				if(request.getParameter("no") != null) {
-					apps.setPostId(Integer.parseInt(request.getParameter("no")));
+				if(mpRequest.getParameter("no") != null) {
+					apps.setPostId(Integer.parseInt(mpRequest.getParameter("no")));
 					flag = true; // 수정하는 경우
 				} 
 				postId = service.insertApps(apps, tagList, flag);
@@ -250,7 +250,6 @@ public class AppsServlet extends HttpServlet {
 					response.getWriter().print(0);
 				}
 
-//				response.getWriter().print(resultArr);
 			}
 		} catch(Exception err) {
 			err.printStackTrace();

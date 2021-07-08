@@ -35,6 +35,7 @@ public class AppsService extends BoardService {
 		for(Apps apps : appsList) {
 			String postContent = apps.getAppsSummary();
 			postContent = postContent.replaceAll("<br>", " ");
+			postContent = postContent.replaceAll("<p>", " ");
 			apps.setAppsSummary(postContent);
 		}
 		close(conn);
@@ -54,6 +55,7 @@ public class AppsService extends BoardService {
 		for(Apps apps : appsList) {
 			String postContent = apps.getAppsSummary();
 			postContent = postContent.replaceAll("<br>", " ");
+			postContent = postContent.replaceAll("<p>", " ");
 			apps.setAppsSummary(postContent);
 		}
 		close(conn);
@@ -72,6 +74,7 @@ public class AppsService extends BoardService {
 		for(Apps apps : appsList) {
 			String postContent = apps.getAppsSummary();
 			postContent = postContent.replaceAll("<br>", " ");
+			postContent = postContent.replaceAll("<p>", " ");
 			apps.setAppsSummary(postContent);
 		}
 		close(conn);
@@ -94,7 +97,7 @@ public class AppsService extends BoardService {
 	}
 
 	/**
-	 * apps 게시물 삽입 Service
+	 * apps 게시물 삽입/수정 Service
 	 * @param apps
 	 * @return
 	 * @throws Exception
@@ -110,11 +113,11 @@ public class AppsService extends BoardService {
 		}
 		if(postId > 0) {
 			apps.setPostId(postId);
-			String postContent = apps.getPostContent();
-			postContent = replaceParameter(postContent);
-			postContent = postContent.replaceAll("(\r\n|\r|\n|\n\r)", "<br>");
-			apps.setPostContent(postContent);
-			apps.setPostTitle(replaceParameter(apps.getPostTitle()));
+			// String postContent = apps.getPostContent();
+			// postContent = replaceParameter(postContent);
+			// postContent = postContent.replaceAll("(\r\n|\r|\n|\n\r)", "<br>");
+			// apps.setPostContent(postContent);
+			// apps.setPostTitle(replaceParameter(apps.getPostTitle()));
 			if(flag) {
 				result = dao.updateApps(conn, apps);
 			} else {
