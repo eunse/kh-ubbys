@@ -21,7 +21,7 @@ $("#inputPresentPw").on("input", function () {
         checkObj.inputPresentPw = false;
     }
 });
-
+ 
 // // 새 비밀번호 유효성 검사
 // // 조건 : 영어, 숫자, 특수기호 8글자 이상
 $("#inputChangePw").on("input", function () {
