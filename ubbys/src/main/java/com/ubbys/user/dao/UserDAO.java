@@ -162,6 +162,28 @@ public class UserDAO {
 		}
 		return result;
 	}
+	
+	/**
+	 * 회원 추가정보 삽입 DAO(user_info 테이블에 값이 없을 경우)
+	 * @param conn
+	 * @param user
+	 * @return result
+	 * @throws Exception
+	 */
+	public int insertUserInfo(Connection conn, User user) throws Exception {
+		int result = 0;
+		String sql = prop.getProperty("insertUserInfo");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, user.getUserNo());
+			result = pstmt.executeUpdate();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	
 
 	/**
 	 * 비밀번호 변경 DAO
