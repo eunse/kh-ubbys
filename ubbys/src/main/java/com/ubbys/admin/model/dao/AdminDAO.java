@@ -4,6 +4,7 @@ import static com.ubbys.common.JDBCTemplate.*;
 
 import java.io.FileInputStream;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.ResultSet;
@@ -569,6 +570,71 @@ public class AdminDAO {
 		}
 		return result;
 	}
+
+	/** 탈퇴회원 복구 DAO
+	 * @param conn
+	 * @param userNo
+	 * @return result
+	 * @throws Exception
+	 */
+	public int updateUser(Connection conn, User user) throws Exception {
+		
+		int result = 0;
+		
+		String sql = prop.getProperty("updateUser");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, user.getUserNo());
+			pstmt.setString(2, user.getUserPw());
+			pstmt.setString(3, user.getUserEmail());
+			pstmt.setString(4, user.getUserNickname());
+			pstmt.setDate(5, user.getUserRegdate());
+			pstmt.setString(6, user.getUserIsAdmin());
+			pstmt.setInt(7, user.getUserNo());
+			
+			result = pstmt.executeUpdate();
+			
+				
+		} finally {
+			close(pstmt);
+		}
+		
+		
+		return result;
+	}
+
+	/** 관리자용  탈퇴회원 복구용 정보 조회 DAO
+	 * @param conn
+	 * @param userNo
+	 * @return unregUser
+	 * @throws Exception
+	 */
+	public User getUnregUser2(Connection conn, int userNo) throws Exception{
+		
+		User unregUser = new User();
+		String sql = prop.getProperty("getUnregUser2");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userNo);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				unregUser.setUserNo(rs.getInt("USER_ID"));
+				unregUser.setUserEmail(rs.getString("USER_EMAIL"));
+				unregUser.setUserPw(rs.getString("USER_PW"));
+				unregUser.setUserNickname(rs.getString("USER_NICKNAME"));
+				unregUser.setUserRegdate(rs.getDate("USER_REGDATE"));
+				
+			}
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return unregUser;
+	}
+
+	
 	
 	
 	
