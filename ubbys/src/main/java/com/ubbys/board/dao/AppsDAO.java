@@ -138,7 +138,7 @@ public class AppsDAO extends BoardDAO {
 	 * @return appsList
 	 * @throws Exception
 	 */
-	public List<Apps> selectAppsList(Connection conn, Pagination pagination, String categoryId, String searchKey, String searchType) throws Exception {
+	public List<Apps> selectAppsList(Connection conn, Pagination pagination, String categoryId, String searchKey, String searchType, String sort) throws Exception {
 		List<Apps> appsList = new ArrayList<Apps>();
 		String sql = "SELECT * FROM ( SELECT ROWNUM RNUM, A.* FROM (SELECT * FROM apps_list ";
 		if(searchKey.length() != 0 && searchType.equals("tag")) {
@@ -154,7 +154,12 @@ public class AppsDAO extends BoardDAO {
 		if(categoryId.length() != 0) {
 			sql += " AND apps_category_id = " + categoryId;
 		}
-		sql += " ORDER BY apps_date DESC) A) WHERE RNUM BETWEEN ? AND ?";
+		if(sort.length() == 0) {
+			sql += " ORDER BY apps_date DESC ";
+		} else if(sort.length() != 0 && sort.equals("mostLiked")) {
+			sql += " ORDER BY apps_like DESC ";
+		}		
+		sql += ") A) WHERE RNUM BETWEEN ? AND ?";
 		System.out.println(sql);
 		String sqlForTag = prop.getProperty("selectAppsTags");
 		try {
@@ -490,7 +495,6 @@ public class AppsDAO extends BoardDAO {
 			sql += " AND apps_category_id = '" + categoryId + "' ";
 		}
 		sql += " GROUP BY apps_post_id)";
-		System.out.println(sql);
 		try {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);

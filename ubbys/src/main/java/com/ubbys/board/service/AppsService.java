@@ -66,9 +66,9 @@ public class AppsService extends BoardService {
 	 * @return boardList
 	 * @throws Exception
 	 */
-	public List<Apps> selectAppsList(Pagination pagination, String categoryId, String searchKey, String searchType) throws Exception {
+	public List<Apps> selectAppsList(Pagination pagination, String categoryId, String searchKey, String searchType, String sort) throws Exception {
 		Connection conn = getConnection();
-		List<Apps> appsList = dao.selectAppsList(conn, pagination, categoryId, searchKey, searchType);
+		List<Apps> appsList = dao.selectAppsList(conn, pagination, categoryId, searchKey, searchType, sort);
 		for(Apps apps : appsList) {
 			String postContent = apps.getAppsSummary();
 			postContent = postContent.replaceAll("<br>", " ");

@@ -8,9 +8,9 @@
       <form action="list" method="GET">
         <div class="row">
           <div class="col-xs-12 col-sm-4">
-            <select class="form-select">
-              <option selected value="sortNewest">최근 작성순</option>
-              <option value="sortLike">좋아요 많은 순</option>
+            <select class="form-select" name="sort">
+              <option selected value="newest">최근 작성순</option>
+              <option value="mostLiked">좋아요 많은 순</option>
             </select>
           </div>
           <div class="col-xs-12 col-sm-4">
