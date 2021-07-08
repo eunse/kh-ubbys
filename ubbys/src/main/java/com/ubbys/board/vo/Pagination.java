@@ -4,8 +4,8 @@ public class Pagination {
 	private int currentPage;
 	private int listCount;
 	
-	private int limit = 10;		// 한 페이지에 보여질 게시글 수
-	private int pageSize = 10;	// pagination 개수
+	private int limit = 9;		// 한 페이지에 보여질 게시글 수
+	private int pageSize = 5;	// pagination 개수
 	
 	private int maxPage;				// 마지막 페이지로 이동하는 버튼을 위한 번호
 	private int startPage;				// 현재 Pagination의 가장 앞의 번호
@@ -19,10 +19,6 @@ public class Pagination {
 		this.currentPage = currentPage;
 		this.listCount = listCount;
 		makePagination();
-	}
-
-	public Pagination(int cp, int listCount2, int userNo, String userNickname) {
-		// TODO Auto-generated constructor stub
 	}
 
 	public int getCurrentPage() {
@@ -101,34 +97,18 @@ public class Pagination {
 		this.nextPage = nextPage;
 	}
 
-	// 페이징 처리에 필요한 값을 계산하는 메소드
 	private void makePagination() {
-		// 마지막 페이지 == 총 페이지 수 
 		maxPage = (int)Math.ceil((double)listCount/limit);
-		// 페이지 번호 목록 시작 번호
 		startPage = (currentPage - 1) / pageSize * pageSize + 1;
-		
 		endPage = startPage + pageSize - 1;
 		
-		if(endPage > maxPage) {
-			endPage = maxPage;
-		}
+		if(endPage > maxPage) { endPage = maxPage; }
 		
-		if(currentPage < 10) {
-			prevPage = 1;
-		} else {
-			prevPage = (currentPage - 1) / pageSize * pageSize;
-		}
+		if(currentPage < 5) { prevPage = 1;
+		} else { prevPage = (currentPage - 1) / pageSize * pageSize; }
 		
 		nextPage = (currentPage + pageSize - 1) / pageSize * pageSize + 1;
 		
-		if(nextPage > maxPage) {
-			nextPage = maxPage;
-		}
-	}
-
-	public int getUserNo() {
-		// TODO Auto-generated method stub
-		return 0;
+		if(nextPage > maxPage) { nextPage = maxPage; }
 	}
 }

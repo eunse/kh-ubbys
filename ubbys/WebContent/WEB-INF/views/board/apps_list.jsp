@@ -5,30 +5,36 @@
     <div class="container">
       <a href="write" class="btn btn-primary float-end">작성하기</a>
       <h1 class="h3 my-5">apps</h1>
-      <div class="row">
-        <div class="col-xs-12 col-sm-4">
-          <select class="form-select">
-            <option selected value="sortNewest">최근 작성순</option>
-            <option value="sortLike">좋아요 많은 순</option>
-          </select>
-        </div>
-        <div class="col-xs-12 col-sm-4">
-          <select class="form-select">
-            <option selected>카테고리 전체</option>
-            <c:if test="${!empty category}">
-            <c:forEach items="${category}" var="c">
-            <option value="${c.categoryId}">${c.categoryName}</option>
-            </c:forEach>
-            </c:if>
-          </select>
-        </div>
-        <div class="col-xs-12 col-sm-4">
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="이름 혹은 해시태그로 검색">
-            <button class="btn btn-outline-secondary" type="button" id="searchApps" name="searchApps"><i class="bi bi-search"></i> 검색</button>
+      <form action="list" method="GET">
+        <div class="row">
+          <div class="col-xs-12 col-sm-4">
+            <select class="form-select">
+              <option selected value="sortNewest">최근 작성순</option>
+              <option value="sortLike">좋아요 많은 순</option>
+            </select>
+          </div>
+          <div class="col-xs-12 col-sm-4">
+            <select class="form-select" name="category">
+              <option selected value="">카테고리 전체</option>
+              <c:if test="${!empty category}">
+              <c:forEach items="${category}" var="c">
+              <option value="${c.categoryId}">${c.categoryName}</option>
+              </c:forEach>
+              </c:if>
+            </select>
+          </div>
+          <div class="col-xs-12 col-sm-4">
+            <div class="input-group mb-3">
+              <select class="form-select" name="searchType">
+                <option selected value="tag">해시태그</option>
+                <option value="title">이름(제목)</option>
+              </select>
+              <input type="text" class="form-control" name="q" placeholder="이름 혹은 해시태그로 검색">
+              <button class="btn btn-outline-secondary" type="submit" id="searchApps"><i class="bi bi-search"></i> 검색</button>
+            </div>
           </div>
         </div>
-      </div>
+      </form>
       <div class="row">
        <c:choose>
         <c:when test="${empty appsList}">
@@ -75,7 +81,7 @@
             <li class="page-item active"><a class="page-link" href="#">${p}</a></li>
            </c:when>
            <c:otherwise>
-            <li class="page-item"><a class="page-link" href="list&cp=${p}">${p}</a></li>
+            <li class="page-item"><a class="page-link" href="list?cp=${p}">${p}</a></li>
            </c:otherwise>
            </c:choose>
           </c:forEach>
