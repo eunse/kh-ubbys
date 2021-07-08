@@ -14,7 +14,7 @@
 		<div class="form-floating mb-3">
 			<input type="password" class="form-control" id="inputPw" name="inputPw" placeholder="비밀번호 입력" required>
 			<label for="inputPw">비밀번호</label>
-			<div id="pwHelp" class="form-text">영문/숫자를 혼합한 10자 이상</div>
+			<div id="pwHelp" class="form-text">영문/숫자를 혼합한 8자 이상</div>
 			<div class="invalid-feedback" id="checkPw">
 			</div>
 		</div>

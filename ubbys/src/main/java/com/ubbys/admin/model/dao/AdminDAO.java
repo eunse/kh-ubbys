@@ -78,16 +78,21 @@ public class AdminDAO {
 	 * @return userList
 	 * @throws Exception
 	 */
-	public List<User> selectUserList(Connection conn) throws Exception {
+	public List<User> selectUserList(Connection conn, Pagination pagination) throws Exception {
 	
 		List<User> userList = null;
 		
 		String sql = prop.getProperty("selectUserList");
-		
+
 		try { 
-			stmt = conn.createStatement();
+			pstmt = conn.prepareStatement(sql);
 			
-			rs = stmt.executeQuery(sql);
+			int startRow = (pagination.getCurrentPage() - 1) * pagination.getLimit() + 1;
+			int endRow = startRow + pagination.getLimit() - 1;
+			
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+			rs = pstmt.executeQuery();
 			
 			userList = new ArrayList<User>();
 			
@@ -227,6 +232,39 @@ public class AdminDAO {
 		return result;
 	}
 
+	
+	/** 전체 회원 수 + 회원 닉네임 조회 DAO
+	 * @param conn
+	 * @param cp
+	 * @param userNo
+	 * @param condition
+	 * @return result
+	 * @throws Exception 
+	 */
+	public int getUserCount(Connection conn, int cp) throws Exception {
+		
+		int result = 0;
+
+		String sql = prop.getProperty("getUserCount");
+		
+		try {
+			
+			stmt = conn.createStatement();
+
+			rs = stmt.executeQuery(sql);
+
+			if (rs.next()) {
+				result = rs.getInt(1);
+
+			}
+			
+		} finally {
+			close(rs);
+			close(stmt);
+		}
+
+		return result;
+	}
 	/**
 	 * 회원 정보 조회
 	 * @param conn

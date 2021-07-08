@@ -43,7 +43,7 @@ public class AdminService {
 
 		Connection conn = getConnection();
 
-		int userCount = dao.getUserCount(conn);
+		int userCount = dao.getUserCount(conn, cp);
 
 		close(conn);
 
@@ -60,7 +60,7 @@ public class AdminService {
 	public List<User> selectUserList(Pagination pagination) throws Exception {
 		Connection conn = getConnection();
 
-		List<User> userList = dao.selectUserList(conn);
+		List<User> userList = dao.selectUserList(conn,pagination);
 
 		close(conn);
 
